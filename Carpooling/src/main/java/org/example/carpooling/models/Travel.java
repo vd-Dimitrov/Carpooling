@@ -1,6 +1,7 @@
 package org.example.carpooling.models;
 
 import jakarta.persistence.*;
+import org.example.carpooling.enums.TravelStatus;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -25,6 +26,12 @@ public class Travel {
 
     @Column(name = "free_spots", nullable = false)
     private int freeSpots;
+
+    private TravelStatus travelStatus;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<User> passengers = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "travels_options",

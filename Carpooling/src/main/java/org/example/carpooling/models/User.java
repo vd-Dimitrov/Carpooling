@@ -19,6 +19,15 @@ public class User {
     @Column(name="first_name", nullable = false, length = 20)
     private String firstName;
 
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "phone_number", nullable = false, unique = true)
+    private String phoneNumber;
+
+    @Column(name="is_admin", nullable = false)
+    private boolean isAdmin;
+
     public int getUserId() {
         return userId;
     }
