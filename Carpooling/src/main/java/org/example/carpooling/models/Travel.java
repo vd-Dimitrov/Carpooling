@@ -21,12 +21,18 @@ public class Travel {
     @Column(name = "ending_point", nullable = false)
     private String endingPoint;
 
+    @ManyToOne
+    @JoinColumn(name = "driver", nullable = false)
+    private User driver;
+
     @Column(name = "departure_time", nullable = false)
     private LocalDateTime departureTime;
 
     @Column(name = "free_spots", nullable = false)
     private int freeSpots;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "travel_status")
     private TravelStatus travelStatus;
 
     @OneToMany
@@ -63,6 +69,14 @@ public class Travel {
         this.endingPoint = endingPoint;
     }
 
+    public User getDriver() {
+        return driver;
+    }
+
+    public void setDriver(User driver) {
+        this.driver = driver;
+    }
+
     public LocalDateTime getDepartureTime() {
         return departureTime;
     }
@@ -77,6 +91,22 @@ public class Travel {
 
     public void setFreeSpots(int freeSpots) {
         this.freeSpots = freeSpots;
+    }
+
+    public TravelStatus getTravelStatus() {
+        return travelStatus;
+    }
+
+    public void setTravelStatus(TravelStatus travelStatus) {
+        this.travelStatus = travelStatus;
+    }
+
+    public Set<User> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(Set<User> passengers) {
+        this.passengers = passengers;
     }
 
     public Set<Option> getOptions() {
