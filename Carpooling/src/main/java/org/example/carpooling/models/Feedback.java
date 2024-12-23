@@ -17,7 +17,7 @@ public class Feedback {
 
     @OneToOne
     @JoinColumn(name = "author_id")
-    private User authorId;
+    private User author;
 
     public int getFeedbackId() {
         return feedbackId;
@@ -43,11 +43,11 @@ public class Feedback {
         this.comment = comment;
     }
 
-    public User getAuthorId() {
-        return authorId;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuthorId(User authorId) {
-        this.authorId = authorId;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }
