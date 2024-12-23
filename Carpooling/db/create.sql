@@ -16,20 +16,16 @@ create table if not exists travels(
     travel_id int auto_increment primary key ,
     starting_point varchar(50) not null ,
     ending_point varchar(50) not null ,
-    driver int not null ,
+    driver_id int,
     departure_time datetime  not null,
     travel_status enum('UPCOMING', 'ONGOING', 'COMPLETE'),
     free_spots int,
-    constraint travels_users_user_id_fk
-        foreign key (driver) references users (user_id) on delete set null
+    constraint travels_users_user_id_fk foreign key (driver_id) references users (user_id) on delete set null
 );
 
 create table if not exists options(
-    options_id int NOT NULL AUTO_INCREMENT,
-    `option` varchar(50) NOT NULL,
-    PRIMARY KEY (options_id),
-    UNIQUE KEY (options_id),
-    UNIQUE KEY (`option`)
+    options_id int auto_increment primary key ,
+    `option` varchar(50) not null unique
 );
 
 create table if not exists travels_options(
@@ -41,11 +37,10 @@ create table if not exists travels_options(
 
 create table if not exists feedbacks(
     feedback_id int auto_increment primary key ,
-    rating float not null ,
+    rating double not null ,
     comment varchar(255),
-    author int not null ,
-    constraint `user_id`
-        foreign key (author) references users (user_id) on delete set null
+    author_id int,
+    constraint feedbacks_users_user_id_fk foreign key (author_id) references users (user_id) on delete set null
 );
 
 create table if not exists feedbacks_travels(
