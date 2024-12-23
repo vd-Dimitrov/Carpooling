@@ -1,68 +1,56 @@
-CREATE DATABASE IF NOT EXISTS `carpooling`;
-USE `carpooling`;
+create database if not exists carpooling;
+use carpooling;
 
-CREATE TABLE IF NOT EXISTS `users` (
-    `user_id` INT(11) NOT NULL AUTO_INCREMENT,
-    `username` varchar(50) NOT NULL ,
-    `password` varchar(100) NOT NULL ,
-    `first_name` varchar(50) NOT NULL ,
-    `last_name` varchar(50) NOT NULL ,
-    `email` varchar(100) NOT NULL  ,
-    `phone_number` varchar(13) NOT NULL,
-    `is_admin` boolean NOT NULL ,
-    PRIMARY KEY (`user_id`),
-    UNIQUE KEY (`user_id`),
-    UNIQUE KEY (`email`)
+create table if not exists users (
+    user_id int auto_increment primary key ,
+    username varchar(50) not null unique ,
+    password varchar(100) not null ,
+    first_name varchar(50) not null ,
+    last_name varchar(50) not null ,
+    email varchar(100) not null unique ,
+    phone_number varchar(13) not null unique ,
+    is_admin boolean not null
 );
 
-CREATE TABLE IF NOT EXISTS `travels`(
-    `travel_id` INT(11) NOT NULL AUTO_INCREMENT,
-    `starting_point` varchar(50) NOT NULL,
-    `ending_point` varchar(50) NOT NULL ,
-    `driver` INT(11) NOT NULL ,
-    `departure_time` DATETIME NOT NULL,
-    `travel_status` enum('UPCOMING', 'ONGOING', 'COMPLETE'),
-    `free_spots` int(11),
-    PRIMARY KEY (`travel_id`),
-    UNIQUE KEY (`travel_id`),
-    KEY `travels_users_user_id_fk` (`driver`),
-    CONSTRAINT `travels_users_user_id_fk` FOREIGN KEY (`driver`) REFERENCES `users` (`user_id`)
+create table if not exists travels(
+    travel_id int auto_increment primary key ,
+    starting_point varchar(50) not null ,
+    ending_point varchar(50) not null ,
+    driver int not null ,
+    departure_time datetime  not null,
+    travel_status enum('UPCOMING', 'ONGOING', 'COMPLETE'),
+    free_spots int,
+    constraint travels_users_user_id_fk
+        foreign key (driver) references users (user_id) on delete set null
 );
 
-CREATE TABLE IF NOT EXISTS `options`(
-    `options_id` INT(11) NOT NULL AUTO_INCREMENT,
+create table if not exists options(
+    options_id int NOT NULL AUTO_INCREMENT,
     `option` varchar(50) NOT NULL,
-    PRIMARY KEY (`options_id`),
-    UNIQUE KEY (`options_id`),
+    PRIMARY KEY (options_id),
+    UNIQUE KEY (options_id),
     UNIQUE KEY (`option`)
 );
 
-CREATE TABLE IF NOT EXISTS `travels_options`(
-    `travels_options_id` INT(11) NOT NULL AUTO_INCREMENT,
-    `travels_id` INT(11) NOT NULL ,
-    `options_id` INT(11) NOT NULL ,
-    PRIMARY KEY (`travels_options_id`),
-    UNIQUE KEY (`travels_options_id`),
-    CONSTRAINT `travels_options_travels_travel_id_fk` FOREIGN KEY (`travels_id`) REFERENCES `travels` (`travel_id`) ON DELETE  CASCADE ,
-    CONSTRAINT `travels_options_options_option_id_fk` FOREIGN KEY (`options_id`) REFERENCES `options` (`options_id`) ON DELETE CASCADE
+create table if not exists travels_options(
+    `travels_id` int not null ,
+    `options_id` int not null ,
+    foreign key (travels_id) references travels (travel_id) on delete cascade,
+    foreign key (options_id) references options (options_id) on delete cascade
 );
 
-CREATE TABLE IF NOT EXISTS `feedbacks`(
-    `feedback_id` INT(11) NOT NULL AUTO_INCREMENT,
-    `rating` FLOAT NOT NULL,
-    `comment` VARCHAR(255),
-    `author` INT(11) NOT NULL ,
-    PRIMARY KEY (`feedback_id`),
-    UNIQUE KEY (`feedback_id`),
-    CONSTRAINT `user_id` FOREIGN KEY (`author`) REFERENCES `users` (`user_id`)
+create table if not exists feedbacks(
+    feedback_id int auto_increment primary key ,
+    rating float not null ,
+    comment varchar(255),
+    author int not null ,
+    constraint `user_id`
+        foreign key (author) references users (user_id) on delete set null
 );
 
-CREATE TABLE IF NOT EXISTS `feedbacks_travels`(
-    `feedbacks_travels_id` INT(11) NOT NULL AUTO_INCREMENT,
-    `feedbacks_id` INT(11) NOT NULL ,
-    `travels_id` INT(11) NOT NULL ,
-    PRIMARY KEY (`feedbacks_travels_id`),
-    UNIQUE KEY (`feedbacks_travels_id`),
-    CONSTRAINT `feedbacks_travels_feedbacks_feedback_id_fk` FOREIGN KEY (`feedbacks_id`) REFERENCES `feedbacks` (`feedback_id`),
-    CONSTRAINT `feedbacks_travels_travels_travel_id_fk` FOREIGN KEY (`travels_id`) REFERENCES `travels` (`travel_id`)
+create table if not exists feedbacks_travels(
+    feedbacks_id int not null ,
+    travels_id int not null ,
+    foreign key (feedbacks_id) references feedbacks (feedback_id) on delete cascade ,
+    foreign key (travels_id) references travels (travel_id) on delete cascade
 );
