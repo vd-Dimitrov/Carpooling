@@ -10,7 +10,7 @@ import org.example.carpooling.services.interfaces.FeedbackService;
 import java.util.List;
 
 public class FeedbackServiceImpl implements FeedbackService {
-    public static final String MODIFY_ERROR_MESSAGE = "Only owner can make changes to the User's information!";
+    public static final String MODIFY_ERROR_MESSAGE = "Only owner can make changes to the feedback!";
     private final FeedbackRepository feedbackRepository;
 
     public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
