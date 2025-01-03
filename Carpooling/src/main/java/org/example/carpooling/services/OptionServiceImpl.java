@@ -47,10 +47,11 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     public void updateOption(User requestingUser, Option updatedOption) {
-
+        checkPermission(requestingUser);
+        optionRepository.save(updatedOption);
     }
 
-    private void checkPermission(User requestingUser, User updatedUser){
+    private void checkPermission(User requestingUser){
         if (!requestingUser.isAdmin()){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
