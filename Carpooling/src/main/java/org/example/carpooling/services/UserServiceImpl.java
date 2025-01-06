@@ -19,9 +19,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-
-
-
     @Override
     public User createUser(User user) {
         boolean duplicateExists = true;
@@ -68,12 +65,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User requestingUser, User updatedUser) {
+    public void updateUser(User updatedUser, User requestingUser) {
         checkPermission(requestingUser, updatedUser);
         userRepository.save(updatedUser);
     }
 
-    private void checkPermission(User requestingUser, User updatedUser){
+    @Override
+    public void deleteUser(User userToDelete, User requestingUser) {
+        checkPermission(userToDelete, requestingUser);
+        userRepository.delete(userToDelete);
+    }
+
+    private void checkPermission(User updatedUser, User requestingUser){
         if (requestingUser.getUserId()!=updatedUser.getUserId()){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }

@@ -13,5 +13,6 @@ public interface UserService {
     User getByPhoneNumber(String phoneNumber);
     List<User> getAllUsers();
 
-    void updateUser(User requestingUser, User updatedUser);
+    void updateUser(User updatedUser, User requestingUser);
+    void deleteUser(User userToDelete, User requestingUser);
 }
