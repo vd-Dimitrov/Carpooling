@@ -9,6 +9,7 @@ import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,18 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        boolean duplicateExists = true;
-        try {
-            getByUsername(user.getUsername());
-        } catch (EntityNotFoundException e){
-            duplicateExists = false;
-        }
-
-        if (duplicateExists) {
-            throw new EntityDuplicateException("User", "username", user.getUsername());
-        } else {
-            return userRepository.save(user);
-        }
+        checkUniqueUser(user);
+        checkValidEmailPattern(user.getEmail());
+        return userRepository.save(user);
     }
 
     @Override
@@ -81,6 +73,35 @@ public class UserServiceImpl implements UserService {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }
+    private void checkUniqueUser(User user) {
+        boolean duplicateUsernameExists = true;
+        boolean duplicateEmailExists = true;
+        try {
+            getByUsername(user.getUsername());
+        } catch (EntityNotFoundException e){
+            duplicateUsernameExists = false;
+        }
+        try{
+            getByEmail(user.getEmail());
+        } catch (EntityNotFoundException e){
+            duplicateEmailExists = false;
+        }
+        if (duplicateUsernameExists) {
+            throw new EntityDuplicateException("User", "username", user.getUsername());
+        }if (duplicateEmailExists) {
+            throw new EntityDuplicateException("User", "email", user.getEmail());
+        }
+    }
 
+    public void checkValidEmailPattern(String emailAddress){
+        String REGEX_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        if (!Pattern.compile(REGEX_PATTERN)
+                .matcher(emailAddress)
+                .matches())
+        {
+            throw new IllegalArgumentException("Enter valid email address");
+        }
+    }
 
 }
