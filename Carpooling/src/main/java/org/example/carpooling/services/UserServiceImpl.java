@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
     private void checkUniqueUser(User user) {
         boolean duplicateUsernameExists = true;
         boolean duplicateEmailExists = true;
+        boolean duplicatePhoneExists = true;
         try {
             getByUsername(user.getUsername());
         } catch (EntityNotFoundException e){
@@ -86,10 +87,17 @@ public class UserServiceImpl implements UserService {
         } catch (EntityNotFoundException e){
             duplicateEmailExists = false;
         }
+        try{
+            getByPhoneNumber(user.getPhoneNumber());
+        } catch (EntityNotFoundException e){
+            duplicatePhoneExists = false;
+        }
         if (duplicateUsernameExists) {
             throw new EntityDuplicateException("User", "username", user.getUsername());
-        }if (duplicateEmailExists) {
+        }else if (duplicateEmailExists) {
             throw new EntityDuplicateException("User", "email", user.getEmail());
+        } else if (duplicatePhoneExists) {
+            throw new EntityDuplicateException("User", "phone number", user.getPhoneNumber());
         }
     }
 
