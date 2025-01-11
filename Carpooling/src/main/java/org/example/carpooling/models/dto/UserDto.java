@@ -1,42 +1,35 @@
-package org.example.carpooling.models;
+package org.example.carpooling.models.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private int userId;
+public class UserDto {
 
-    @Column(name = "username", nullable = false, unique = true, length = 20)
+    @NotNull(message = "Username cannot be empty")
+    @Size(min = 2, max = 20, message = "Username should be between 2 and 20 characters")
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @NotNull(message = "Password cannot be empty")
+    @Size(min = 8, message = "Password should have at least 8 characters")
     private String password;
 
-    @Column(name = "first_name", nullable = false, length = 20)
+    @NotNull(message = "First name cannot be empty")
+    @Size(min = 2, max = 20, message = "First name should be between 2 and 20 characters")
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 20)
+    @NotNull(message = "Last name cannot be empty")
+    @Size(min = 2, max = 20, message = "Last name should be between 2 and 20 characters")
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @NotNull(message = "Email cannot be empty")
     private String email;
 
-    @Column(name = "phone_number", nullable = false, unique = true)
+    @NotNull(message = "Phone number cannot be empty")
+    @Size(min = 10, max = 10, message = "A valid phone number is 10 digits")
     private String phoneNumber;
 
-    @Column(name = "is_admin")
-    private boolean isAdmin;
+    public void userDto(){
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getUsername() {
@@ -85,13 +78,5 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
     }
 }
