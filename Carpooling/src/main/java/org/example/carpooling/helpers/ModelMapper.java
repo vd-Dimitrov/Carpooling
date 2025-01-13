@@ -3,6 +3,9 @@ package org.example.carpooling.helpers;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.UserDtoIn;
 import org.example.carpooling.models.dto.UserDtoOut;
+import org.example.carpooling.models.dto.UserDtoUpdate;
+import org.example.carpooling.services.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,6 +14,13 @@ import java.util.stream.Collectors;
 
 @Component
 public class ModelMapper {
+    private final UserService userService;
+
+    @Autowired
+    public ModelMapper(UserService userService) {
+        this.userService = userService;
+    }
+
     public User fromUserDto(UserDtoIn userDtoIn) {
         User user = new User();
 
@@ -20,6 +30,19 @@ public class ModelMapper {
         user.setLastName(userDtoIn.getLastName());
         user.setEmail(userDtoIn.getEmail());
         user.setPhoneNumber(userDtoIn.getPhoneNumber());
+
+        return user;
+    }
+
+    public User fromUserDtoUpdate(UserDtoUpdate userDtoUpdate, int id){
+        User user = new User();
+        user.setUserId(id);
+        user.setUsername(userService.getById(id).getUsername());
+        user.setPassword(userDtoUpdate.getPassword());
+        user.setFirstName(userDtoUpdate.getFirstName());
+        user.setLastName(userDtoUpdate.getLastName());
+        user.setEmail(userDtoUpdate.getEmail());
+        user.setPhoneNumber(userDtoUpdate.getEmail());
 
         return user;
     }
