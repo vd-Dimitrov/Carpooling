@@ -24,23 +24,10 @@ public class AuthenticationHelper {
         if (!headers.containsKey(AUTHORIZATION_HEADER)) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
-
-        String userInfo = headers.getFirst(AUTHORIZATION_HEADER);
-        String username = getUsername(userInfo);
-        String password = getPassword(userInfo);
-        return verifyAuthentication(username, password);
-    }
-
-    public User tryGetCurrentUser(HttpSession session){
-        String currentUsername = session.getAttribute("currentUser").toString();
-        if (currentUsername == null){
-            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
-        }
-        return userService.getByUsername(currentUsername);
-    }
-
-    private User verifyAuthentication(String username, String password) {
-        try{
+        try {
+            String userInfo = headers.getFirst(AUTHORIZATION_HEADER);
+            String username = getUsername(userInfo);
+            String password = getPassword(userInfo);
             User user = userService.getByUsername(username);
             if (!user.getPassword().equals(password)){
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
@@ -51,9 +38,17 @@ public class AuthenticationHelper {
         }
     }
 
+    public User tryGetCurrentUser(HttpSession session){
+        String currentUsername = session.getAttribute("currentUser").toString();
+        if (currentUsername == null){
+            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+        }
+        return userService.getByUsername(currentUsername);
+    }
+
 
     private String getUsername(String userInformation) {
-        int firstSpace =userInformation.indexOf(" ");
+        int firstSpace = userInformation.indexOf(" ");
         if (firstSpace == -1){
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }

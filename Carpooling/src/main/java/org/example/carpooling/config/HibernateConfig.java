@@ -22,18 +22,18 @@ public class HibernateConfig {
 
     @Autowired
     public HibernateConfig(Environment environment) {
-        this.dbUrl = environment.getProperty("database.url");
-        this.dbUsername = environment.getProperty("database.username");
-        this.dbPassword = environment.getProperty("database.password");
+        dbUrl = environment.getProperty("database.url");
+        dbUsername = environment.getProperty("database.username");
+        dbPassword = environment.getProperty("database.password");
     }
 
     @Bean(name = "entityManagerFactory")
-    public LocalSessionFactoryBean entityManagerFactory(){
-        LocalSessionFactoryBean entityManagerFactory = new LocalSessionFactoryBean();
-        entityManagerFactory.setDataSource(dataSource());
-        entityManagerFactory.setPackagesToScan("org.example.carpooling.models");
-        entityManagerFactory.setHibernateProperties(hibernateProperties());
-        return entityManagerFactory;
+    public LocalSessionFactoryBean sessionFactory(){
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("org.example.carpooling.models");
+        sessionFactory.setHibernateProperties(hibernateProperties());
+        return sessionFactory;
     }
 
     @Bean
@@ -46,21 +46,12 @@ public class HibernateConfig {
         return dataSource;
     }
 
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(
-            EntityManagerFactoryBuilder builder,
-            DataSource dataSource) {
-        return builder
-                .dataSource(dataSource)
-                .packages("org.example.carpooling.models")
-                .persistenceUnit("carpoolingPu")
-                .build();
-    }
 
     private Properties hibernateProperties(){
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect");
-        hibernateProperties.setProperty("hibernate.show_sql", "true");
-        hibernateProperties.setProperty("hibernate.format_sql", "true");
+//        hibernateProperties.setProperty("hibernate.show_sql", "true");
+//        hibernateProperties.setProperty("hibernate.format_sql", "true");
         return hibernateProperties;
     }
 }
