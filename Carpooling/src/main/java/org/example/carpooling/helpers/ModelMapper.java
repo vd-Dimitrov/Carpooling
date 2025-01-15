@@ -42,7 +42,7 @@ public class ModelMapper {
         user.setFirstName(userDtoUpdate.getFirstName());
         user.setLastName(userDtoUpdate.getLastName());
         user.setEmail(userDtoUpdate.getEmail());
-        user.setPhoneNumber(userDtoUpdate.getEmail());
+        user.setPhoneNumber(userDtoUpdate.getPhoneNumber());
 
         return user;
     }
