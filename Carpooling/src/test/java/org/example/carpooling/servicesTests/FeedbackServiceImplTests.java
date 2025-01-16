@@ -96,4 +96,15 @@ public class FeedbackServiceImplTests {
         Assertions.assertThrows(AuthorizationException.class,
                 () -> mockFeedbackService.updateFeedback(mockFeedback, mockUser));
     }
+
+    @Test
+    public void deleteFeedback_Should_CallRepository_When_UserIsAuthor(){
+        Feedback mockFeedback = createMockFeedback();
+        User mockUser = createMockUser();
+
+        mockFeedbackService.deleteFeedback(mockFeedback, mockUser);
+
+        Mockito.verify(mockFeedbackRepository, Mockito.times(1))
+                .delete(mockFeedback);
+    }
 }
