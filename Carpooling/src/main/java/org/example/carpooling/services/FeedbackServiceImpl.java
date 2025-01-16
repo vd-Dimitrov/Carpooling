@@ -45,6 +45,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackRepository.save(updatedFeedback);
     }
 
+    @Override
+    public void deleteFeedback(Feedback deletedFeedback, User requestingUser) {
+        checkPermission(requestingUser, deletedFeedback);
+        feedbackRepository.delete(deletedFeedback);
+    }
+    
     private void checkPermission(User requestingUser, Feedback updatedFeedback){
         if (requestingUser.getUserId()!= updatedFeedback.getAuthor().getUserId()){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
