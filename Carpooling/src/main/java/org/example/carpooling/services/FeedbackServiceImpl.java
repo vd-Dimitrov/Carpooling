@@ -34,9 +34,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<Feedback> getFeedbackByAuthor(int authorId) {
-        return feedbackRepository.findAllByAuthorUserId(authorId)
-                .orElseThrow( () -> new EntityNotFoundException("User", authorId));
+    public List<Feedback> getFeedbackByAuthor(User author) {
+        return feedbackRepository.findFeedbackByAuthor(author)
+                .orElseThrow( () -> new EntityNotFoundException("User", author.getUserId()));
     }
 
     @Override

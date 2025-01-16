@@ -10,7 +10,7 @@ public interface FeedbackService {
 
     Feedback findById(int id);
     List<Feedback> getAllFeedback();
-    List<Feedback> getFeedbackByAuthor(int authorId);
+    List<Feedback> getFeedbackByAuthor(User author);
     void updateFeedback(Feedback updatedFeedback, User requestingUser);
     void deleteFeedback(Feedback deletedFeedback, User requestingUser);
 }

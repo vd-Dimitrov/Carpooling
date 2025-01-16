@@ -77,6 +77,22 @@ public class FeedbackServiceImplTests {
     }
 
     @Test
+    public void getByAuthor_Should_ReturnListOfFeedbacks_When_AuthorExists(){
+        // Arrange
+        User mockUser = createMockUser();
+        List<Feedback> mockFeedbacks = List.of(createMockFeedback(), createMockFeedback());
+
+        Mockito.when(mockFeedbackRepository.findFeedbackByAuthor(mockUser))
+                .thenReturn(Optional.of(mockFeedbacks));
+
+        // Act
+        List<Feedback> result = mockFeedbackService.getFeedbackByAuthor(mockUser);
+
+        // Assert
+        Assertions.assertEquals(mockFeedbacks, result);
+    }
+
+    @Test
     void updateFeedback_Should_CallRepository_When_FeedbackExists(){
         Feedback mockFeedback = createMockFeedback();
         User mockUser = createMockUser();

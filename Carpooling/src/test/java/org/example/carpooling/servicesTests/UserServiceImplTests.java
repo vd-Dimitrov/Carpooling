@@ -3,6 +3,7 @@ package org.example.carpooling.servicesTests;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityDuplicateException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
+import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.UserRepository;
 import org.example.carpooling.services.UserServiceImpl;
