@@ -1,4 +1,4 @@
-package org.example.carpooling.controllers;
+package org.example.carpooling.config;
 
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityDuplicateException;
