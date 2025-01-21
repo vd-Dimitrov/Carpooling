@@ -1,7 +1,9 @@
 package org.example.carpooling;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.User;
+import org.example.carpooling.models.dto.UserDtoOut;
 
 public class Helpers {
 
@@ -42,5 +44,24 @@ public class Helpers {
         mockFeedback.setComment("Mock Comment");
 
         return mockFeedback;
+    }
+
+    public static UserDtoOut createMockUserOutDto(){
+        UserDtoOut mockUser = new UserDtoOut();
+        mockUser.setUsername("MockUsername");
+        mockUser.setFirstName("MockFirstName");
+        mockUser.setLastName("MockLastName");
+        mockUser.setPhoneNumber("0123456789");
+        mockUser.setEmail("MockEmail@mock.com");
+
+        return mockUser;
+    }
+
+    public static String toJson(final Object obj){
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
