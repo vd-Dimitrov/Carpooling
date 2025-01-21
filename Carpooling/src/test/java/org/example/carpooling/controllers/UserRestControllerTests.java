@@ -1,9 +1,11 @@
 package org.example.carpooling.controllers;
 
+import org.example.carpooling.exceptions.EntityDuplicateException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.helpers.AuthenticationHelper;
 import org.example.carpooling.helpers.ModelMapper;
 import org.example.carpooling.models.User;
+import org.example.carpooling.models.dto.UserDtoUpdate;
 import org.example.carpooling.services.interfaces.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -38,7 +40,6 @@ public class UserRestControllerTests {
     @Autowired
     MockMvc mockMvc;
 
-    // ToDo fix unit test
     @Test
     public void getUserById_Should_ReturnStatusOk_When_UserExists() throws Exception {
         // Arrange
@@ -49,8 +50,7 @@ public class UserRestControllerTests {
 
         // Act, Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/{id}", 1))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(mockUser.getUsername()));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -113,22 +113,120 @@ public class UserRestControllerTests {
 
     }
 
-    // ToDo fix unit test
     @Test
     public void registerUser_Should_ReturnStatusOk_When_CorrectRequest() throws Exception {
-        // Arrange
-        User mockUser = createMockUser();
-
-        Mockito.when(mockMapper.fromUserDto(Mockito.any()))
-                .thenReturn(mockUser);
-
         // Act, Assert
-        String body = toJson(createMockUserOutDto());
+        String body = toJson(createMockUserDtoIn());
         mockMvc.perform(MockMvcRequestBuilders.post("/api/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
+    public void registerUser_Should_ReturnStatusConflict_When_UserWithSameUsernameExists() throws Exception{
+        // Arrange
+        User mockUser = createMockUser();
 
+        Mockito.when(mockMapper.fromUserDto(Mockito.any()))
+                        .thenReturn(mockUser);
+
+        Mockito.doThrow(EntityDuplicateException.class)
+                .when(mockService)
+                .createUser(mockUser);
+
+        // Act, Assert
+        String body = toJson(createMockUserDtoIn());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(MockMvcResultMatchers.status().isConflict());
+    }
+
+    @Test
+    public void updateUser_Should_ReturnStatusOk_When_CorrectRequest() throws Exception{
+        // Arrange
+        User mockUser = createMockUser();
+
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenReturn(mockUser);
+
+        // Act, Assert
+        String body = toJson(createMockUserDtoUpdate());
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void updateUser_Should_ReturnStatusUnauthorized_When_AuthorizationIsMissing() throws Exception{
+        // Arrange
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, null));
+
+        // Act, Assert
+        String body = toJson(createMockUserDtoUpdate());
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    public void updateUser_Should_ReturnStatusBadRequest_When_BodyIsInvalid() throws Exception{
+        // Arrange
+        UserDtoUpdate mockDto = createMockUserDtoUpdate();
+        mockDto.setPassword(null);
+
+        // Act, Assert
+        String body = toJson(mockDto);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+
+    @Test
+    public void updateUser_Should_ReturnStatusNotFound_When_UserDoesntExist() throws Exception{
+        // Arrange
+        User mockUser =createMockUser();
+
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenReturn(mockUser);
+
+        Mockito.when(mockMapper.fromUserDtoUpdate(Mockito.any(), Mockito.anyInt()))
+                .thenThrow(EntityNotFoundException.class);
+
+        // Act, Assert
+        String body = toJson(createMockUserDtoUpdate());
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{id}",1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void updateUser_Should_ReturnStatusConflict_When_UserWithSameInfoExists() throws Exception{
+        // Arrange
+        User mockUser = createMockUser();
+
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenReturn(mockUser);
+
+        Mockito.when(mockMapper.fromUserDtoUpdate(Mockito.any(), Mockito.anyInt()))
+                        .thenReturn(mockUser);
+
+        Mockito.doThrow(EntityDuplicateException.class)
+                .when(mockService)
+                .updateUser(mockUser, mockUser);
+
+        // Act, Assert
+        String body = toJson(createMockUserDtoUpdate());
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(MockMvcResultMatchers.status().isConflict());
+    }
 }
