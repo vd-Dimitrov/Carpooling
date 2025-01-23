@@ -268,8 +268,24 @@ public class UserRestControllerTests {
         Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
                 .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, null));
 
-        // Act, Arrange
+        // Act, Assert
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    public void deleteUser_Should_ReturnStatusNotFound_When_UserDoesNotExist() throws Exception {
+        // Arrange
+        User mockUser = createMockUser();
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                        .thenReturn(mockUser);
+
+        Mockito.doThrow(EntityNotFoundException.class)
+                .when(mockService)
+                .deleteUser(1,mockUser);
+
+        // Act, Assert
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

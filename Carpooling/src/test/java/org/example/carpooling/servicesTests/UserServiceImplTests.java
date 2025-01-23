@@ -173,8 +173,11 @@ public class UserServiceImplTests {
         // Arrange
         User mockUser = createMockUser();
 
+        Mockito.when(mockUserRepository.findUserByUserId(Mockito.anyInt()))
+                .thenReturn(Optional.of(mockUser));
+
         // Act
-        mockUserService.deleteUser(mockUser, mockUser);
+        mockUserService.deleteUser(1, mockUser);
 
         // Assert
         Mockito.verify(mockUserRepository, Mockito.times(1))
@@ -185,12 +188,14 @@ public class UserServiceImplTests {
     public void deleteUser_Should_Throw_When_UserIsNotOwner(){
         // Arrange
         User mockUser = createMockUser();
-        User mockInvalidUser = createMockUser();
-        mockInvalidUser.setUserId(2);
+        Mockito.when(mockUserRepository.findUserByUserId(Mockito.anyInt()))
+                .thenReturn(Optional.of(mockUser));
+
+        User mockInvalidUser = Mockito.mock(User.class);
 
         // Act, Assert
         Assertions.assertThrows(AuthorizationException.class,
-                () -> mockUserService.deleteUser(mockUser, mockInvalidUser));
+                () -> mockUserService.deleteUser(1, mockInvalidUser));
     }
 
 }

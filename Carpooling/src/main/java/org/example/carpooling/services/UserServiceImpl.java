@@ -65,7 +65,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(User userToDelete, User requestingUser) {
+    public void deleteUser(int id, User requestingUser) {
+        User userToDelete = getById(id);
         checkPermission(userToDelete, requestingUser);
         userRepository.delete(userToDelete);
     }
