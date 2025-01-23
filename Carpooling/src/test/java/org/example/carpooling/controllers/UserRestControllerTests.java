@@ -1,5 +1,6 @@
 package org.example.carpooling.controllers;
 
+import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityDuplicateException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.helpers.AuthenticationHelper;
@@ -228,5 +229,47 @@ public class UserRestControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
                 .andExpect(MockMvcResultMatchers.status().isConflict());
+    }
+
+    @Test
+    public void updateUser_Should_ReturnStatusUnauthorized_When_UserIsNotAuthorizedToEdit() throws Exception{
+        // Arrange
+        User mockUser = createMockUser();
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenReturn(mockUser);
+        User mockUpdateUser = createMockUser();
+        Mockito.when(mockMapper.fromUserDtoUpdate(Mockito.any(), Mockito.anyInt()))
+                        .thenReturn(mockUpdateUser);
+        Mockito.doThrow(AuthorizationException.class)
+                .when(mockService)
+                .updateUser(mockUpdateUser, mockUser);
+
+        // Act, Assert
+        String body = toJson(createMockUserDtoUpdate());
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    public void deleteUser_Should_ReturnStatusOk_When_CorrectRequest() throws Exception{
+        User mockUser = createMockUser();
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenReturn(mockUser);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void deleteUser_Should_ReturnStatusUnauthorized_When_AuthorizationIsMissing() throws Exception{
+        // Arrange
+        Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, null));
+
+        // Act, Arrange
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 }
