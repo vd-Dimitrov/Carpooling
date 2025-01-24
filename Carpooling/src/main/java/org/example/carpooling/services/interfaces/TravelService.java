@@ -8,6 +8,8 @@ import java.util.List;
 public interface TravelService {
     Travel createTravel(Travel travel);
 
+    List<Travel> getAllTravels();
+    List<Travel> getAllUpcomingTravels();
     Travel getById(int travelId);
     List<Travel> getByDriver(int driveId);
 

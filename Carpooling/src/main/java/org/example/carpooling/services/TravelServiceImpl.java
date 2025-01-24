@@ -1,5 +1,6 @@
 package org.example.carpooling.services;
 
+import org.example.carpooling.enums.TravelStatus;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.models.Travel;
@@ -23,6 +24,17 @@ public class TravelServiceImpl implements TravelService {
     public Travel createTravel(Travel travel) {
         return travelRepository.save(travel);
     }
+
+    @Override
+    public List<Travel> getAllTravels() {
+        return travelRepository.findAll();
+    }
+
+    @Override
+    public List<Travel> getAllUpcomingTravels() {
+        return travelRepository.findTravelByTravelStatus(TravelStatus.UPCOMING);
+    }
+
 
     @Override
     public Travel getById(int travelId) {
