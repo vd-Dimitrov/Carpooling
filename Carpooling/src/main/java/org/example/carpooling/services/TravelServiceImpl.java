@@ -6,9 +6,11 @@ import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.TravelRepository;
 import org.example.carpooling.services.interfaces.TravelService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TravelServiceImpl implements TravelService {
     public static final String MODIFY_ERROR_MESSAGE = "Only author can make changes to the travel information!";
     private final TravelRepository travelRepository;

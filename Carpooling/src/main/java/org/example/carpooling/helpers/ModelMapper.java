@@ -1,6 +1,8 @@
 package org.example.carpooling.helpers;
 
+import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
+import org.example.carpooling.models.dto.TravelDtoOut;
 import org.example.carpooling.models.dto.UserDtoIn;
 import org.example.carpooling.models.dto.UserDtoOut;
 import org.example.carpooling.models.dto.UserDtoUpdate;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -68,5 +71,27 @@ public class ModelMapper {
         return users.stream()
                 .map(this::fromUserToUserDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<UserDtoOut> fromSetUsersToListUserDtoOut(Set<User> users){
+        if (users == null){
+            return new ArrayList<>();
+        }
+
+        return users.stream().map(this::fromUserToUserDto)
+                .collect(Collectors.toList());
+    }
+
+    public TravelDtoOut fromTravelToTravelDtoOut(Travel travel){
+        TravelDtoOut travelDtoOut = new TravelDtoOut();
+
+        travelDtoOut.setStartingPoint(travel.getStartingPoint());
+        travelDtoOut.setEndingPoint(travel.getEndingPoint());
+        travelDtoOut.setDriverName(travel.getDriver().getUsername());
+        travelDtoOut.setDepartureTime(travel.getDepartureTime());
+        travelDtoOut.setFreeSpots(travel.getFreeSpots());
+        travelDtoOut.setPassengers(fromSetUsersToListUserDtoOut(travel.getPassengers()))
+
+        return travelDtoOut;
     }
 }
