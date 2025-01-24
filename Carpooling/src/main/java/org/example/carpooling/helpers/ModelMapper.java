@@ -90,8 +90,17 @@ public class ModelMapper {
         travelDtoOut.setDriverName(travel.getDriver().getUsername());
         travelDtoOut.setDepartureTime(travel.getDepartureTime());
         travelDtoOut.setFreeSpots(travel.getFreeSpots());
-        travelDtoOut.setPassengers(fromSetUsersToListUserDtoOut(travel.getPassengers()))
+        travelDtoOut.setPassengers(fromSetUsersToListUserDtoOut(travel.getPassengers()));
 
         return travelDtoOut;
+    }
+
+    public List<TravelDtoOut> fromListTravelsToListTravelDtoOut(List<Travel> travels){
+        if (travels == null){
+            return new ArrayList<>();
+        }
+
+        return travels.stream().map(this::fromTravelToTravelDtoOut)
+                    .collect(Collectors.toList());
     }
 }
