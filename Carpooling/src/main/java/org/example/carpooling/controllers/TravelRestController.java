@@ -4,12 +4,15 @@ import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.helpers.AuthenticationHelper;
 import org.example.carpooling.helpers.ModelMapper;
+import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.dto.TravelDtoOut;
 import org.example.carpooling.services.interfaces.TravelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/travel")
@@ -24,6 +27,18 @@ public class TravelRestController {
         this.travelService = travelService;
         this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;
+    }
+
+    @GetMapping
+    public List<TravelDtoOut> getAllTravels(@RequestHeader HttpHeaders httpHeaders){
+        try{
+            authenticationHelper.tryGetUser(httpHeaders);
+            List<Travel> travelList = travelService.getAllTravels();
+
+            return modelMapper.fromListTravelsToListTravelDtoOut(travelList);
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
