@@ -3,6 +3,7 @@ package org.example.carpooling.models;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +30,9 @@ public class User {
 
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER)
+    private Set<Travel> travels;
 
     @Column(name = "is_admin")
     private boolean isAdmin;
@@ -87,6 +91,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Set<Travel> getTravels() {
+        return travels;
+    }
+
+    public void setTravels(Set<Travel> travels) {
+        this.travels = travels;
     }
 
     public boolean isAdmin() {
