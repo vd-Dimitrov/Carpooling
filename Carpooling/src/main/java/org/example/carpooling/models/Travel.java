@@ -35,6 +35,7 @@ public class Travel {
     @Column(name = "travel_status")
     private TravelStatus travelStatus;
 
+    // ToDo make a JoinTable for user_passenger logging
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<User> passengers = new HashSet<>();

@@ -2,10 +2,7 @@ package org.example.carpooling.helpers;
 
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
-import org.example.carpooling.models.dto.TravelDtoOut;
-import org.example.carpooling.models.dto.UserDtoIn;
-import org.example.carpooling.models.dto.UserDtoOut;
-import org.example.carpooling.models.dto.UserDtoUpdate;
+import org.example.carpooling.models.dto.*;
 import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -93,6 +90,18 @@ public class ModelMapper {
         travelDtoOut.setPassengers(fromSetUsersToListUserDtoOut(travel.getPassengers()));
 
         return travelDtoOut;
+    }
+
+    public Travel fromTravelDtoInToTravel(TravelDtoIn travelDto, User user){
+        Travel travel = new Travel();
+
+        travel.setStartingPoint(travelDto.getStartingPoint());
+        travel.setEndingPoint(travelDto.getEndingPoint());
+        travel.setDriver(user);
+        travel.setDepartureTime(travelDto.getDepartureTime());
+        travel.setFreeSpots(travelDto.getFreeSpots());
+
+        return travel;
     }
 
     public List<TravelDtoOut> fromListTravelsToListTravelDtoOut(List<Travel> travels){
