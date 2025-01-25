@@ -3,25 +3,15 @@ package org.example.carpooling.models.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class TravelDtoOut {
-    private int travelId;
+public class TravelDtoUpdate {
     private String startingPoint;
     private String endingPoint;
-    private String driverName;
     private LocalDateTime departureTime;
     private int freeSpots;
     private String travelStatus;
-    private List<UserDtoOut> passengers;
+    private List<String> passengers;
+    private List<String> options;
 
-    public TravelDtoOut() {
-    }
-    public int getTravelId() {
-        return travelId;
-    }
-
-    public void setTravelId(int travelId) {
-        this.travelId = travelId;
-    }
     public String getStartingPoint() {
         return startingPoint;
     }
@@ -36,14 +26,6 @@ public class TravelDtoOut {
 
     public void setEndingPoint(String endingPoint) {
         this.endingPoint = endingPoint;
-    }
-
-    public String getDriverName() {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
     }
 
     public LocalDateTime getDepartureTime() {
@@ -70,11 +52,19 @@ public class TravelDtoOut {
         this.travelStatus = travelStatus;
     }
 
-    public List<UserDtoOut> getPassengers() {
+    public List<String> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(List<UserDtoOut> passengers) {
+    public void setPassengers(List<String> passengers) {
         this.passengers = passengers;
+    }
+
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<String> options) {
+        this.options = options;
     }
 }
