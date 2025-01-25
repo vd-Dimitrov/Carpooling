@@ -1,11 +1,14 @@
 package org.example.carpooling.controllers;
 
+import jakarta.validation.Valid;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
+import org.example.carpooling.exceptions.IllegalArgumentException;
 import org.example.carpooling.helpers.AuthenticationHelper;
 import org.example.carpooling.helpers.ModelMapper;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
+import org.example.carpooling.models.dto.TravelDtoIn;
 import org.example.carpooling.models.dto.TravelDtoOut;
 import org.example.carpooling.services.interfaces.TravelService;
 import org.example.carpooling.services.interfaces.UserService;
@@ -73,4 +76,20 @@ public class TravelRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+    @PostMapping
+    public TravelDtoOut createTravel(@RequestHeader HttpHeaders httpHeaders,
+                                     @Valid @RequestBody TravelDtoIn travelDto){
+        try{
+            User user = authenticationHelper.tryGetUser(httpHeaders);
+            Travel travel = modelMapper.fromTravelDtoInToTravel(travelDto, user);
+            travelService.createTravel(travel);
+            return modelMapper.fromTravelToTravelDtoOut(travel);
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
 }
