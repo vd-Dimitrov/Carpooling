@@ -77,7 +77,7 @@ public class TravelRestController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public TravelDtoOut createTravel(@RequestHeader HttpHeaders httpHeaders,
                                      @Valid @RequestBody TravelDtoIn travelDto){
         try{

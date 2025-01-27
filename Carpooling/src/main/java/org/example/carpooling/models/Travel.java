@@ -21,7 +21,7 @@ public class Travel {
     @Column(name = "ending_point", nullable = false)
     private String endingPoint;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "driver_id", nullable = false)
     private User driver;
 
