@@ -1,11 +1,17 @@
 package org.example.carpooling;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.carpooling.enums.TravelStatus;
 import org.example.carpooling.models.Feedback;
+import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
+import org.example.carpooling.models.dto.TravelDtoOut;
 import org.example.carpooling.models.dto.UserDtoIn;
 import org.example.carpooling.models.dto.UserDtoOut;
 import org.example.carpooling.models.dto.UserDtoUpdate;
+
+import java.time.LocalDateTime;
+
 
 public class Helpers {
 
@@ -82,6 +88,32 @@ public class Helpers {
         return mockUserDto;
     }
 
+    public static Travel createMockTravel(){
+        Travel mockTravel = new Travel();
+        mockTravel.setTravelId(MOCK_ID);
+        mockTravel.setStartingPoint("Mock starting point");
+        mockTravel.setEndingPoint("Mock ending point");
+        mockTravel.setDriver(createMockUser());
+        mockTravel.setDepartureTime(LocalDateTime.now());
+        mockTravel.setFreeSpots(0);
+        mockTravel.setTravelStatus(TravelStatus.UPCOMING);
+
+        return mockTravel;
+    }
+
+    public static TravelDtoOut createMockTravelDtoOut(){
+        TravelDtoOut mockTravel = new TravelDtoOut();
+
+        mockTravel.setStartingPoint("Mock starting point");
+        mockTravel.setEndingPoint("Mock ending point");
+        mockTravel.setDriverName(createMockUser().getUsername());
+        mockTravel.setDepartureTime(LocalDateTime.now());
+        mockTravel.setFreeSpots(0);
+        mockTravel.setTravelStatus(TravelStatus.UPCOMING.toString());
+
+        return mockTravel;
+    }
+
     public static String toJson(final Object obj){
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -89,4 +121,6 @@ public class Helpers {
             throw new RuntimeException(e);
         }
     }
+
+
 }

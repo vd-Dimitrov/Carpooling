@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TravelDtoOut {
-    private int travelId;
     private String startingPoint;
     private String endingPoint;
     private String driverName;
@@ -14,13 +13,6 @@ public class TravelDtoOut {
     private List<UserDtoOut> passengers;
 
     public TravelDtoOut() {
-    }
-    public int getTravelId() {
-        return travelId;
-    }
-
-    public void setTravelId(int travelId) {
-        this.travelId = travelId;
     }
     public String getStartingPoint() {
         return startingPoint;
