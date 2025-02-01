@@ -7,6 +7,9 @@ import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +18,8 @@ import java.util.stream.Collectors;
 @Component
 public class ModelMapper {
     private final UserService userService;
+    private static final String pattern = "MM/dd/yyyy HH:mm:ss";
+    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
 
     @Autowired
     public ModelMapper(UserService userService) {
@@ -85,7 +90,7 @@ public class ModelMapper {
         travelDtoOut.setStartingPoint(travel.getStartingPoint());
         travelDtoOut.setEndingPoint(travel.getEndingPoint());
         travelDtoOut.setDriverName(travel.getDriver().getUsername());
-        travelDtoOut.setDepartureTime(travel.getDepartureTime());
+        travelDtoOut.setDepartureTime(dateFormat.format(travel.getDepartureTime()));
         travelDtoOut.setFreeSpots(travel.getFreeSpots());
         travelDtoOut.setPassengers(fromSetUsersToListUserDtoOut(travel.getPassengers()));
 
@@ -98,7 +103,6 @@ public class ModelMapper {
         travel.setStartingPoint(travelDto.getStartingPoint());
         travel.setEndingPoint(travelDto.getEndingPoint());
         travel.setDriver(user);
-        travel.setDepartureTime(travelDto.getDepartureTime());
         travel.setFreeSpots(travelDto.getFreeSpots());
 
         return travel;

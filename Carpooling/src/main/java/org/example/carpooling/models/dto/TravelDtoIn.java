@@ -1,13 +1,10 @@
 package org.example.carpooling.models.dto;
 
-import java.time.LocalDateTime;
-
 public class TravelDtoIn {
     private String startingPoint;
     private String endingPoint;
-    private LocalDateTime departureTime;
+    private String departureTime;
     private int freeSpots;
-    private String travelStatus;
 
     public TravelDtoIn() {
     }
@@ -28,11 +25,11 @@ public class TravelDtoIn {
         this.endingPoint = endingPoint;
     }
 
-    public LocalDateTime getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDateTime departureTime) {
+    public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
 
@@ -43,13 +40,4 @@ public class TravelDtoIn {
     public void setFreeSpots(int freeSpots) {
         this.freeSpots = freeSpots;
     }
-
-    public String getTravelStatus() {
-        return travelStatus;
-    }
-
-    public void setTravelStatus(String travelStatus) {
-        this.travelStatus = travelStatus;
-    }
-
 }

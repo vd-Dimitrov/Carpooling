@@ -7,7 +7,7 @@ public class TravelDtoOut {
     private String startingPoint;
     private String endingPoint;
     private String driverName;
-    private LocalDateTime departureTime;
+    private String departureTime;
     private int freeSpots;
     private String travelStatus;
     private List<UserDtoOut> passengers;
@@ -38,11 +38,11 @@ public class TravelDtoOut {
         this.driverName = driverName;
     }
 
-    public LocalDateTime getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDateTime departureTime) {
+    public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
 
