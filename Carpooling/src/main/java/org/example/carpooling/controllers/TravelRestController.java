@@ -10,6 +10,7 @@ import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.TravelDtoIn;
 import org.example.carpooling.models.dto.TravelDtoOut;
+import org.example.carpooling.models.dto.TravelDtoUpdate;
 import org.example.carpooling.services.interfaces.TravelService;
 import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.http.HttpStatus;
@@ -89,6 +90,39 @@ public class TravelRestController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public TravelDtoOut updateTravel(@RequestHeader HttpHeaders headers,
+                             @Valid @RequestBody TravelDtoUpdate travelDtoUpdate,
+                             @PathVariable int id){
+        try{
+            User user = authenticationHelper.tryGetUser(headers);
+            Travel travel = modelMapper.fromTravelDtoUpdateToTravel(
+                    travelDtoUpdate,
+                    user,
+                    id);
+            travelService.updateTravel(travel, user);
+
+            return modelMapper.fromTravelToTravelDtoOut(travel);
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteTravel(@RequestHeader HttpHeaders headers,
+                             @PathVariable int id){
+        try{
+            User user = authenticationHelper.tryGetUser(headers);
+            travelService.deleteTravel(travelService.getById(id), user);
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 

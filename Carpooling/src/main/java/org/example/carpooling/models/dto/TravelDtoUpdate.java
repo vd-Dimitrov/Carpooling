@@ -6,11 +6,9 @@ import java.util.List;
 public class TravelDtoUpdate {
     private String startingPoint;
     private String endingPoint;
-    private LocalDateTime departureTime;
+    private String departureTime;
     private int freeSpots;
     private String travelStatus;
-    private List<String> passengers;
-    private List<String> options;
 
     public String getStartingPoint() {
         return startingPoint;
@@ -28,11 +26,11 @@ public class TravelDtoUpdate {
         this.endingPoint = endingPoint;
     }
 
-    public LocalDateTime getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDateTime departureTime) {
+    public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
 
@@ -52,19 +50,4 @@ public class TravelDtoUpdate {
         this.travelStatus = travelStatus;
     }
 
-    public List<String> getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(List<String> passengers) {
-        this.passengers = passengers;
-    }
-
-    public List<String> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
-}
+  }

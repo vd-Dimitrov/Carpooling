@@ -1,5 +1,6 @@
 package org.example.carpooling.helpers;
 
+import org.example.carpooling.enums.TravelStatus;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.*;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +106,20 @@ public class ModelMapper {
         travel.setEndingPoint(travelDto.getEndingPoint());
         travel.setDriver(user);
         travel.setFreeSpots(travelDto.getFreeSpots());
+
+        return travel;
+    }
+
+    public Travel fromTravelDtoUpdateToTravel(TravelDtoUpdate travelDto, User user, int id){
+        Travel travel = new Travel();
+
+        travel.setTravelId(id);
+        travel.setDriver(user);
+        travel.setDepartureTime(LocalDateTime.parse(travelDto.getDepartureTime()));
+        travel.setStartingPoint(travelDto.getStartingPoint());
+        travel.setEndingPoint(travelDto.getEndingPoint());
+        travel.setFreeSpots(travelDto.getFreeSpots());
+        travel.setTravelStatus(TravelStatus.valueOf(travelDto.getDepartureTime().toUpperCase()));
 
         return travel;
     }
