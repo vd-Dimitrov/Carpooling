@@ -1,6 +1,7 @@
 package org.example.carpooling.helpers;
 
 import org.example.carpooling.enums.TravelStatus;
+import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.*;
@@ -131,5 +132,24 @@ public class ModelMapper {
 
         return travels.stream().map(this::fromTravelToTravelDtoOut)
                     .collect(Collectors.toList());
+    }
+
+    public FeedbackDtoOut fromFeedbackToFeedbackDtoOut(Feedback feedback){
+        FeedbackDtoOut feedbackDtoOut = new FeedbackDtoOut();
+
+        feedbackDtoOut.setRating(feedback.getRating());
+        feedbackDtoOut.setComment(feedback.getComment());
+        feedbackDtoOut.setAuthor(feedback.getAuthor().getUsername());
+
+        return feedbackDtoOut;
+    }
+
+    public List<FeedbackDtoOut> fromListFeedbackToListFeedbackDtoOut(List<Feedback> feedbacks){
+        if (feedbacks == null){
+            return new ArrayList<>();
+        }
+
+        return feedbacks.stream().map(this::fromFeedbackToFeedbackDtoOut)
+                .collect(Collectors.toList());
     }
 }
