@@ -48,7 +48,7 @@ public class FeedbackServiceImplTests {
     }
 
     @Test
-    void findById_Should_ReturnFeedback_When_FeedbackExists(){
+    void getFeedbackById_Should_ReturnFeedback_When_FeedbackExists(){
         //Arrange
         Feedback mockFeedback = createMockFeedback();
 
@@ -56,7 +56,7 @@ public class FeedbackServiceImplTests {
                 .thenReturn(Optional.of(mockFeedback));
 
         // Act
-        Feedback result = mockFeedbackService.findById(Mockito.anyInt());
+        Feedback result = mockFeedbackService.getFeedbackById(Mockito.anyInt());
 
         // Assert
         Assertions.assertEquals(mockFeedback, result);

@@ -6,9 +6,11 @@ import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.FeedbackRepository;
 import org.example.carpooling.services.interfaces.FeedbackService;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class FeedbackServiceImpl implements FeedbackService {
     public static final String MODIFY_ERROR_MESSAGE = "Only owner can make changes to the feedback!";
     private final FeedbackRepository feedbackRepository;
@@ -23,7 +25,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Feedback findById(int id) {
+    public Feedback getFeedbackById(int id) {
         return feedbackRepository.findFeedbackByFeedbackId(id)
                 .orElseThrow( () -> new EntityNotFoundException("Feedback", id));
     }
