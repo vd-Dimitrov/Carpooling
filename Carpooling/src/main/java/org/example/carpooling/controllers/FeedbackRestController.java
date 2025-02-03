@@ -72,4 +72,18 @@ public class FeedbackRestController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
+    @DeleteMapping("/{feedbackId}")
+    public void deleteFeedback(@RequestHeader HttpHeaders httpHeaders,
+                               @PathVariable int feedbackId){
+        try {
+            User requestingUser = authenticationHelper.tryGetUser(httpHeaders);
+            Feedback deletedFeedback = feedbackService.getFeedbackById(feedbackId);
+            feedbackService.deleteFeedback(deletedFeedback, requestingUser);
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 }
