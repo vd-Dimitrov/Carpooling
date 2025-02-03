@@ -1,5 +1,6 @@
 package org.example.carpooling.helpers;
 
+import jakarta.validation.Valid;
 import org.example.carpooling.enums.TravelStatus;
 import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
@@ -151,5 +152,17 @@ public class ModelMapper {
 
         return feedbacks.stream().map(this::fromFeedbackToFeedbackDtoOut)
                 .collect(Collectors.toList());
+    }
+
+    public Feedback fromFeedbackDtoInToFeedback(FeedbackDtoIn feedbackDtoIn, User feedbackAuthor) {
+        Feedback feedback = new Feedback();
+
+        feedback.setAuthor(feedbackAuthor);
+        feedback.setRating(feedbackDtoIn.getRating());
+        if (!feedbackDtoIn.getComment().isEmpty()){
+            feedback.setComment(feedbackDtoIn.getComment());
+        }
+
+        return feedback;
     }
 }

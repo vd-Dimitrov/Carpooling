@@ -3,6 +3,7 @@ package org.example.carpooling.services;
 import org.example.carpooling.enums.TravelStatus;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
+import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.TravelRepository;
@@ -49,13 +50,19 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    public void addFeedback(int travelId, Feedback feedback) {
+            getById(travelId).getFeedbacks().add(feedback);
+    }
+
+    @Override
     public void updateTravel(Travel updatedTravel, User requestingUser) {
         checkPermission(updatedTravel, requestingUser);
         travelRepository.save(updatedTravel);
     }
 
     @Override
-    public void deleteTravel(Travel travelToDelete, User requestingUser) {
+    public void deleteTravel(int id, User requestingUser) {
+        Travel travelToDelete = getById(id);
         checkPermission(travelToDelete, requestingUser);
         travelRepository.delete(travelToDelete);
     }

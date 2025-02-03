@@ -1,5 +1,6 @@
 package org.example.carpooling.services.interfaces;
 
+import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 
@@ -13,6 +14,7 @@ public interface TravelService {
     Travel getById(int travelId);
     List<Travel> getByDriver(int driveId);
 
+    void addFeedback(int travelId, Feedback feedback);
     void updateTravel(Travel updatedTravel, User requestingUser);
-    void deleteTravel(Travel travelToDelete, User requestingUser );
+    void deleteTravel(int travelId, User requestingUser );
 }

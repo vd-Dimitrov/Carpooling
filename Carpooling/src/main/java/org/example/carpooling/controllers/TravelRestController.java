@@ -118,7 +118,7 @@ public class TravelRestController {
                              @PathVariable int id){
         try{
             User user = authenticationHelper.tryGetUser(headers);
-            travelService.deleteTravel(travelService.getById(id), user);
+            travelService.deleteTravel(id, user);
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e){
