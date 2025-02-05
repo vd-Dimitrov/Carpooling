@@ -41,9 +41,8 @@ public class FeedbackRestController {
                                           @PathVariable int feedbackId) {
         try {
             authenticationHelper.tryGetUser(httpHeaders);
-            Feedback feedback = feedbackService.getFeedbackById(feedbackId);
 
-            return modelMapper.fromFeedbackToFeedbackDtoOut(feedback);
+            return modelMapper.fromFeedbackToFeedbackDtoOut(feedbackService.getFeedbackById(feedbackId));
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
@@ -51,7 +50,7 @@ public class FeedbackRestController {
         }
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/author/{userId}")
     public List<FeedbackDtoOut> getFeedbacksByAuthor(@RequestHeader HttpHeaders httpHeaders,
                                                      @PathVariable int userId){
         try{
