@@ -62,10 +62,7 @@ public class TravelRestControllerTests {
                 .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, null));
 
         // Act, Assert
-        String body = toJson(createMockTravelDtoOut());
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/travel")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/travel"))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
