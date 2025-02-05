@@ -127,6 +127,16 @@ public class Helpers {
         return mockTravel;
     }
 
+    public static FeedbackDtoOut createMockFeedbackDtoOut(){
+        FeedbackDtoOut mockFeedback = new FeedbackDtoOut();
+
+        mockFeedback.setAuthor("MockUsername");
+        mockFeedback.setRating(5.0);
+        mockFeedback.setComment("Mock comment");
+
+        return mockFeedback;
+    }
+
     public static String toJson(final Object obj){
         try {
             return new ObjectMapper().writeValueAsString(obj);
