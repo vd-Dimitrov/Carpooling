@@ -7,8 +7,7 @@ import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,7 +16,7 @@ public class Helpers {
 
     public static final double MOCK_RATING = 5.0;
     public static final int MOCK_ID = 1;
-    private static final String pattern = "MM/dd/yyyy HH:mm:ss";
+    private static final String pattern = "dd/MM/yyyy HH:mm:ss";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
 
     public static User createMockUser(){

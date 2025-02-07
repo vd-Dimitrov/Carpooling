@@ -21,13 +21,13 @@ public class OptionServiceImpl implements OptionService {
     public Option createOption(Option option) {
         boolean duplicateExists = true;
         try {
-            findOptionByName(option.getOption());
+            findOptionByName(option.getOptionType());
         } catch (EntityNotFoundException e){
             duplicateExists = false;
         }
 
         if (duplicateExists) {
-            throw new EntityDuplicateException("Option", "name", option.getOption());
+            throw new EntityDuplicateException("Option", "name", option.getOptionType());
         } else {
             return optionRepository.save(option);
         }

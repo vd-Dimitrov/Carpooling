@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 public class ModelMapper {
     private final UserService userService;
-    private static final String pattern = "MM/dd/yyyy HH:mm:ss";
+    private static final String pattern = "dd/MM/yyyy HH:mm:ss";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
 
     @Autowired

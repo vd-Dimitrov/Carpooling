@@ -2,6 +2,8 @@ package org.example.carpooling.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "options")
 public class Option {
@@ -11,7 +13,7 @@ public class Option {
     private int optionId;
 
     @Column(name = "option", nullable = false)
-    private String option;
+    private String optionType;
 
     public int getOptionId() {
         return optionId;
@@ -21,11 +23,24 @@ public class Option {
         this.optionId = optionId;
     }
 
-    public String getOption() {
-        return option;
+    public String getOptionType() {
+        return optionType;
     }
 
-    public void setOption(String option) {
-        this.option = option;
+    public void setOptionType(String option) {
+        this.optionType = option;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Option option = (Option) o;
+        return optionId == option.optionId;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hashCode(optionId);
     }
 }
