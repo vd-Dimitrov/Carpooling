@@ -10,6 +10,11 @@ public interface TravelService {
     Travel createTravel(Travel travel);
 
     List<Travel> getAllTravels();
+    List<Travel> searchTravels(String startingPoint,
+                               String endingPoint,
+                               String departureTime,
+                               String travelStatus,
+                               int freeSpots);
     List<Travel> getAllUpcomingTravels();
     Travel getById(int travelId);
     List<Travel> getByDriver(int driveId);

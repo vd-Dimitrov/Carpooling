@@ -62,6 +62,23 @@ public class TravelRestController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
+    @GetMapping("/search")
+    public List<TravelDtoOut> searchTravels(@RequestHeader HttpHeaders httpHeaders,
+                                            @RequestParam(required = false) String startingPoint,
+                                            @RequestParam(required = false) String endingPoint,
+                                            @RequestParam(required = false) String departureTime,
+                                            @RequestParam(required = false) String travelStatus,
+                                            @RequestParam(required = false) int freeSpots){
+        try{
+            authenticationHelper.tryGetUser(httpHeaders);
+            List<Travel> travelList = travelService.searchTravels(startingPoint, endingPoint, departureTime, travelStatus, freeSpots);
+
+            return modelMapper.fromListTravelsToListTravelDtoOut(travelList);
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
     
     @GetMapping("/user/{id}")
     public List<TravelDtoOut> getAllTravelsOfUser(@RequestHeader HttpHeaders httpHeaders,

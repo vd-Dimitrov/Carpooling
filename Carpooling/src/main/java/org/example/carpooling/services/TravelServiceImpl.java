@@ -10,12 +10,16 @@ import org.example.carpooling.repositories.TravelRepository;
 import org.example.carpooling.services.interfaces.TravelService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class TravelServiceImpl implements TravelService {
     public static final String MODIFY_ERROR_MESSAGE = "Only author can make changes to the travel information!";
     private final TravelRepository travelRepository;
+    private static final String pattern = "dd/MM/yyyy HH:mm:ss";
+    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
 
     public TravelServiceImpl(TravelRepository travelRepository) {
         this.travelRepository = travelRepository;
@@ -29,6 +33,15 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public List<Travel> getAllTravels() {
         return travelRepository.findAll();
+    }
+
+    @Override
+    public List<Travel> searchTravels(String startingPoint, String endingPoint, String departureTime, String travelStatus, int freeSpots) {
+        return travelRepository.searchTravels(startingPoint,
+                endingPoint,
+                LocalDateTime.parse(departureTime, dateFormat),
+                TravelStatus.valueOf(travelStatus),
+                freeSpots);
     }
 
     @Override
