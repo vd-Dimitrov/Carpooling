@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(userToDelete);
     }
 
+    @Override
+    public User searchUsers(String username, String email, String phoneNumber) {
+        return userRepository.searchUsers(username, email, phoneNumber);
+    }
+
     private void checkPermission(User updatedUser, User requestingUser){
         if (requestingUser.getUserId()!=updatedUser.getUserId()){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);

@@ -57,6 +57,20 @@ public class UserRestController {
         }
     }
 
+    @GetMapping("/search")
+    public UserDtoOut searchUser(@RequestHeader HttpHeaders httpHeaders,
+                                 @RequestParam(required = false) String username,
+                                 @RequestParam(required = false) String email,
+                                 @RequestParam(required = false) String phoneNumber) {
+        try{
+            authenticationHelper.tryGetUser(httpHeaders);
+            User user = userService.searchUsers(username, email, phoneNumber);
+
+            return modelMapper.fromUserToUserDto(user);
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
     @PostMapping("/register")
     public void registerUser(@Valid @RequestBody UserDtoIn userDtoIn) {
         try {
