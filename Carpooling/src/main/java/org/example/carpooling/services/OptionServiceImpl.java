@@ -21,7 +21,7 @@ public class OptionServiceImpl implements OptionService {
     public Option createOption(Option option) {
         boolean duplicateExists = true;
         try {
-            findOptionByName(option.getOptionType());
+            findOptionByOptionType(option.getOptionType());
         } catch (EntityNotFoundException e){
             duplicateExists = false;
         }
@@ -40,9 +40,9 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public Option findOptionByName(String name) {
-        return optionRepository.findOptionByOption(name)
-                .orElseThrow( () -> new EntityNotFoundException("Option", "name", name));
+    public Option findOptionByOptionType(String optionType) {
+        return optionRepository.findOptionByOptionType(optionType)
+                .orElseThrow( () -> new EntityNotFoundException("Option", "name", optionType));
     }
 
     @Override

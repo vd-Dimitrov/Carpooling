@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface OptionRepository extends JpaRepository<Option, Integer> {
-    Optional<Option> findOptionByOption(String option);
+    Optional<Option> findOptionByOptionType(String optionType);
 
     Optional<Option> findOptionByOptionId(int optionId);
 }

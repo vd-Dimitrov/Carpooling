@@ -7,7 +7,7 @@ public interface OptionService {
     Option createOption(Option option);
 
     Option findOptionById(int id);
-    Option findOptionByName(String name);
+    Option findOptionByOptionType(String name);
 
     void updateOption(User requestingUser, Option updatedOption);
 }
