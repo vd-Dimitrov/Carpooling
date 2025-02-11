@@ -22,6 +22,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/auth/register}"
+                       th:text="#{navigation.all-travels}">Browse all Travels</a></li>
+                <li th:unless="${isAuthenticated}" class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/travels}"
+                       th:text="#{navigation.all-travels}">Browse all Travels</a></li>
+                <li th:unless="${isAuthenticated}" class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/auth/login}">Login</a></li>
+                <li th:unless="${isAuthenticated}" class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/auth/register}">Register</a></li>
+                <li th:if="${isAuthenticated}" class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/auth/logout}">Logout</a></li>
             </ul>
         </div>
     </div>
