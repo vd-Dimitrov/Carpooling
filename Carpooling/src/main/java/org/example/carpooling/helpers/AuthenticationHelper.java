@@ -38,6 +38,18 @@ public class AuthenticationHelper {
         }
     }
 
+    public User verifyUser(String username, String password){
+        try{
+            User user = userService.getByUsername(username);
+            if(!user.getPassword().equals(password)){
+                throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            }
+            return user;
+        } catch (EntityNotFoundException e){
+            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+        }
+    }
+
     public User tryGetCurrentUser(HttpSession session){
         String currentUsername = session.getAttribute("currentUser").toString();
         if (currentUsername == null){
