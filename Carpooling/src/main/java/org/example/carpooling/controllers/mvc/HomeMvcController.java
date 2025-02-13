@@ -23,7 +23,13 @@ public class HomeMvcController {
     }
 
     @GetMapping
-    public String showHomepage(Model model) {
+    public String showHomepage() {
         return "HomeView";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession){
+        httpSession.removeAttribute("currentUser");
+        return "redirect:/";
     }
 }
