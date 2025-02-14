@@ -70,6 +70,7 @@ public class Helpers {
         UserDtoIn mockUserDto = new UserDtoIn();
         mockUserDto.setUsername("MockUsername");
         mockUserDto.setPassword("MockPassword");
+        mockUserDto.setPhoneNumber("MockPassword");
         mockUserDto.setFirstName("MockFirstName");
         mockUserDto.setLastName("MockLastName");
         mockUserDto.setEmail("MockEmail@mock.com");

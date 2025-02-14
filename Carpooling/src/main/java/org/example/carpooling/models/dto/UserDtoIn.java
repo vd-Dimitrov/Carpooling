@@ -1,17 +1,12 @@
 package org.example.carpooling.models.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class UserDtoIn {
-
-    @NotNull(message = "Username cannot be empty")
-    @Size(min = 2, max = 20, message = "Username should be between 2 and 20 characters")
-    private String username;
-
-    @NotNull(message = "Password cannot be empty")
-    @Size(min = 8, message = "Password should have at least 8 characters")
-    private String password;
+public class UserDtoIn extends LoginDto{
+    @NotEmpty(message = "Password confirmation cannot be empty")
+    private String passwordConfirm;
 
     @NotNull(message = "First name cannot be empty")
     @Size(min = 2, max = 20, message = "First name should be between 2 and 20 characters")
@@ -32,20 +27,12 @@ public class UserDtoIn {
 
     }
 
-    public String getUsername() {
-        return username;
+    public String getPasswordConfirm() {
+        return passwordConfirm;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public String getFirstName() {
