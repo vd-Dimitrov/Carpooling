@@ -2,7 +2,7 @@ create database if not exists carpooling;
 use carpooling;
 
 create table if not exists users (
-    user_id int auto_increment primary key ,
+    user_id int auto_increment primary key,
     username varchar(50) not null unique ,
     password varchar(100) not null ,
     first_name varchar(50) not null ,
@@ -18,9 +18,18 @@ create table if not exists travels(
     ending_point varchar(50) not null ,
     driver_id int,
     departure_time datetime  not null,
-    travel_status enum('UPCOMING', 'ONGOING', 'COMPLETE'),
+    travel_status enum('Upcoming', 'Ongoing', 'Complete', 'Cancelled'),
     free_spots int,
-    constraint travels_users_user_id_fk foreign key (driver_id) references users (user_id) on delete set null
+    constraint travels_users_user_id_fk foreign key (driver_id) references users (user_id) on update cascade on delete cascade
+);
+
+create table if not exists travel_applications(
+    application_id int auto_increment primary key,
+    applicant_id int,
+    travel_id int,
+    application_status enum('Waiting', 'Accepted', 'Rejected'),
+    constraint travel_applications_users_user_id_fk foreign key (applicant_id) references users (user_id) on update cascade on delete cascade ,
+    constraint travel_applications_travels_travel_id_fk foreign key (travel_id) references travels (travel_id) on update cascade on delete cascade
 );
 
 create table if not exists options(
@@ -38,14 +47,11 @@ create table if not exists travels_options(
 create table if not exists feedbacks(
     feedback_id int auto_increment primary key ,
     rating double not null ,
+    CHECK ( rating >= 1 and rating <= 5 ),
     comment varchar(255),
-    author_id int,
-    constraint feedbacks_users_user_id_fk foreign key (author_id) references users (user_id) on delete set null
+    author_id int not null ,
+    receiver_id int not null ,
+    constraint feedbacks_users_user_id_fk1 foreign key (author_id) references users (user_id) on update cascade on delete cascade ,
+    constraint feedbacks_users_user_id_fk2 foreign key (receiver_id) references users (user_id) on update cascade on delete cascade
 );
 
-create table if not exists feedbacks_travels(
-    feedbacks_id int not null ,
-    travels_id int not null ,
-    foreign key (feedbacks_id) references feedbacks (feedback_id) on delete cascade ,
-    foreign key (travels_id) references travels (travel_id) on delete cascade
-);
