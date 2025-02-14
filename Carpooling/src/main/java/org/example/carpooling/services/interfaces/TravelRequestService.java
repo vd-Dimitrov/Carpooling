@@ -13,8 +13,8 @@ public interface TravelRequestService {
     List<TravelRequest> getAllTravelRequests();
     List<TravelRequest> getAllTravelRequestsForTravel(int travelId);
     List<TravelRequest> getAllTravelRequestsForUser(int userId);
-    TravelRequest approveRequest(User driver, int requestId, int travelId);
-    TravelRequest rejectRequest(User driver, int requestId, int travelId);
+    TravelRequest approveRequest(User driver, int travelId, int requestId);
+    TravelRequest rejectRequest(User driver, int travelId, int requestId);
     void updateTravelRequest(TravelRequest updatedRequest, User requestingUser);
     void deleteTravelRequest(int travelRequestId, User requestingUser);
 }

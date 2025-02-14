@@ -72,7 +72,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     }
 
     @Override
-    public TravelRequest approveRequest(User driver, int requestId, int travelId) {
+    public TravelRequest approveRequest(User driver, int travelId, int requestId) {
         TravelRequest travelRequest = getRequestByRequestId(requestId);
         checkRequestManagementPermission(driver, travelRequest, travelId);
 
@@ -90,7 +90,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     }
 
     @Override
-    public TravelRequest rejectRequest(User driver, int requestId, int travelId) {
+    public TravelRequest rejectRequest(User driver, int travelId, int requestId) {
         TravelRequest travelRequest = getRequestByRequestId(requestId);
         checkRequestManagementPermission(driver, travelRequest, travelId);
         Travel travel = travelService.getById(travelId);

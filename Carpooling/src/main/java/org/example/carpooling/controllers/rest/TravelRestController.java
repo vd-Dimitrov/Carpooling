@@ -131,6 +131,19 @@ public class TravelRestController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteTravel(@RequestHeader HttpHeaders headers,
+                             @PathVariable int id){
+        try{
+            User user = authenticationHelper.tryGetUser(headers);
+            travelService.deleteTravel(id, user);
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
     @PostMapping("/{travelId}/apply")
     public void applyForTravel(@RequestHeader HttpHeaders httpHeaders,
                                @PathVariable int travelId){
@@ -147,17 +160,33 @@ public class TravelRestController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteTravel(@RequestHeader HttpHeaders headers,
-                             @PathVariable int id){
+    @PutMapping("/{travelId}/apply/{requestId}/approve")
+    public void approveRequest( HttpHeaders httpHeaders,
+                                @PathVariable int travelId,
+                                @PathVariable int requestId){
         try{
-            User user = authenticationHelper.tryGetUser(headers);
-            travelService.deleteTravel(id, user);
-        } catch (EntityNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            User user = authenticationHelper.tryGetUser(httpHeaders);
+            requestService.approveRequest(user, travelId, requestId);
+
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
+    @PutMapping("/{travelId}/apply/{requestId}/reject")
+    public void rejectRequest( HttpHeaders httpHeaders,
+                                @PathVariable int travelId,
+                                @PathVariable int requestId){
+        try{
+            User user = authenticationHelper.tryGetUser(httpHeaders);
+            requestService.rejectRequest(user, travelId, requestId);
+
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 }
