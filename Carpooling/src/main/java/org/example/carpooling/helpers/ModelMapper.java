@@ -1,7 +1,6 @@
 package org.example.carpooling.helpers;
 
-import jakarta.validation.Valid;
-import org.example.carpooling.enums.TravelStatus;
+import org.example.carpooling.models.enums.TravelStatus;
 import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
@@ -10,8 +9,6 @@ import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package org.example.carpooling.services;
 
-import org.example.carpooling.enums.TravelStatus;
+import org.example.carpooling.models.enums.TravelStatus;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.models.Feedback;
@@ -63,8 +63,8 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public void addFeedback(int travelId, Feedback feedback) {
-            getById(travelId).getFeedbacks().add(feedback);
+    public void addFeedback(int userId, Feedback feedback) {
+            getById(userId).getFeedbacks().add(feedback);
     }
 
     @Override

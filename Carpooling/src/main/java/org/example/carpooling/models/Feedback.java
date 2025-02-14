@@ -15,7 +15,11 @@ public class Feedback {
     @Column(name = "comment")
     private String comment;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
+
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
 

@@ -1,15 +1,13 @@
 package org.example.carpooling.repositories;
 
-import org.example.carpooling.enums.TravelStatus;
+import org.example.carpooling.models.enums.TravelStatus;
 import org.example.carpooling.models.Travel;
-import org.example.carpooling.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 

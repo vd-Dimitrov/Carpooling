@@ -8,9 +8,8 @@ import org.example.carpooling.helpers.AuthenticationHelper;
 import org.example.carpooling.helpers.ModelMapper;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
-import org.example.carpooling.models.dto.TravelDtoIn;
-import org.example.carpooling.models.dto.TravelDtoOut;
-import org.example.carpooling.models.dto.TravelDtoUpdate;
+import org.example.carpooling.models.dto.*;
+import org.example.carpooling.services.interfaces.TravelRequestService;
 import org.example.carpooling.services.interfaces.TravelService;
 import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.http.HttpStatus;
@@ -24,14 +23,16 @@ import java.util.List;
 @RequestMapping("/api/travel")
 public class TravelRestController {
     private final TravelService travelService;
+    private final TravelRequestService requestService;
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final AuthenticationHelper authenticationHelper;
 
 
-    public TravelRestController(TravelService travelService, UserService userService, ModelMapper modelMapper,
+    public TravelRestController(TravelService travelService, TravelRequestService requestService, UserService userService, ModelMapper modelMapper,
                                 AuthenticationHelper authenticationHelper) {
         this.travelService = travelService;
+        this.requestService = requestService;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;
@@ -127,6 +128,22 @@ public class TravelRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @PostMapping("/{travelId}/apply")
+    public void applyForTravel(@RequestHeader HttpHeaders httpHeaders,
+                               @PathVariable int travelId){
+        try{
+            User user = authenticationHelper.tryGetUser(httpHeaders);
+            Travel travel = travelService.getById(travelId);
+            requestService.createTravelRequest(user, travel);
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 

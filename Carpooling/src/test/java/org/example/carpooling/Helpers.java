@@ -1,7 +1,7 @@
 package org.example.carpooling;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.carpooling.enums.TravelStatus;
+import org.example.carpooling.models.enums.TravelStatus;
 import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;

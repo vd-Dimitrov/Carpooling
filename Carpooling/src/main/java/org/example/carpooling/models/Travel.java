@@ -1,10 +1,11 @@
 package org.example.carpooling.models;
 
 import jakarta.persistence.*;
-import org.example.carpooling.enums.TravelStatus;
+import org.example.carpooling.models.enums.TravelStatus;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -35,7 +36,6 @@ public class Travel {
     @Column(name = "travel_status")
     private TravelStatus travelStatus;
 
-    // ToDo make a JoinTable for user_passenger logging
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<User> passengers = new HashSet<>();
@@ -130,5 +130,18 @@ public class Travel {
 
     public void setFeedbacks(Set<Feedback> feedbacks) {
         this.feedbacks = feedbacks;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Travel travel = (Travel) o;
+        return travelId == travel.travelId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(travelId);
     }
 }
