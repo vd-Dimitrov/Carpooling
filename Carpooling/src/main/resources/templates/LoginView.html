@@ -9,12 +9,16 @@
         <form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
             <label th:text="#{login.label.username}">Username</label>
             <br/>
-            <input type="text" th:field="*{username}"/>
+            <label>
+                <input type="text" th:field="*{username}"/>
+            </label>
             <label class="is-invalid" th:errors="*{username}">Username error thing</label>
             <br/><br/>
             <label th:text="#{login.label.password}">Password</label>
             <br/>
-            <input type="password" th:field="*{password}"/>
+            <label>
+                <input type="password" th:field="*{password}"/>
+            </label>
             <label class="is-invalid" th:errors="*{password}">Password error thing</label>
             <br/>
             <br/>

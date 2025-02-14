@@ -13,9 +13,9 @@
     <link href="../../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-<nav th:fragment="navbar" class ="navbar navbar-expand-lg fixed-top">
+<nav th:fragment="navbar" class ="navbar navbar-expand-lg fixed-top text-light">
     <div class="container px-4">
-        <a class="navbar-brand" href="#" th:href="@{/}">Carpooling</a>
+        <a class="navbar-brand" href="#" th:href="@{/}" id="mainNav">Carpooling</a>
         <button class="navbar-toggler bg-primary text-uppercase" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-label="Toggle navigation" aria-expanded="false"><span class="navbar-toggler-icon"></span>
@@ -24,16 +24,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/auth/register}"
-                       th:text="#{navigation.all-travels}">Browse all Travels</a></li>
                 <li th:unless="${isAuthenticated}" class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/travels}"
+                    <a class="nav-link" href="#" th:href="@{/auth/register}"
                        th:text="#{navigation.all-travels}">Browse all Travels</a></li>
                 <li th:unless="${isAuthenticated}" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/auth/login}">Login</a></li>
                 <li th:unless="${isAuthenticated}" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/auth/register}">Register</a></li>
+                <li th:if="${isAuthenticated}" class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/travels}"
+                       th:text="#{navigation.all-travels}">Browse all Travels</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/auth/logout}">Logout</a></li>
             </ul>
