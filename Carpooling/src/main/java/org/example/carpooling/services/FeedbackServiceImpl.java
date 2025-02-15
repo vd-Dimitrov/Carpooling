@@ -42,6 +42,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    public List<Feedback> getFeedbackByReceiver(User receiver) {
+        return feedbackRepository.findFeedbackByReceiver(receiver)
+                .orElseThrow( () -> new EntityNotFoundException("User", receiver.getUserId()));
+    }
+
+    @Override
     public void updateFeedback(Feedback updatedFeedback, User requestingUser) {
         checkPermission(requestingUser, updatedFeedback);
         feedbackRepository.save(updatedFeedback);

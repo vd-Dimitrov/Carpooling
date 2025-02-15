@@ -66,6 +66,21 @@ public class FeedbackRestController {
         }
     }
 
+    @GetMapping("/receiver/{userId}")
+    public List<FeedbackDtoOut> getFeedbacksByReceiver(@RequestHeader HttpHeaders httpHeaders,
+                                                        @PathVariable int userId){
+        try{
+            authenticationHelper.tryGetUser(httpHeaders);
+            User requestedUser = userService.getById(userId);
+            List<Feedback> feedbacks = feedbackService.getFeedbackByReceiver(requestedUser);
+            return modelMapper.fromListFeedbackToListFeedbackDtoOut(feedbacks);
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @GetMapping
     public List<FeedbackDtoOut> getAllFeedbacks(@RequestHeader HttpHeaders httpHeaders){
         try {

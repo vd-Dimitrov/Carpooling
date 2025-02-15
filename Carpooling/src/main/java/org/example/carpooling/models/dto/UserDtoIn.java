@@ -23,10 +23,6 @@ public class UserDtoIn extends LoginDto{
     @Size(min = 10, max = 10, message = "A valid phone number is 10 digits")
     private String phoneNumber;
 
-    public void userDto(){
-
-    }
-
     public String getPasswordConfirm() {
         return passwordConfirm;
     }

@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
     Optional<List<Feedback>> findFeedbackByAuthor(User user);
+    Optional<List<Feedback>> findFeedbackByReceiver(User user);
 
     Optional<Feedback> findFeedbackByFeedbackId(int feedbackId);
 }

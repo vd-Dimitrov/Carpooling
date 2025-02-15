@@ -11,6 +11,7 @@ public interface FeedbackService {
     Feedback getFeedbackById(int id);
     List<Feedback> getAllFeedback();
     List<Feedback> getFeedbackByAuthor(User author);
+    List<Feedback> getFeedbackByReceiver(User receiver);
     void updateFeedback(Feedback updatedFeedback, User requestingUser);
     void deleteFeedback(Feedback deletedFeedback, User requestingUser);
 }
