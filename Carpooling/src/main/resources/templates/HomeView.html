@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:insert="~{fragments/PageFrame :: head('Carpooling Home')}"></div>
-<body>
-<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+<body id="page-top">
+<div th:replace="~{fragments/PageFrame :: navbar(mainNav)}" ></div>
 <!-- nothing to see until i add image background-->
 <header class="masthead" id="mainPage">
     <div class="container px-4 px-lg-5 h-100">
@@ -17,7 +17,19 @@
             </div>
         </div>
     </div>
-
 </header>
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <div class = "row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="text-white mt-0">Take life by the wheel!</h2>
+                <hr class="divider divider-light"/>
+                <p class="text-white-75 mb-4">Carpooling has everything to set out on the journey you've always wanted with like-minded people! Go look for passengers for your next trip or form contacts with new people</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:fragment="~{fragments/PageFrame :: scripts}"></div>
 </body>
 </html>
