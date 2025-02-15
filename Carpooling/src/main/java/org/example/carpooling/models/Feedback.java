@@ -47,6 +47,14 @@ public class Feedback {
         this.comment = comment;
     }
 
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
     public User getAuthor() {
         return author;
     }

@@ -46,11 +46,6 @@ public class Travel {
             inverseJoinColumns = @JoinColumn(name = "options_id"))
     private Set<Option> options = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "feedbacks_travels",
-            joinColumns = @JoinColumn(name = "travels_id"),
-            inverseJoinColumns = @JoinColumn(name = "feedbacks_id"))
-    private Set<Feedback> feedbacks = new HashSet<>();
 
     public int getTravelId() {
         return travelId;
@@ -122,14 +117,6 @@ public class Travel {
 
     public void setOptions(Set<Option> options) {
         this.options = options;
-    }
-
-    public Set<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(Set<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
     }
 
     @Override

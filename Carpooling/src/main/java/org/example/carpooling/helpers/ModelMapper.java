@@ -138,7 +138,7 @@ public class ModelMapper {
         feedbackDtoOut.setRating(feedback.getRating());
         feedbackDtoOut.setComment(feedback.getComment());
         feedbackDtoOut.setAuthor(feedback.getAuthor().getUsername());
-
+        feedbackDtoOut.setReceiver(feedback.getReceiver().getUsername());
         return feedbackDtoOut;
     }
 
@@ -151,7 +151,7 @@ public class ModelMapper {
                 .collect(Collectors.toList());
     }
 
-    public Feedback fromFeedbackDtoInToFeedback(FeedbackDtoIn feedbackDtoIn, User feedbackAuthor) {
+    public Feedback fromFeedbackDtoInToFeedback(FeedbackDtoIn feedbackDtoIn, User feedbackAuthor, User feedbackReceiver) {
         Feedback feedback = new Feedback();
 
         feedback.setAuthor(feedbackAuthor);
@@ -159,6 +159,7 @@ public class ModelMapper {
         if (!feedbackDtoIn.getComment().isEmpty()){
             feedback.setComment(feedbackDtoIn.getComment());
         }
+        feedback.setReceiver(feedbackReceiver);
 
         return feedback;
     }

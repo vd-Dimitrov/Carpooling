@@ -49,6 +49,7 @@ public class Helpers {
         Feedback mockFeedback = new Feedback();
         mockFeedback.setFeedbackId(MOCK_ID);
         mockFeedback.setAuthor(createMockUser());
+        mockFeedback.setReceiver(createMockUser());
         mockFeedback.setRating(MOCK_RATING);
         mockFeedback.setComment("Mock Comment");
 
@@ -70,7 +71,7 @@ public class Helpers {
         UserDtoIn mockUserDto = new UserDtoIn();
         mockUserDto.setUsername("MockUsername");
         mockUserDto.setPassword("MockPassword");
-        mockUserDto.setPhoneNumber("MockPassword");
+        mockUserDto.setPasswordConfirm("MockPassword");
         mockUserDto.setFirstName("MockFirstName");
         mockUserDto.setLastName("MockLastName");
         mockUserDto.setEmail("MockEmail@mock.com");
@@ -131,6 +132,7 @@ public class Helpers {
         FeedbackDtoOut mockFeedback = new FeedbackDtoOut();
 
         mockFeedback.setAuthor("MockUsername");
+        mockFeedback.setReceiver("MockReceiver");
         mockFeedback.setRating(5.0);
         mockFeedback.setComment("Mock comment");
 

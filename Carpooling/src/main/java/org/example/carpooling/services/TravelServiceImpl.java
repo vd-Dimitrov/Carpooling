@@ -63,11 +63,6 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public void addFeedback(int userId, Feedback feedback) {
-            getById(userId).getFeedbacks().add(feedback);
-    }
-
-    @Override
     public void updateTravel(Travel updatedTravel, User requestingUser) {
         checkPermission(updatedTravel, requestingUser);
         travelRepository.save(updatedTravel);

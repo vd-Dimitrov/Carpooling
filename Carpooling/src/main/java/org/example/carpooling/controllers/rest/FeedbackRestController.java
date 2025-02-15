@@ -77,14 +77,14 @@ public class FeedbackRestController {
         }
     }
 
-    @PostMapping("/{travelId}")
+    @PostMapping("/{receiverId}")
     public FeedbackDtoOut createNewFeedback(@RequestHeader HttpHeaders httpHeaders,
                                                   @Valid @RequestBody FeedbackDtoIn feedbackDtoIn,
-                                                  @PathVariable int travelId){
+                                                  @PathVariable int receiverId){
         try {
             User feedbackAuthor = authenticationHelper.tryGetUser(httpHeaders);
-            Feedback feedback = modelMapper.fromFeedbackDtoInToFeedback(feedbackDtoIn, feedbackAuthor);
-            travelService.addFeedback(travelId, feedback);
+            User feedbackReceiver = userService.getById(receiverId);
+            Feedback feedback = modelMapper.fromFeedbackDtoInToFeedback(feedbackDtoIn, feedbackAuthor, feedbackReceiver);
 
             return modelMapper.fromFeedbackToFeedbackDtoOut(feedback);
         } catch (AuthorizationException e){
@@ -102,10 +102,11 @@ public class FeedbackRestController {
                                          @PathVariable int feedbackId){
         try {
             User feedbackAuthor = authenticationHelper.tryGetUser(httpHeaders);
-            Feedback feedback = modelMapper.fromFeedbackDtoInToFeedback(feedbackDtoIn, feedbackAuthor);
-            feedbackService.updateFeedback(feedback, feedbackAuthor);
+            Feedback originalFeedback = feedbackService.getFeedbackById(feedbackId);
+            Feedback updatedFeedback = modelMapper.fromFeedbackDtoInToFeedback(feedbackDtoIn, feedbackAuthor, originalFeedback.getReceiver());
+            feedbackService.updateFeedback(updatedFeedback, feedbackAuthor);
 
-            return modelMapper.fromFeedbackToFeedbackDtoOut(feedback);
+            return modelMapper.fromFeedbackToFeedbackDtoOut(updatedFeedback);
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){

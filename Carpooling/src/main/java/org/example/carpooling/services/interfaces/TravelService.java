@@ -19,7 +19,6 @@ public interface TravelService {
     Travel getById(int travelId);
     List<Travel> getByDriver(int driveId);
 
-    void addFeedback(int userId, Feedback feedback);
     void updateTravel(Travel updatedTravel, User requestingUser);
     void deleteTravel(int travelId, User requestingUser );
 }
