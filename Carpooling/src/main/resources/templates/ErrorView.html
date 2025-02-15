@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head(${statusCode})}"></div>
+
+<body>
+<div class="error-wrap">
+    <img class="error-bg" src="../static/assets/img/error.png" th:src="@{../static/assets/img/error.png}" alt="error sign">
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="error-content">
+            <h3 class="display-1 fw-bold" th:text="${statusCode}">HTTP status code</h3>
+            <p class="fs-2 text-danger">Error!</p>
+            <p th:unless="${error == null}" class="alert-danger" th:text="${error}">Error placeholder</p>
+
+            <a href="HomeView.html" class="btn btn-primary" th:href="@{/}">Return home</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
