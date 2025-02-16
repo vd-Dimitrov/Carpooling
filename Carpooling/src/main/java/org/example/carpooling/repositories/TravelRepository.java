@@ -2,6 +2,8 @@ package org.example.carpooling.repositories;
 
 import org.example.carpooling.models.enums.TravelStatus;
 import org.example.carpooling.models.Travel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +26,18 @@ public interface TravelRepository extends JpaRepository<Travel, Integer> {
                                @Param("departureTime") LocalDateTime departureTime,
                                @Param("travelStatus") TravelStatus travelStatus,
                                @Param("freeSpots") int freeSpots);
+
+    @Query("select t from Travel t where (:startingPoint is null or t.startingPoint like %:startingPoint)" +
+                                    "and (:endingPoint is null or t.endingPoint like %:endingPoint%)" +
+                                    "and (:departureTime is null or t.departureTime >= :departureTime)" +
+                                    "and (:travelStatus is null or t.travelStatus = :#{#travelStatus?.name()})" +
+                                    "and (:freeSpots is null or t.freeSpots >= :freeSpots)")
+    Page<Travel> searchTravelsPaginated(@Param("startingPoint") String startingPoint,
+                               @Param("endingPoint") String endingPoint,
+                               @Param("departureTime") LocalDateTime departureTime,
+                               @Param("travelStatus") TravelStatus travelStatus,
+                               @Param("freeSpots") int freeSpots,
+                                        Pageable pageable);
     Optional<List<Travel>> findAllByDriverUserId(int driverId);
     Optional<Travel> findTravelByTravelId(int travelId);
 
