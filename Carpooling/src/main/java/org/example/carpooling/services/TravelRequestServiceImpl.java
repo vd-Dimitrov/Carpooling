@@ -34,7 +34,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
 
     @Override
     public TravelRequest createTravelRequest(User requestingUser, Travel appliedTravel) {
-        if (!appliedTravel.getTravelStatus().equals(TravelStatus.UPCOMING)) {
+        if (!appliedTravel.getTravelStatus().equals(TravelStatus.Upcoming)) {
             throw new IllegalArgumentException("Too late to apply for this travel.");
         }
 

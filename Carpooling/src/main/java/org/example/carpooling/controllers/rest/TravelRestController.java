@@ -66,6 +66,7 @@ public class TravelRestController {
 
     @GetMapping("/search")
     public List<TravelDtoOut> searchTravels(@RequestHeader HttpHeaders httpHeaders,
+                                            @RequestParam(required = false) String title,
                                             @RequestParam(required = false) String startingPoint,
                                             @RequestParam(required = false) String endingPoint,
                                             @RequestParam(required = false) String departureTime,
@@ -73,7 +74,7 @@ public class TravelRestController {
                                             @RequestParam(required = false) int freeSpots){
         try{
             authenticationHelper.tryGetUser(httpHeaders);
-            List<Travel> travelList = travelService.searchTravels(startingPoint, endingPoint, departureTime, travelStatus, freeSpots);
+            List<Travel> travelList = travelService.searchTravels(title, startingPoint, endingPoint, departureTime, freeSpots);
 
             return modelMapper.fromListTravelsToListTravelDtoOut(travelList);
         } catch (AuthorizationException e){

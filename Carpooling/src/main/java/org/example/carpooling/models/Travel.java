@@ -3,6 +3,8 @@ package org.example.carpooling.models;
 import jakarta.persistence.*;
 import org.example.carpooling.models.enums.TravelStatus;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,6 +18,9 @@ public class Travel {
     @Column(name = "travel_id")
     private int travelId;
 
+    @Column(name = "title", nullable = false)
+    private String title;
+
     @Column(name = "starting_point", nullable = false)
     private String startingPoint;
 
@@ -26,8 +31,9 @@ public class Travel {
     @JoinColumn(name = "driver_id", nullable = false)
     private User driver;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "departure_time", nullable = false)
-    private LocalDateTime departureTime;
+    private Timestamp departureTime;
 
     @Column(name = "free_spots", nullable = false)
     private int freeSpots;
@@ -46,6 +52,13 @@ public class Travel {
             inverseJoinColumns = @JoinColumn(name = "options_id"))
     private Set<Option> options = new HashSet<>();
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public int getTravelId() {
         return travelId;
@@ -79,11 +92,11 @@ public class Travel {
         this.driver = driver;
     }
 
-    public LocalDateTime getDepartureTime() {
+    public Timestamp getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDateTime departureTime) {
+    public void setDepartureTime(Timestamp departureTime) {
         this.departureTime = departureTime;
     }
 

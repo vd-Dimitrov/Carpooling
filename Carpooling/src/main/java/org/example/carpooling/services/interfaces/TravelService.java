@@ -6,21 +6,22 @@ import org.example.carpooling.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface TravelService {
     Travel createTravel(Travel travel);
 
     List<Travel> getAllTravels();
-    List<Travel> searchTravels(String startingPoint,
+    List<Travel> searchTravels(String title,
+                               String startingPoint,
                                String endingPoint,
                                String departureTime,
-                               String travelStatus,
                                int freeSpots);
-    Page<Travel> searchTravelsPaginated(String startingPoint,
+    Page<Travel> searchTravelsPaginated(String title,
+                                        String startingPoint,
                                         String endingPoint,
-                                        String departureTime,
-                                        String travelStatus,
+                                        Timestamp departureTime,
                                         int freeSpots,
                                         PageRequest pageRequest);
     List<Travel> getAllUpcomingTravels();

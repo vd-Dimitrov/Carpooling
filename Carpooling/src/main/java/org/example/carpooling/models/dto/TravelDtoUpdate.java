@@ -4,11 +4,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TravelDtoUpdate {
+    private String title;
     private String startingPoint;
     private String endingPoint;
     private String departureTime;
     private int freeSpots;
     private String travelStatus;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getStartingPoint() {
         return startingPoint;

@@ -1,13 +1,24 @@
 package org.example.carpooling.models.dto;
 
+import java.sql.Timestamp;
+
 public class TravelSearchDto {
+    private String travelTitle;
     private String startingPoint;
     private String endingPoint;
-    private String departureTime;
+    private Timestamp departureTime;
     private String travelStatus;
     private int freeSpots;
 
     public TravelSearchDto() {
+    }
+
+    public String getTravelTitle() {
+        return travelTitle;
+    }
+
+    public void setTravelTitle(String travelTitle) {
+        this.travelTitle = travelTitle;
     }
 
     public String getStartingPoint() {
@@ -26,11 +37,11 @@ public class TravelSearchDto {
         this.endingPoint = endingPoint;
     }
 
-    public String getDepartureTime() {
+    public Timestamp getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(Timestamp departureTime) {
         this.departureTime = departureTime;
     }
 

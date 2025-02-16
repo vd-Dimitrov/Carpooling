@@ -3,7 +3,6 @@ package org.example.carpooling.services;
 import org.example.carpooling.models.enums.TravelStatus;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
-import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.TravelRepository;
@@ -12,16 +11,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
 public class TravelServiceImpl implements TravelService {
     public static final String MODIFY_ERROR_MESSAGE = "Only author can make changes to the travel information!";
+    private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final TravelRepository travelRepository;
-    private static final String pattern = "dd/MM/yyyy HH:mm:ss";
-    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
 
     public TravelServiceImpl(TravelRepository travelRepository) {
         this.travelRepository = travelRepository;
@@ -38,22 +37,23 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public List<Travel> searchTravels(String startingPoint, String endingPoint, String departureTime, String travelStatus, int freeSpots) {
-        return travelRepository.searchTravels(startingPoint,
-                endingPoint,
-                LocalDateTime.parse(departureTime, dateFormat),
-                TravelStatus.valueOf(travelStatus),
-                freeSpots);
+    public List<Travel> searchTravels(String title, String startingPoint, String endingPoint, String departureTime, int freeSpots) {
+        try{
+            Timestamp departureTimeConverted = new Timestamp(DATE_TIME_FORMAT.parse(departureTime).getTime());
+            return travelRepository.searchTravels(title, startingPoint, endingPoint, departureTimeConverted, freeSpots);
+        } catch (ParseException e){
+            throw new IllegalArgumentException(e);
+        }
     }
 
     @Override
-    public Page<Travel> searchTravelsPaginated(String startingPoint, String endingPoint, String departureTime, String travelStatus, int freeSpots, PageRequest pageRequest) {
-        return travelRepository.searchTravelsPaginated(startingPoint, endingPoint, LocalDateTime.parse(departureTime, dateFormat), TravelStatus.valueOf(travelStatus), freeSpots, pageRequest);
+    public Page<Travel> searchTravelsPaginated(String title, String startingPoint, String endingPoint, Timestamp departureTime, int freeSpots, PageRequest pageRequest) {
+            return travelRepository.searchTravelsPaginated(title, startingPoint, endingPoint, departureTime, freeSpots, pageRequest);
     }
 
     @Override
     public List<Travel> getAllUpcomingTravels() {
-        return travelRepository.findTravelByTravelStatus(TravelStatus.UPCOMING);
+        return travelRepository.findTravelByTravelStatus(TravelStatus.Upcoming);
     }
 
 
@@ -85,6 +85,14 @@ public class TravelServiceImpl implements TravelService {
     private void checkPermission(Travel updatedTravel, User requestingUser){
         if (requestingUser.getUserId()!=updatedTravel.getDriver().getUserId()){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
+        }
+    }
+
+    private Timestamp parseTimestamp(String time) {
+        try {
+            return new Timestamp(DATE_TIME_FORMAT.parse(time).getTime());
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 }

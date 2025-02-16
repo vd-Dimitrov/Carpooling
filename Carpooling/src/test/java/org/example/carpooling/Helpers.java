@@ -94,32 +94,33 @@ public class Helpers {
     public static Travel createMockTravel(){
         Travel mockTravel = new Travel();
         mockTravel.setTravelId(MOCK_ID);
+        mockTravel.setTitle("Mock title");
         mockTravel.setStartingPoint("Mock starting point");
         mockTravel.setEndingPoint("Mock ending point");
         mockTravel.setDriver(createMockUser());
         mockTravel.setDepartureTime(LocalDateTime.now());
         mockTravel.setFreeSpots(0);
-        mockTravel.setTravelStatus(TravelStatus.UPCOMING);
+        mockTravel.setTravelStatus(TravelStatus.Upcoming);
 
         return mockTravel;
     }
 
     public static TravelDtoOut createMockTravelDtoOut(){
         TravelDtoOut mockTravel = new TravelDtoOut();
-
+        mockTravel.setTitle("Mock title");
         mockTravel.setStartingPoint("Mock starting point");
         mockTravel.setEndingPoint("Mock ending point");
         mockTravel.setDriverName(createMockUser().getUsername());
         mockTravel.setDepartureTime(dateFormat.format(LocalDateTime.now()));
         mockTravel.setFreeSpots(0);
-        mockTravel.setTravelStatus(TravelStatus.UPCOMING.toString());
+        mockTravel.setTravelStatus(TravelStatus.Upcoming.toString());
 
         return mockTravel;
     }
 
     public static TravelDtoIn createMockTravelDtoIn(){
         TravelDtoIn mockTravel = new TravelDtoIn();
-
+        mockTravel.setTitle("Mock title");
         mockTravel.setStartingPoint("Mock starting point");
         mockTravel.setEndingPoint("Mock ending point");
         mockTravel.setDepartureTime(dateFormat.format(LocalDateTime.now()));

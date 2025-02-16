@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -16,27 +18,27 @@ import java.util.Optional;
 
 @Repository
 public interface TravelRepository extends JpaRepository<Travel, Integer> {
-    @Query("select t from Travel t where (:startingPoint is null or t.startingPoint like %:startingPoint)" +
+    @Query("select t from Travel t where (:title is null or t.title like %:title%)" +
+                                    "and (:startingPoint is null or t.startingPoint like %:startingPoint%)" +
                                     "and (:endingPoint is null or t.endingPoint like %:endingPoint%)" +
-                                    "and (:departureTime is null or t.departureTime >= :departureTime)" +
-                                    "and (:travelStatus is null or t.travelStatus = :#{#travelStatus?.name()})" +
+                                    "and (:departureTime is null or t.departureTime <= :departureTime)" +
                                     "and (:freeSpots is null or t.freeSpots >= :freeSpots)")
-    List<Travel> searchTravels(@Param("startingPoint") String startingPoint,
+    List<Travel> searchTravels(@Param("title")String title,
+                               @Param("startingPoint") String startingPoint,
                                @Param("endingPoint") String endingPoint,
-                               @Param("departureTime") LocalDateTime departureTime,
-                               @Param("travelStatus") TravelStatus travelStatus,
+                               @Param("departureTime") Timestamp     departureTime,
                                @Param("freeSpots") int freeSpots);
 
-    @Query("select t from Travel t where (:startingPoint is null or t.startingPoint like %:startingPoint)" +
+    @Query("select t from Travel t where (:title is null or t.title like %:title%)" +
+                                    "and (:startingPoint is null or t.startingPoint like %:startingPoint%)" +
                                     "and (:endingPoint is null or t.endingPoint like %:endingPoint%)" +
                                     "and (:departureTime is null or t.departureTime >= :departureTime)" +
-                                    "and (:travelStatus is null or t.travelStatus = :#{#travelStatus?.name()})" +
                                     "and (:freeSpots is null or t.freeSpots >= :freeSpots)")
-    Page<Travel> searchTravelsPaginated(@Param("startingPoint") String startingPoint,
-                               @Param("endingPoint") String endingPoint,
-                               @Param("departureTime") LocalDateTime departureTime,
-                               @Param("travelStatus") TravelStatus travelStatus,
-                               @Param("freeSpots") int freeSpots,
+    Page<Travel> searchTravelsPaginated(@Param("title")String title,
+                                        @Param("startingPoint") String startingPoint,
+                                        @Param("endingPoint") String endingPoint,
+                                        @Param("departureTime") Timestamp departureTime,
+                                        @Param("freeSpots") int freeSpots,
                                         Pageable pageable);
     Optional<List<Travel>> findAllByDriverUserId(int driverId);
     Optional<Travel> findTravelByTravelId(int travelId);
