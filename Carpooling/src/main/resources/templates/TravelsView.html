@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('Travels')}"></div>
+<body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+
+<header class="masthead bg-secondary text-light text-center">
+  <div class = "container d-flex align-items-center flex-column">
+    <h1 class="masthead mb-0" th:if="${travelsPaged.isEmpty()}" th:text="#{travels.title.empty}">No travels listed</h1>
+    <h1 class="masthead mb-0" th:unless="${travelsPaged.isEmpty()}" th:text="#{travels.title}">All listed travels</h1>
+  </div>
+</header>
+
+<div class="page-section bg-secondary pb-4 pb-lg-3">
+  <div class="container">
+    <div class="row g-0">
+      <div class="col-4 col-lg-5 order-2 order-lg-1 pe-4 pe-md-3">
+        <div class = "sidebar-wrapper">
+          <div class="sidebar-section">
+            <h3 class="title">Find travel</h3>
+            <div class="sidebar-search-form">
+              <h4 class="small-title" th:text="'Travel title'"></h4>
+              <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
+                <div class="input-group">
+                  <input type="text" name="search" placeholder="Search" th:placeholder="'Travel title'"
+                  th:field="*{travelTitle}">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 order-1 order-lg-2">
+        <div class="filter">
+          <div class="result-sorted">
+            <div class="total-result">
+              <span th:text="${travelsSize}"></span>
+              <span th:text="'Results found'"></span>
+            </div>
+            <div class="form-left">
+              <form action="#" method="get">
+                <label>Sort by:</label>
+                <select class="form-select" name="sortField" id="sortField">
+                  <option value="title" th:selected="${sortField == 'title'}" th:text="'Title'"></option>
+                  <option value="departureTime" th:selected="${sortField == 'departureTime'}" th:text="'Departute time'"></option>
+                  <option value="startingPoint" th:selected="${sortField == 'startingPoint'}" th:text="'Starting point'"></option>
+                  <option value="freeSpots" th:selected="${sortField == 'freeSpots'}" th:text="'Free spots'"></option>
+                </select>
+                <label>Order:</label>
+                <select class="form-select" name="sortDirection">
+                  <option value="asc" th:selected="${sortDirection == 'asc'}" th:text="Ascending"></option>
+                  <option value="desc" th:selected="${sortDirection == 'desc'}" th:text="Descending"></option>
+                </select>
+                <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
+                  <button type="submit" class="btn-secondary w-25">Sort</button>
+                </form>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="~{fragments/PageFrame :: footer}"></div>
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
+</body>
+</html>

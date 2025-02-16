@@ -11025,3 +11025,63 @@ header.masthead h1, header.masthead .h1 {
   position: relative;
   text-align: center !important;
 }
+
+.sidebar-wrapper {
+  padding: 50px;
+  background-color:#ffffff;
+  float:left;
+  width:100%;
+}
+
+.sidebar-section {
+  border-bottom: 1px solid #eee;
+  padding: 0 30px 25px;
+  margin-bottom: 25px;
+  float: left;
+  width: 100%;
+}
+
+.sidebar-search-form {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.sidebar-search-form .input-group input {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #d1d3da;
+  border-radius: 3px;
+  padding: 7px 16px 7px 35px;
+  font-size: 14px;
+  line-height: 30px;
+  color: #999;
+  font-weight: 400;
+}
+
+.small-title{
+  font-size: 15px;
+  line-height: 25px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.filter .result-sorted {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.filter .result-sorted .total-result {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+  position: relative;
+  margin-bottom: 20px;
+  text-transform: none;
+}
+
+.filter .result-sorted .form-left{
+  text-align: right;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}

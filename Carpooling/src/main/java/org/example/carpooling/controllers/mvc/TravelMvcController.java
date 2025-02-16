@@ -1,6 +1,8 @@
 package org.example.carpooling.controllers.mvc;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.helpers.AuthenticationHelper;
@@ -31,39 +33,50 @@ public class TravelMvcController {
 
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
-        return session.getAttribute("isAuthenticated") != null;
+        return session.getAttribute("currentUser") != null;
+    }
+
+    @ModelAttribute("requestURI")
+    public String requestURI(final HttpServletRequest request) {
+        return request.getRequestURI();
     }
 
     @GetMapping
-    public String showAllTravels(@RequestParam(defaultValue = "0") int page,
+    public String getAllTravels(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = LISTINGS_PER_PAGE) int size,
+                                @RequestParam(defaultValue = "title") String sortField,
                                 @RequestParam(defaultValue = "asc") String sortDirection,
-                                @ModelAttribute("TravelSearchDto")TravelSearchDto searchDto,
+                                @Valid @ModelAttribute("travelSearchDto")TravelSearchDto searchDto,
                                 Model model,
                                 HttpSession httpSession) {
         try{
             authenticationHelper.tryGetCurrentUser(httpSession);
-        } catch(AuthorizationException e){
-            return "redirect:/auth/login";
-        }
 
-        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC);
+        if ("title".equals(sortField)) {
+            sortField = "title";
+        }
+        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         Page<Travel> travelPage = travelService.searchTravelsPaginated(
+                searchDto.getTravelTitle(),
                 searchDto.getStartingPoint(),
                 searchDto.getEndingPoint(),
-                searchDto.getStartingPoint(),
-                searchDto.getTravelStatus(),
+                searchDto.getDepartureTime(),
                 searchDto.getFreeSpots(),
                 pageRequest);
-        model.addAttribute("travelPage", travelPage.getContent());
+        model.addAttribute("travelsPaged", travelPage.getContent());
         model.addAttribute("travelsSize", travelPage.getTotalElements());
+        model.addAttribute("sortField", sortField);
         model.addAttribute("currentPage",travelPage.getNumber());
         model.addAttribute("totalPages",travelPage.getTotalPages());
         model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("travelSearchDto", searchDto);
 
-        return "travelsView";
+        return "TravelsView";
+        } catch(AuthorizationException e) {
+            return "redirect:/auth/login";
+        }
     }
 
     @GetMapping("/{travelId}")
@@ -72,7 +85,7 @@ public class TravelMvcController {
             authenticationHelper.tryGetCurrentUser(httpSession);
             model.addAttribute("travel", travelService.getById(travelId));
 
-            return "travelView";
+            return "ТravelView";
         } catch (AuthorizationException e){
             model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
