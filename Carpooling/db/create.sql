@@ -14,10 +14,11 @@ create table if not exists users (
 
 create table if not exists travels(
     travel_id int auto_increment primary key ,
+    title varchar(50) not null ,
     starting_point varchar(50) not null ,
     ending_point varchar(50) not null ,
     driver_id int,
-    departure_time datetime  not null,
+    departure_time timestamp  not null,
     travel_status enum('Upcoming', 'Ongoing', 'Complete', 'Cancelled'),
     free_spots int,
     constraint travels_users_user_id_fk foreign key (driver_id) references users (user_id) on update cascade on delete cascade
