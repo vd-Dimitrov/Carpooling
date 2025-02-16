@@ -53,12 +53,12 @@ public class GlobalExceptionHandler {
                 new HttpHeaders(), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String,List<String>>>
-    handleIllegalArgumentException(IllegalArgumentException e){
-        List<String> errors = Collections.singletonList(e.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public ResponseEntity<Map<String,List<String>>>
+//    handleIllegalArgumentException(IllegalArgumentException e){
+//        List<String> errors = Collections.singletonList(e.getMessage());
+//        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+//    }
     private Map<String, List<String>> getErrorsMap(List<String> errors) {
         Map<String, List<String>> errorResponse = new HashMap<>();
         errorResponse.put("errors", errors);
