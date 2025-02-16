@@ -8,6 +8,8 @@ import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.TravelRepository;
 import org.example.carpooling.services.interfaces.TravelService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,6 +44,11 @@ public class TravelServiceImpl implements TravelService {
                 LocalDateTime.parse(departureTime, dateFormat),
                 TravelStatus.valueOf(travelStatus),
                 freeSpots);
+    }
+
+    @Override
+    public Page<Travel> searchTravelsPaginated(String startingPoint, String endingPoint, String departureTime, String travelStatus, int freeSpots, PageRequest pageRequest) {
+        return travelRepository.searchTravelsPaginated(startingPoint, endingPoint, LocalDateTime.parse(departureTime, dateFormat), TravelStatus.valueOf(travelStatus), freeSpots, pageRequest);
     }
 
     @Override
