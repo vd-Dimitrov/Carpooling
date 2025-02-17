@@ -95,7 +95,7 @@
                   <!-- for previous pages -->
                   <li th:class="${currentPage == 0} ? 'disabled' : ''">
                     <a th:if="${currentPage > 0}" th:href="@{/travels(page = ${currentPage - 1})}">
-                      <i class="fa fa-angle-left"></i>
+                      <i class="fa-solid fa-angle-left"></i>
                     </a>
                   </li>
 
@@ -105,7 +105,7 @@
 
                   <li th:class="${currentPage == totalPages - 1 } ? 'disabled' : ''">
                     <a th:if="${currentPage < totalPages - 1}" th:href="@{/travels(page = ${currentPage +1})}">
-                      <i th:class="fa fa-angle-right"></i>
+                      <i class="fa-solid fa-angle-right"></i>
                     </a>
                   </li>
                 </ul>
