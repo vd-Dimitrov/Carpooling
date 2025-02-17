@@ -94,6 +94,9 @@ public class AuthenticationMvcController {
             String rejectedValue = duplicateErrorCause(e.getMessage());
             bindingResult.rejectValue(rejectedValue, rejectedValue+"_error", e.getMessage());
             return "RegisterView";
+        } catch ( IllegalArgumentException e){
+            bindingResult.rejectValue("email", "email_error", e.getMessage());
+            return "RegisterView";
         }
     }
 
