@@ -10846,7 +10846,11 @@ body {
   float: left;
   width: 100%
 }
-
+.btn-section {
+  padding: 8rem 0;
+  float: left;
+  width: 100%
+}
 .text-white-75 {
   color: rgba(255, 255, 255, 0.75) !important;
 }
@@ -11000,8 +11004,9 @@ header.masthead h1, header.masthead .h1 {
   color: #fff;
   background: rgba(244, 98, 58, 0.9);
   transition: opacity 0.25s ease;
-  text-align: center;
 }
+
+
 #portfolio .container-fluid .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-sm .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-md .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-lg .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-xl .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-xxl .portfolio-box .portfolio-box-caption .project-category {
   font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 0.85rem;
@@ -11028,7 +11033,9 @@ header.masthead h1, header.masthead .h1 {
   width: 100%;
   height: auto;
 }
-
+.travel-view-color{
+  background: var(--bs-gray-400);
+}
 .error-content {
   position: relative;
   text-align: center !important;
@@ -11140,7 +11147,7 @@ header.masthead h1, header.masthead .h1 {
   padding: 0 7px;
   font-weight: 700;
   font-size: 14px;
-  color: var(--bs-primary);
+  color: var(--bs-secondary);
   line-height: 20px;
   text-transform: capitalize;
   border-radius: 3px;
@@ -11173,9 +11180,24 @@ header.masthead h1, header.masthead .h1 {
   color: #343434;
 }
 
-.travel-info .inner-info .top-info .driver-name a:hover{
+#driverLink .travel-info .inner-info .top-info .driver-name a:hover{
   color: #fd9d84;
 }
 
+.travel-info .inner-info .bottom-info{
+  font-size: 14px;
+  line-height: 24px;
+  color: #343434;
+  font-weight: 400;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 
+.travel-info .inner-info .bottom-info .travel-desc{
+  font-weight: 500;
+  color: #232323;
+}
 

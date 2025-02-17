@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('Travel View')}"></div>
+<body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+
+<div class="container travel-view-color py-5 py-3 pb-lg-2">
+    <div class="row g-0">
+        <div class="card-title">
+            <h2 class="text-bg-primary mb-3" th:text="'Travel details'"></h2>
+        </div>
+        <div class="display-1">
+            <div class="gx-4 gx-lg-5">
+                <h3 class="text-center travel-title">
+                    <a th:text="${travel.title}"></a>
+                </h3>
+                <div class="driver-name">
+                    <a th:text="'Driver:' "></a>
+                    <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}" th:text="${travel.driver.username}" id="driverLink"></a>
+                </div>
+                <div class = "travel-desc text-center" th:text = "'Starting location: ' + ${travel.getStartingPoint()}">
+                </div>
+                <div class = "travel-desc text-center" th:text = "'Ending location: ' + ${travel.getEndingPoint()()}">
+                </div>
+                <div class = "travel-desc text-center" th:text = "'Free spots: ' + ${travel.getFreeSpots()}">
+                </div>
+                <div class = "travel-desc text-center">
+                    <i class = "fa-solid fa-clock"> </i>
+                        <a th:text = "'Departure time: ' + ${travel.getStartingPoint()}"></a>
+                </div>
+                <!-- make two buttons, one appearing when not applied, one when applied to cancel -->
+                <div class="btn-section">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
