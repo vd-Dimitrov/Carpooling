@@ -1,5 +1,6 @@
 package org.example.carpooling.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.example.carpooling.models.enums.TravelStatus;
 
@@ -41,6 +42,13 @@ public class Travel {
     @Enumerated(EnumType.STRING)
     @Column(name = "travel_status")
     private TravelStatus travelStatus;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "travel_applications",
+                joinColumns = @JoinColumn(name = "travel_id"),
+                inverseJoinColumns = @JoinColumn(name = "applicant_id"))
+    private Set<TravelRequest> travelRequests = new HashSet<>();
 
     @OneToMany
     @JoinColumn(name = "user_id")
@@ -114,6 +122,14 @@ public class Travel {
 
     public void setTravelStatus(TravelStatus travelStatus) {
         this.travelStatus = travelStatus;
+    }
+
+    public Set<TravelRequest> getTravelRequests() {
+        return travelRequests;
+    }
+
+    public void setTravelRequests(Set<TravelRequest> travelRequests) {
+        this.travelRequests = travelRequests;
     }
 
     public Set<User> getPassengers() {

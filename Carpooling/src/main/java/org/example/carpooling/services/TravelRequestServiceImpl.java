@@ -15,6 +15,7 @@ import org.example.carpooling.services.interfaces.TravelService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TravelRequestServiceImpl implements TravelRequestService {
@@ -44,7 +45,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         TravelRequest request = new TravelRequest();
         request.setApplicant(requestingUser);
         request.setAppliedTravel(appliedTravel);
-        request.setRequestStatus(TravelRequestStatus.WAITING);
+        request.setRequestStatus(TravelRequestStatus.Waiting);
         return requestRepository.save(request);
     }
 
@@ -52,6 +53,19 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     public TravelRequest getRequestByRequestId(int requestId) {
         return requestRepository.findTravelRequestByRequestId(requestId)
                 .orElseThrow( () -> new EntityNotFoundException("request", requestId));
+    }
+
+    @Override
+    public List<TravelRequest> getTravelRequestsForPopulate(User user, int travelId) {
+        Travel travel = travelRepository.findTravelByTravelId(travelId).orElseThrow(() -> new EntityNotFoundException("Travel", travelId));
+        if (travel.getDriver().getUserId() == user.getUserId()){
+            return requestRepository.findTravelRequestsByAppliedTravelTravelId(travelId).orElseThrow(() -> new EntityNotFoundException("Travel", travelId));
+        }
+        else {
+            return getAllTravelRequestsForUser(user.getUserId()).stream()
+                    .filter(r -> r.getAppliedTravel().getTravelId() == travelId)
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override
@@ -81,7 +95,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
             throw new IllegalArgumentException(NO_FREE_SPOTS_ERROR);
         }
 
-        travelRequest.setRequestStatus(TravelRequestStatus.ACCEPTED);
+        travelRequest.setRequestStatus(TravelRequestStatus.Accepted);
         travel.getPassengers().add(travelRequest.getApplicant());
         travel.setFreeSpots(travel.getFreeSpots()-1);
 
@@ -95,7 +109,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         checkRequestManagementPermission(driver, travelRequest, travelId);
         Travel travel = travelService.getById(travelId);
 
-        travelRequest.setRequestStatus(TravelRequestStatus.REJECTED);
+        travelRequest.setRequestStatus(TravelRequestStatus.Rejected);
 
 
         travel.setFreeSpots(travel.getFreeSpots()+1);

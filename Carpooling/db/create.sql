@@ -21,7 +21,7 @@ create table if not exists travels(
     ending_point varchar(50) not null ,
     driver_id int,
     departure_time timestamp  not null,
-    travel_status enum('Upcoming', 'Ongoing', 'Complete', 'Cancelled'),
+    travel_status enum('Upcoming', 'Complete', 'Cancelled'),
     free_spots int,
     constraint travels_users_user_id_fk foreign key (driver_id) references users (user_id) on update cascade on delete cascade
 );
