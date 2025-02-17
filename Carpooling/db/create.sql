@@ -1,6 +1,7 @@
 create database if not exists carpooling;
 use carpooling;
 
+
 create table if not exists users (
     user_id int auto_increment primary key,
     username varchar(50) not null unique ,
@@ -9,6 +10,7 @@ create table if not exists users (
     last_name varchar(50) not null ,
     email varchar(100) not null unique ,
     phone_number varchar(13) not null unique ,
+    created_at timestamp default current_timestamp,
     is_admin boolean not null
 );
 
