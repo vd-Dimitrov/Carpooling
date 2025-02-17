@@ -10,6 +10,7 @@ public interface TravelRequestService {
     TravelRequest createTravelRequest(User requestingUser, Travel requestedTravel);
 
     TravelRequest getRequestByRequestId(int requestId);
+    List<TravelRequest> getTravelRequestsForPopulate(User user, int travelId);
     List<TravelRequest> getAllTravelRequests();
     List<TravelRequest> getAllTravelRequestsForTravel(int travelId);
     List<TravelRequest> getAllTravelRequestsForUser(int userId);

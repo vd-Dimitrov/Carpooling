@@ -4,17 +4,16 @@
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 
-<header class="bg-secondary text-light text-center">
+<header class="bg-secondary text-light text-center py-3">
   <div class = "pt-5 container d-flex align-items-center flex-column">
-    <h1 class=" mb-0" th:if="${travelsPaged.isEmpty()}" th:text="#{travels.title.empty}">No travels listed</h1>
-    <h1 class=" mb-0" th:unless="${travelsPaged.isEmpty()}" th:text="#{travels.title}">All listed travels</h1>
+    <h1 class=" mb-0" th:text="#{travels.title}">All Listed Travels</h1>
   </div>
 </header>
 
-<div class="page-section bg-secondary pb-4 pb-lg-3">
+<div class="page-section travel-view-color py-5 pb-3 pb-lg-2">
   <div class="container">
     <div class="row g-0">
-      <div class="col-4 col-lg-5 order-2 order-lg-1 pe-4 pe-md-3 ">
+      <div class=" col-lg-4 order-2 order-lg-1 pe-4 ">
         <div class = "sidebar-wrapper">
           <div class="sidebar-section">
             <h3 class="title">Find travel</h3>
@@ -30,6 +29,7 @@
           </div>
         </div>
       </div>
+      <!-- Sorting window-->
       <div class="col-lg-8 order-1 order-lg-2">
         <div class="filter">
           <div class="result-sorted">
@@ -39,6 +39,7 @@
             </div>
             <div class="form-left">
               <form action="#" method="get">
+                <!-- sort options -->
                 <label>Sort by:</label>
                 <select class="form-select" name="sortField" id="sortField">
                   <option value="title" th:selected="${sortField == 'title'}" th:text="'Title'"></option>
@@ -46,14 +47,18 @@
                   <option value="startingPoint" th:selected="${sortField == 'startingPoint'}" th:text="'Starting point'"></option>
                   <option value="freeSpots" th:selected="${sortField == 'freeSpots'}" th:text="'Free spots'"></option>
                 </select>
+                <!-- sort options -->
+
+                <!-- Order options -->
                 <label>Order:</label>
                 <select class="form-select" name="sortDirection">
                   <option value="asc" th:selected="${sortDirection == 'asc'}" th:text="Ascending"></option>
                   <option value="desc" th:selected="${sortDirection == 'desc'}" th:text="Descending"></option>
                 </select>
                 <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
-                  <button type="submit" class="btn-secondary w-25">Sort</button>
+                  <button type="submit" class="btn-secondary btn">Sort</button>
                 </form>
+                <!-- Order options -->
               </form>
             </div>
           </div>
@@ -75,9 +80,27 @@
                               <a th:ref="@{/travels/{travelId}(travelId=${travel.getTravelId()})}" th:text="${travel.getTitle()}"></a>
                             </h3>
                             <div class="driver-name">
-                              <!-- finish when done with user profiles !-->
-                              <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}" th:text="${travel.driver.username}"></a>
+                              <a th:text="'Driver:' "></a>
+                              <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}" th:text="${travel.driver.username}" id="driverLink"></a>
                             </div>
+                          </div>
+                        </div>
+                        <div class="bottom-info gx-4 gx-lg-5">
+                          <div class = "travel-desc col-lg-2 col-md-2 text-center" th:text = "'Starting location: ' + ${travel.getStartingPoint()}">
+                          </div>
+                          <div class = "travel-desc col-lg-2 col-md-2 text-center" th:text = "'Ending location: ' + ${travel.getEndingPoint()}">
+                          </div>
+                          <div class = "travel-desc col-lg-2 col-md-2 text-center" th:text = "'Free spots: ' + ${travel.getFreeSpots()}">
+                          </div>
+                          <div class="travel-desc col-lg-2 col-md-2 text-center">
+                            <i class="fa-solid fa-clock"></i>
+                            <a th:text="${travel.departureTime}"></a>
+                          </div>
+
+                          <div class="col-lg-4 offset-2">
+                            <form action="#" th:action="@{/travels/{travelId}(travelId=${travel.getTravelId()})}" method="get">
+                              <button type="submit" class="btn-secondary btn">View</button>
+                            </form>
                           </div>
                         </div>
                       </div>

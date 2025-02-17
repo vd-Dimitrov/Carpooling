@@ -38,12 +38,7 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public List<Travel> searchTravels(String title, String startingPoint, String endingPoint, String departureTime, int freeSpots) {
-        try{
-            Timestamp departureTimeConverted = new Timestamp(DATE_TIME_FORMAT.parse(departureTime).getTime());
-            return travelRepository.searchTravels(title, startingPoint, endingPoint, departureTimeConverted, freeSpots);
-        } catch (ParseException e){
-            throw new IllegalArgumentException(e);
-        }
+        return travelRepository.searchTravels(title, startingPoint, endingPoint, parseTimestamp(departureTime), freeSpots);
     }
 
     @Override
@@ -76,6 +71,20 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    public void changeTravelStatusToFinished(Travel travel, User requestingUser) {
+        checkPermission(travel, requestingUser);
+        travel.setTravelStatus(TravelStatus.Complete);
+        travelRepository.save(travel);
+    }
+
+    @Override
+    public void changeTravelStatusToCancelled(Travel travel, User requestingUser){
+        checkPermission(travel, requestingUser);
+        travel.setTravelStatus(TravelStatus.Cancelled);
+        travelRepository.save(travel);
+    }
+
+    @Override
     public void deleteTravel(int id, User requestingUser) {
         Travel travelToDelete = getById(id);
         checkPermission(travelToDelete, requestingUser);
@@ -83,7 +92,7 @@ public class TravelServiceImpl implements TravelService {
     }
     
     private void checkPermission(Travel updatedTravel, User requestingUser){
-        if (requestingUser.getUserId()!=updatedTravel.getDriver().getUserId()){
+        if (requestingUser.getUserId()!=updatedTravel.getDriver().getUserId() || !requestingUser.isAdmin()){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }
