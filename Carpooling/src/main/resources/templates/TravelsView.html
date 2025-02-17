@@ -94,7 +94,7 @@
                 <ul class="pagination">
                   <!-- for previous pages -->
                   <li th:class="${currentPage == 0} ? 'disabled' : ''">
-                    <a th:if="${currentPage > 0}" th:href="@{/travels(page = ${currentPage+1})}">
+                    <a th:if="${currentPage > 0}" th:href="@{/travels(page = ${currentPage - 1})}">
                       <i class="fa fa-angle-left"></i>
                     </a>
                   </li>
@@ -117,9 +117,10 @@
       </div>
     </div>
   </div>
-  <div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
 
 </div>
+<div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
+
 <div th:replace="~{fragments/PageFrame :: scripts}"></div>
 </body>
 </html>
