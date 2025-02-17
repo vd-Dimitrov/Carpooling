@@ -68,6 +68,19 @@ public class ModelMapper {
         return userDtoOut;
     }
 
+    public UserDtoUpdateOut fromUserToUserDtoUpdateOut(User user){
+        UserDtoUpdateOut userDtoUpdateOut = new UserDtoUpdateOut();
+
+        userDtoUpdateOut.setUserId(user.getUserId());
+        userDtoUpdateOut.setPassword(user.getPassword());
+        userDtoUpdateOut.setFirstName(user.getFirstName());
+        userDtoUpdateOut.setLastName(user.getLastName());
+        userDtoUpdateOut.setEmail(user.getEmail());
+        userDtoUpdateOut.setPhoneNumber(user.getPhoneNumber());
+
+        return userDtoUpdateOut;
+    }
+
     public List<UserDtoOut> fromListUsersToListUserDto(List<User> users){
         if (users == null){
             return new ArrayList<>();

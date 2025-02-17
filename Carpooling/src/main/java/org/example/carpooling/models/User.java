@@ -2,6 +2,7 @@ package org.example.carpooling.models;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,8 +35,19 @@ public class User {
     @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER)
     private Set<Travel> travels;
 
-    @Column(name = "is_admin")
+       @Column(name = "is_admin")
     private boolean isAdmin;
+
+    @Column(name = "created_at")
+    private Timestamp createAt;
+
+       public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
+    }
 
     public int getUserId() {
         return userId;
