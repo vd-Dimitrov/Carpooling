@@ -132,6 +132,18 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         requestRepository.delete(requestToDelete);
     }
 
+    @Override
+    public void deleteTravelRequestByTravelId(int travelId, User requestingUser) {
+        List<TravelRequest> requestsForTravel = getAllTravelRequestsForTravel(travelId);
+        TravelRequest requestToDelete = requestsForTravel
+                .stream()
+                .filter( r -> r.getApplicant().equals(requestingUser))
+                .findFirst()
+                .orElseThrow( () -> new EntityNotFoundException("User", requestingUser.getUserId()));
+        checkPermission(requestToDelete, requestingUser);
+        requestRepository.delete(requestToDelete);
+    }
+
     private void checkPermission(TravelRequest travelRequest, User requestingUser){
         if (requestingUser.getUserId()!=travelRequest.getApplicant().getUserId()){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);

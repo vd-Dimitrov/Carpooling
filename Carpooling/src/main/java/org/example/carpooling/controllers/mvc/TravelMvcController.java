@@ -157,7 +157,7 @@ public class TravelMvcController {
             if (travel.getPassengers().remove(currentUser)) {
                 travel.setFreeSpots(travel.getFreeSpots() + 1);
             }
-            travelRequestService.deleteTravelRequest(travelId, currentUser);
+            travelRequestService.deleteTravelRequestByTravelId(travelId, currentUser);
 
             return "redirect:/travels";
         } catch (AuthorizationException e) {
@@ -182,7 +182,7 @@ public class TravelMvcController {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             travelRequestService.approveRequest(currentUser, travelId, requestId);
 
-            return "redirect:/TravelView"+travelId;
+            return "redirect:/travels/"+travelId;
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         } catch (EntityNotFoundException e) {
@@ -205,7 +205,7 @@ public class TravelMvcController {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             travelRequestService.rejectRequest(currentUser, travelId, requestId);
 
-            return "redirect:/TravelView"+travelId;
+            return "redirect:/travels/"+travelId;
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         } catch (EntityNotFoundException e) {

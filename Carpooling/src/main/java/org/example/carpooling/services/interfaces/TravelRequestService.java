@@ -18,4 +18,5 @@ public interface TravelRequestService {
     TravelRequest rejectRequest(User driver, int travelId, int requestId);
     void updateTravelRequest(TravelRequest updatedRequest, User requestingUser);
     void deleteTravelRequest(int travelRequestId, User requestingUser);
+    void deleteTravelRequestByTravelId(int travelId, User requestingUser);
 }
