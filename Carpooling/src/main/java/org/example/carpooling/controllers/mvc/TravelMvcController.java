@@ -98,8 +98,6 @@ public class TravelMvcController {
         try {
             User currentUser= authenticationHelper.tryGetCurrentUser(httpSession);
             Travel travel = travelService.getById(travelId);
-            model.addAttribute("travel", travel);
-
             List<TravelRequest> populateTravelRequests = travelRequestService.getTravelRequestsForPopulate(currentUser, travelId);
 
             boolean hasApplied = !populateTravelRequests.isEmpty();

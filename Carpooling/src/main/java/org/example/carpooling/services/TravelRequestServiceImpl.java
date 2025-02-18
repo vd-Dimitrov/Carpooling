@@ -86,7 +86,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     }
 
     @Override
-    public TravelRequest approveRequest(User driver, int travelId, int requestId) {
+    public void approveRequest(User driver, int travelId, int requestId) {
         TravelRequest travelRequest = getRequestByRequestId(requestId);
         checkRequestManagementPermission(driver, travelRequest, travelId);
 
@@ -98,13 +98,11 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         travelRequest.setRequestStatus(TravelRequestStatus.Accepted);
         travel.getPassengers().add(travelRequest.getApplicant());
         travel.setFreeSpots(travel.getFreeSpots()-1);
-
-        travelRepository.save(travel);
-        return requestRepository.save(travelRequest);
+        requestRepository.save(travelRequest);
     }
 
     @Override
-    public TravelRequest rejectRequest(User driver, int travelId, int requestId) {
+    public void rejectRequest(User driver, int travelId, int requestId) {
         TravelRequest travelRequest = getRequestByRequestId(requestId);
         checkRequestManagementPermission(driver, travelRequest, travelId);
         Travel travel = travelService.getById(travelId);
@@ -115,8 +113,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         travel.setFreeSpots(travel.getFreeSpots()+1);
         travel.getPassengers().remove(travelRequest.getApplicant());
         travelRepository.save(travel);
-
-        return requestRepository.save(travelRequest);
+        requestRepository.save(travelRequest);
     }
 
     @Override
