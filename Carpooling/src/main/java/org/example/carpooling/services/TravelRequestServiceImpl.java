@@ -111,7 +111,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
 
 
         travel.setFreeSpots(travel.getFreeSpots()+1);
-        travel.getPassengers().remove(travelRequest.getApplicant());
+        travel.getTravelRequests().remove(travelRequest);
         travelRepository.save(travel);
         requestRepository.save(travelRequest);
     }

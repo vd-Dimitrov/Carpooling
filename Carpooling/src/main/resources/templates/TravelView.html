@@ -63,12 +63,12 @@
                                     <a th:text="'User rating: ' + ${request.getApplicant().getUserRating()}"></a>
                                 </div>
                                 <div th:unless="${request.requestStatus.name() == 'Rejected'}" >
-                                    <div th:if = "${isDriver}"  class="col-lg-4 offset-2">
+                                    <div th:if = "${isDriver && request.requestStatus.name() != 'Accepted'}"   class="col-lg-4 offset-2">
                                         <form action="#" th:action="@{/travels/{travelId}/requests/{requestId}/accept(travelId=${travel.getTravelId()}, requestId=${request.getRequestId()})}" method="post">
                                             <button type="submit" class="btn-secondary btn">Accept</button>
                                         </form>
                                     </div>
-                                    <div th:if = "${isDriver}" class="col-lg-4 offset-2">
+                                    <div th:if = "${isDriver && request.requestStatus.name() != 'Rejected'}" class="col-lg-4 offset-2">
                                         <form action="#" th:action="@{/travels/{travelId}/requests/{requestId}/reject(travelId=${travel.getTravelId()}, requestId=${request.getRequestId()})}" method="post">
                                             <button type="submit" class="btn-danger btn">Reject</button>
                                         </form>
