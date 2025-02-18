@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('Create Trip')}"></div>
+<body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+<div class="masthead">
+  <div class="container d-flex align-items-center flex-column">
+    <h2>Your next travel</h2>
+    <form action="#" th:action="@{/travels/create}" th:object="${travel}" method="post">
+      <label th:text="#{travels.creation.title}">Title</label>
+      <br/>
+      <input type="text" th:field="*{title}"/>
+      <label class="text-warning" th:errors="*{title}">Title error placeholder</label>
+      <br/><br/>
+
+      <label th:text="#{travels.creation.starting-point}">Starting point</label>
+      <br/>
+      <input type="text" th:field="*{startingPoint}"/>
+      <label class="text-warning" th:errors="*{startingPoint}">Starting point error placeholder</label>
+      <br/><br/>
+
+      <label th:text="#{travels.creation.ending-point}">Ending point</label>
+      <br/>
+      <input type="text" th:field="*{endingPoint}"/>
+      <label class="text-warning" th:errors="*{endingPoint}">Ending point error placeholder</label>
+      <br/><br/>
+
+      <label th:text="#{travels.creation.free-spots}">Free spots</label>
+      <br/>
+      <input type="text" th:field="*{freeSpots}"/>
+      <label class="text-warning" th:errors="*{freeSpots}">Free spots error placeholder</label>
+      <br/><br/>
+
+      <label th:text="#{travels.creation.departure-time}">Departure time</label>
+      <br/>
+      <input type="datetime-local" th:field="*{departureTime}"/>
+      <label class="text-warning" th:errors="*{departureTime}">Departure time error placeholder</label>
+      <br/><br/>
+
+      <input type="submit" value="Submit"/>
+    </form>
+  </div>
+</div>
+<div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
+</body>
+</html>

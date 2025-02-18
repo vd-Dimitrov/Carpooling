@@ -37,6 +37,9 @@
                     <a class="nav-link" href="#" th:href="@{/travels}"
                        th:text="#{navigation.all-travels}">Browse all Travels</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/travels/create}"
+                       th:text="#{navigation.new-travel}">Post Your Next Trip</a></li>
+                <li th:if="${isAuthenticated}" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/auth/logout}">Logout</a></li>
             </ul>
         </div>

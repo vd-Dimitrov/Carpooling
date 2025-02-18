@@ -21,8 +21,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class ModelMapper {
+    public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
     private final UserService userService;
-    private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT);
 
     @Autowired
     public ModelMapper(UserService userService) {
@@ -38,6 +39,9 @@ public class ModelMapper {
         user.setLastName(userDtoIn.getLastName());
         user.setEmail(userDtoIn.getEmail());
         user.setPhoneNumber(userDtoIn.getPhoneNumber());
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMAT);
+        user.setCreateAt(parseTimestamp(now.format(formatter)));
 
         return user;
     }
@@ -51,6 +55,10 @@ public class ModelMapper {
         user.setLastName(userDtoUpdate.getLastName());
         user.setEmail(userDtoUpdate.getEmail());
         user.setPhoneNumber(userDtoUpdate.getPhoneNumber());
+        user.setUserRating(userService.getById(id).getUserRating());
+        user.setTravels(userService.getById(id).getTravels());
+        user.setAdmin(userService.getById(id).isAdmin());
+        user.setCreateAt(userService.getById(id).getCreateAt());
 
         return user;
     }
@@ -119,8 +127,10 @@ public class ModelMapper {
         travel.setTitle(travelDto.getTitle());
         travel.setStartingPoint(travelDto.getStartingPoint());
         travel.setEndingPoint(travelDto.getEndingPoint());
+        travel.setDepartureTime(parseTimestamp(travelDto.getDepartureTime()));
         travel.setDriver(user);
         travel.setFreeSpots(travelDto.getFreeSpots());
+        travel.setTravelStatus(TravelStatus.Upcoming);
 
         return travel;
     }

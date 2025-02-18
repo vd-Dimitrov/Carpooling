@@ -104,11 +104,13 @@ public class TravelMvcController {
             boolean isDriver = currentUser.getUserId() == travel.getDriver().getUserId();
             boolean isPassenger = travel.getPassengers().contains(currentUser);
             boolean isCancelled = travel.getTravelStatus().equals(TravelStatus.Cancelled);
+            boolean isCompleted = travel.getTravelStatus().equals(TravelStatus.Complete);
 
             model.addAttribute("hasApplied", hasApplied);
             model.addAttribute("isDriver", isDriver);
             model.addAttribute("isPassenger", isPassenger);
             model.addAttribute("isCancelled", isCancelled);
+            model.addAttribute("isCompleted", isCompleted);
             model.addAttribute("requests", populateTravelRequests);
             model.addAttribute("travel", travel);
 
@@ -238,7 +240,6 @@ public class TravelMvcController {
         }
     }
 
-
     @GetMapping("/create")
     public String showTravelCreate(Model model, HttpSession httpSession){
         try{
@@ -255,11 +256,12 @@ public class TravelMvcController {
                                      BindingResult bindingResult,
                                      Model model,
                                      HttpSession httpSession){
+        if (bindingResult.hasErrors()){
+            return "CreateTravelView";
+        }
         try{
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
-            if (bindingResult.hasErrors()){
-                return "CreateTravelView";
-            }
+
             Travel travel = modelMapper.fromTravelDtoInToTravel(travelDtoIn, currentUser);
 
             travelService.createTravel(travel);
@@ -273,7 +275,7 @@ public class TravelMvcController {
         }
     }
 
-    @PostMapping("/{travelId}/cancelled")
+    @PostMapping("/{travelId}/cancel")
     public String cancelTravel(@PathVariable int travelId,
                                Model model,
                                HttpSession httpSession){

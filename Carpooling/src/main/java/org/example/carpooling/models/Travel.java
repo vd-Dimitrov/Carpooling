@@ -3,6 +3,7 @@ package org.example.carpooling.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.example.carpooling.models.enums.TravelStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -33,6 +34,7 @@ public class Travel {
     private User driver;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     @Column(name = "departure_time", nullable = false)
     private Timestamp departureTime;
 

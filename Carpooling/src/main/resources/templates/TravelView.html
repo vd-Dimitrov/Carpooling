@@ -29,13 +29,23 @@
                         <a th:text = "'Departure time: ' + ${travel.getStartingPoint()}"></a>
                 </div>
                 <!-- make two buttons, one appearing when not applied, one when applied to cancel -->
-                <div th:unless = "${isDriver}" class="btn-section">
-                    <form th:unless = "${hasApplied}" action = "#" th:action="@{/travels/{travelId}/apply(travelId=${travel.getTravelId()})}" method="post">
-                        <button type="submit" class="btn-secondary btn">Apply</button>
-                    </form>
-                    <form th:if = "${hasApplied}" action ="#" th:action="@{/travels/{travelId}/cancel-request(travelId=${travel.getTravelId()})}" method="post">
-                        <button type="submit" class="btn-danger btn">Cancel request</button>
-                    </form>
+                <div class="btn-section">
+                    <div th:unless = "${isDriver}">
+                        <form th:unless = "${hasApplied}" action = "#" th:action="@{/travels/{travelId}/apply(travelId=${travel.getTravelId()})}" method="post">
+                            <button type="submit" class="btn-secondary btn">Apply</button>
+                        </form>
+                        <form th:if = "${hasApplied}" action ="#" th:action="@{/travels/{travelId}/cancel-request(travelId=${travel.getTravelId()})}" method="post">
+                            <button type="submit" class="btn-danger btn">Cancel request</button>
+                        </form>
+                    </div>
+                    <div th:if = "${isDriver}" th:unless="${isCancelled || isCompleted}">
+                        <form action="#" th:action="@{/travels/{travelId}/complete(travelId=${travel.getTravelId()})}" method="post">
+                            <button type="submit" class="btn-secondary btn">Complete travel</button>
+                        </form>
+                        <form action="#" th:action="@{/travels/{travelId}/cancel(travelId=${travel.getTravelId()})}" method="post">
+                            <button type="submit" class="btn-danger btn">Cancel travel</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

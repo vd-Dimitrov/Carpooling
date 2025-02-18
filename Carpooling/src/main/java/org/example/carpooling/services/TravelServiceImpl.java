@@ -92,7 +92,7 @@ public class TravelServiceImpl implements TravelService {
     }
     
     private void checkPermission(Travel updatedTravel, User requestingUser){
-        if (requestingUser.getUserId()!=updatedTravel.getDriver().getUserId() || !requestingUser.isAdmin()){
+        if (!requestingUser.equals(updatedTravel.getDriver())){
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }
