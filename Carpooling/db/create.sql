@@ -10,6 +10,7 @@ create table if not exists users (
     last_name varchar(50) not null ,
     email varchar(100) not null unique ,
     phone_number varchar(13) not null unique ,
+    user_rating double default 0,
     created_at timestamp default current_timestamp,
     is_admin boolean not null
 );

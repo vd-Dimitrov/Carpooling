@@ -6,18 +6,9 @@ public class UserDtoOut {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private double rating;
 
     public UserDtoOut() {
-    }
-
-    public UserDtoOut(String username, String firstName,
-                      String lastName, String email,
-                      String phoneNumber, String isAdmin) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
     }
 
     public String getUsername() {
@@ -58,5 +49,13 @@ public class UserDtoOut {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

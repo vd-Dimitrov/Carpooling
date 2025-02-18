@@ -32,10 +32,13 @@ public class User {
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
+    @Column(name = "user_rating")
+    private double userRating;
+
     @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER)
     private Set<Travel> travels;
 
-       @Column(name = "is_admin")
+    @Column(name = "is_admin")
     private boolean isAdmin;
 
     @Column(name = "created_at")
@@ -111,6 +114,14 @@ public class User {
 
     public void setTravels(Set<Travel> travels) {
         this.travels = travels;
+    }
+
+    public double getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(double userRating) {
+        this.userRating = userRating;
     }
 
     public boolean isAdmin() {
