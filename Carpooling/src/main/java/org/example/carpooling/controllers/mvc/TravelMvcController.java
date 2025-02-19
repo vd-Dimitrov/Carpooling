@@ -309,7 +309,7 @@ public class TravelMvcController {
                                      HttpSession httpSession,
                                      Model model) {
         if (bindingResult.hasErrors()) {
-            return "TravelCreateView";
+            return "TravelUpdateView";
         }
         try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
@@ -323,7 +323,7 @@ public class TravelMvcController {
         } catch (IllegalArgumentException e) {
             model.addAttribute("statusCode", HttpStatus.BAD_REQUEST.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
-            return "TravelCreateView";
+            return "TravelUpdateView";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());

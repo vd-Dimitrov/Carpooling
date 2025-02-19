@@ -90,7 +90,7 @@
                                                             <a th:ref="@{/travels/{travelId}(travelId=${travel.getTravelId()})}"
                                                                th:text="${travel.getTitle()}"></a>
                                                         </h3>
-                                                        <div class="driver-name">
+                                                        <div class="user-name">
                                                             <a th:text="'Driver:' "></a>
                                                             <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}"
                                                                th:text="${travel.driver.username}" id="driverLink"></a>
@@ -163,7 +163,6 @@
 
 </div>
 <div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
-
 <div th:replace="~{fragments/PageFrame :: scripts}"></div>
 </body>
 </html>

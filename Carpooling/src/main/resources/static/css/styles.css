@@ -12787,16 +12787,16 @@ header.masthead h1, header.masthead .h1 {
     margin: 30px 0 5px;
 }
 
-.driver-name {
+.user-name {
     margin-bottom: 12px;
 }
 
-.travel-info .inner-info .top-info .driver-name a {
+.travel-info .inner-info .top-info .user-name a {
     display: inline-block;
     color: #343434;
 }
 
-.driver-name a:hover {
+.user-name a:hover {
     color: #fd9d84;
 }
 

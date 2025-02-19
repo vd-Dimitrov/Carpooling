@@ -4,114 +4,120 @@
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 
-<div class="container travel-view-color py-5 py-3 pb-lg-2">
-    <div class="row g-0">
-        <div class="card-title">
-            <h2 class="text-bg-primary mb-3" th:text="'Travel details'"></h2>
-        </div>
-        <div class="display-6">
-            <div class="gx-4 gx-lg-5">
-                <h3 class="text-center travel-view-title">
-                    <a th:text="${travel.title}"></a>
-                </h3>
-                <div class="driver-name">
-                    <a th:text="'Driver:' "></a>
-                    <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}"
-                       th:text="${travel.driver.username}" id="driverLink"></a>
-                </div>
-                <div class="travel-desc text-center" th:text="'Starting location: ' + ${travel.getStartingPoint()}">
-                </div>
-                <div class="travel-desc text-center" th:text="'Ending location: ' + ${travel.getEndingPoint()}">
-                </div>
-                <div class="travel-desc text-center" th:text="'Free spots: ' + ${travel.getFreeSpots()}">
-                </div>
-                <div class="travel-desc text-center">
-                    <i class="fa-solid fa-clock"> </i>
-                    <a th:text="'Departure time: ' + ${travel.getDepartureTime()}"></a>
-                </div>
-                <div class="btn-section">
-                    <div th:unless="${isDriver}">
-                        <form th:unless="${hasApplied}" action="#"
-                              th:action="@{/travels/{travelId}/apply(travelId=${travel.getTravelId()})}" method="post">
-                            <button type="submit" class="btn-secondary btn">Apply</button>
-                        </form>
-                        <form th:if="${hasApplied}" action="#"
-                              th:action="@{/travels/{travelId}/cancel-request(travelId=${travel.getTravelId()})}"
-                              method="post">
-                            <button type="submit" class="btn-danger btn">Cancel request</button>
-                        </form>
+<div class="masthead ">
+    <div class="container travel-view-color py-5 py-3 pb-lg-2 rounded-5 border">
+        <div class="row g-0">
+            <div class="card-title">
+                <h1 class="text-bg-primary text-center  mb-3 rounded-4" th:text="'Travel details'"></h1>
+            </div>
+            <div class="display-6">
+                <div class="gx-4 gx-lg-5">
+                    <h3 class="text-center travel-view-title ">
+                        <a th:text="${travel.title}"></a>
+                    </h3>
+                    <div class="user-name">
+                        <a th:text="'Driver:' "></a>
+                        <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}"
+                           th:text="${travel.driver.username}" id="driverLink"></a>
                     </div>
-                    <div th:if="${isDriver}" th:unless="${isCancelled || isCompleted}">
-                        <form action="#" th:action="@{/travels/{travelId}/complete(travelId=${travel.getTravelId()})}"
-                              method="post">
-                            <button type="submit" class="btn-secondary btn">Complete travel</button>
-                        </form>
-                        <form action="#" th:action="@{/travels/{travelId}/cancel(travelId=${travel.getTravelId()})}"
-                              method="post">
-                            <button type="submit" class="btn-danger btn">Cancel travel</button>
-                        </form>
+                    <div class="travel-desc text-center" th:text="'Starting location: ' + ${travel.getStartingPoint()}">
                     </div>
-                    <div th:if="${isDriver}" th:unless="${isCancelled || isCompleted}">
-                        <form action="#" th:action="@{/travels/{travelId}/update(travelId=${travel.getTravelId()})}"
-                              method="post">
-                            <button type="submit" class="btn-secondary btn">Update travel</button>
-                        </form>
+                    <div class="travel-desc text-center" th:text="'Ending location: ' + ${travel.getEndingPoint()}">
+                    </div>
+                    <div class="travel-desc text-center" th:text="'Free spots: ' + ${travel.getFreeSpots()}">
+                    </div>
+                    <div class="travel-desc text-center">
+                        <i class="fa-solid fa-clock"> </i>
+                        <a th:text="'Departure time: ' + ${travel.getDepartureTime()}"></a>
+                    </div>
+                    <div class="btn-section">
+                        <div th:unless="${isDriver}">
+                            <form th:unless="${hasApplied}" action="#"
+                                  th:action="@{/travels/{travelId}/apply(travelId=${travel.getTravelId()})}"
+                                  method="post">
+                                <button type="submit" class="btn-secondary btn">Apply</button>
+                            </form>
+                            <form th:if="${hasApplied}" action="#"
+                                  th:action="@{/travels/{travelId}/cancel-request(travelId=${travel.getTravelId()})}"
+                                  method="post">
+                                <button type="submit" class="btn-danger btn">Cancel request</button>
+                            </form>
+                        </div>
+                        <div th:if="${isDriver}" th:unless="${isCancelled || isCompleted}">
+                            <form action="#"
+                                  th:action="@{/travels/{travelId}/complete(travelId=${travel.getTravelId()})}"
+                                  method="post">
+                                <button type="submit" class="btn-secondary btn">Complete travel</button>
+                            </form>
+                            <form action="#" th:action="@{/travels/{travelId}/cancel(travelId=${travel.getTravelId()})}"
+                                  method="post">
+                                <button type="submit" class="btn-danger btn">Cancel travel</button>
+                            </form>
+                        </div>
+                        <div th:if="${isDriver}" th:unless="${isCancelled || isCompleted}">
+                            <form action="#" th:action="@{/travels/{travelId}/update(travelId=${travel.getTravelId()})}"
+                                  method="post">
+                                <button type="submit" class="btn-secondary btn">Update travel</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row g-0">
-        <div class="col-lg-12 mb-1" th:each="request : ${requests}">
-            <div class="single-travel">
-                <div class="info-box">
-                    <div class="travel-info">
-                        <div class="inner-info">
-                            <div class="top-info">
-                                <div class="travel-status">
-                                    <span class="travel-label" th:text="${request.requestStatus.name()}"></span>
-                                </div>
-                                <div class="title-section">
-                                    <div class="driver-name">
-                                        <a th:text="'User:' "></a>
-                                        <a th:href="@{/users/{userId}(userId=${request.getApplicant().getUserId()})}"
-                                           th:text="${request.applicant.username}"></a>
+        <div class="row g-0">
+            <div class="col-lg-12 mb-1" th:each="request : ${requests}">
+                <div class="single-travel">
+                    <div class="info-box">
+                        <div class="travel-info">
+                            <div class="inner-info">
+                                <div class="top-info">
+                                    <div class="travel-status">
+                                        <span class="travel-label" th:text="${request.requestStatus.name()}"></span>
+                                    </div>
+                                    <div class="title-section">
+                                        <div class="user-name">
+                                            <a th:text="'User:' "></a>
+                                            <a th:href="@{/users/{userId}(userId=${request.getApplicant().getUserId()})}"
+                                               th:text="${request.applicant.username}"></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="bottom-info gx-4 gx-lg-5">
-                                <div class="travel-desc col-lg-2 col-md-2 text-center">
-                                    <i class="fa-solid fa-star"></i>
-                                    <a th:text="'User rating: ' + ${request.getApplicant().getUserRating()}"></a>
-                                </div>
-                                <div th:unless="${request.requestStatus.name() == 'Rejected'}">
-                                    <div th:if="${isDriver && request.requestStatus.name() != 'Accepted'}"
-                                         class="col-lg-4 offset-2">
-                                        <form action="#"
-                                              th:action="@{/travels/{travelId}/requests/{requestId}/accept(travelId=${travel.getTravelId()}, requestId=${request.getRequestId()})}"
-                                              method="post">
-                                            <button type="submit" class="btn-secondary btn">Accept</button>
-                                        </form>
+                                <div class="bottom-info gx-4 gx-lg-5">
+                                    <div class="travel-desc col-lg-2 col-md-2 text-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <a th:text="'User rating: ' + ${request.getApplicant().getUserRating()}"></a>
                                     </div>
-                                    <div th:if="${isDriver && request.requestStatus.name() != 'Rejected'}"
-                                         class="col-lg-4 offset-2">
-                                        <form action="#"
-                                              th:action="@{/travels/{travelId}/requests/{requestId}/reject(travelId=${travel.getTravelId()}, requestId=${request.getRequestId()})}"
-                                              method="post">
-                                            <button type="submit" class="btn-danger btn">Reject</button>
-                                        </form>
+                                    <div th:unless="${request.requestStatus.name() == 'Rejected'}">
+                                        <div th:if="${isDriver && request.requestStatus.name() != 'Accepted'}"
+                                             class="col-lg-4 offset-2">
+                                            <form action="#"
+                                                  th:action="@{/travels/{travelId}/requests/{requestId}/accept(travelId=${travel.getTravelId()}, requestId=${request.getRequestId()})}"
+                                                  method="post">
+                                                <button type="submit" class="btn-secondary btn">Accept</button>
+                                            </form>
+                                        </div>
+                                        <div th:if="${isDriver && request.requestStatus.name() != 'Rejected'}"
+                                             class="col-lg-4 offset-2">
+                                            <form action="#"
+                                                  th:action="@{/travels/{travelId}/requests/{requestId}/reject(travelId=${travel.getTravelId()}, requestId=${request.getRequestId()})}"
+                                                  method="post">
+                                                <button type="submit" class="btn-danger btn">Reject</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
+
             </div>
 
         </div>
-
     </div>
 </div>
+<div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
 </body>
 </html>
