@@ -9,7 +9,7 @@
         <div class="card-title">
             <h2 class="text-bg-primary mb-3" th:text="'Travel details'"></h2>
         </div>
-        <div class="display-1">
+        <div class="display-3">
             <div class="gx-4 gx-lg-5">
                 <h3 class="text-center travel-title">
                     <a th:text="${travel.title}"></a>
@@ -26,9 +26,8 @@
                 </div>
                 <div class = "travel-desc text-center">
                     <i class = "fa-solid fa-clock"> </i>
-                        <a th:text = "'Departure time: ' + ${travel.getStartingPoint()}"></a>
+                        <a th:text = "'Departure time: ' + ${travel.getDepartureTime()}"></a>
                 </div>
-                <!-- make two buttons, one appearing when not applied, one when applied to cancel -->
                 <div class="btn-section">
                     <div th:unless = "${isDriver}">
                         <form th:unless = "${hasApplied}" action = "#" th:action="@{/travels/{travelId}/apply(travelId=${travel.getTravelId()})}" method="post">
@@ -44,6 +43,11 @@
                         </form>
                         <form action="#" th:action="@{/travels/{travelId}/cancel(travelId=${travel.getTravelId()})}" method="post">
                             <button type="submit" class="btn-danger btn">Cancel travel</button>
+                        </form>
+                    </div>
+                    <div th:if = "${isDriver}" th:unless="${isCancelled || isCompleted}">
+                        <form action="#" th:action="@{/travels/{travelId}/update(travelId=${travel.getTravelId()})}" method="post">
+                            <button type="submit" class="btn-secondary btn">Update travel</button>
                         </form>
                     </div>
                 </div>

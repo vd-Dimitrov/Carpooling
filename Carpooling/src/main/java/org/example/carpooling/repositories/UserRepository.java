@@ -19,6 +19,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findUserByPhoneNumber(String phoneNumber);
 
+    @Query("select u from User u join u.travels tr where tr.travelId = :travelId")
+    Optional<User> findUserByTravelId(@Param("travelId") int travelId);
+
     @Query("select u from User u where (:username is null or u.username like %:username%)" +
                                 "and (:email is null or u.email like %:email%)" +
                                 "and (:phoneNumber is null or u.phoneNumber like %:phoneNumber%)")

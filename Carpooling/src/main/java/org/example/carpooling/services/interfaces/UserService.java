@@ -11,6 +11,7 @@ public interface UserService {
     User getById(int id);
     User getByEmail(String email);
     User getByPhoneNumber(String phoneNumber);
+    User getByTravelId(int travelId);
     List<User> getAllUsers();
 
     void updateUser(User updatedUser, User requestingUser);

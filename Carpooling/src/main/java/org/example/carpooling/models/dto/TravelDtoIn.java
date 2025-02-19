@@ -1,9 +1,15 @@
 package org.example.carpooling.models.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class TravelDtoIn {
+    @NotEmpty
     private String title;
+    @NotEmpty
     private String startingPoint;
+    @NotEmpty
     private String endingPoint;
+    @NotEmpty
     private String departureTime;
     private int freeSpots;
 

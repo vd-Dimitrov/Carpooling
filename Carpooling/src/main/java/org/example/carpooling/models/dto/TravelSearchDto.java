@@ -9,6 +9,7 @@ public class TravelSearchDto {
     private Timestamp departureTime;
     private String travelStatus;
     private int freeSpots;
+    private Timestamp createdAt;
 
     public TravelSearchDto() {
     }
@@ -59,5 +60,13 @@ public class TravelSearchDto {
 
     public void setFreeSpots(int freeSpots) {
         this.freeSpots = freeSpots;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

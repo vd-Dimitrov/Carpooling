@@ -1,7 +1,5 @@
 package org.example.carpooling.models.dto;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class TravelDtoUpdate {
     private String title;
@@ -9,7 +7,6 @@ public class TravelDtoUpdate {
     private String endingPoint;
     private String departureTime;
     private int freeSpots;
-    private String travelStatus;
 
     public String getTitle() {
         return title;
@@ -49,14 +46,6 @@ public class TravelDtoUpdate {
 
     public void setFreeSpots(int freeSpots) {
         this.freeSpots = freeSpots;
-    }
-
-    public String getTravelStatus() {
-        return travelStatus;
-    }
-
-    public void setTravelStatus(String travelStatus) {
-        this.travelStatus = travelStatus;
     }
 
   }

@@ -6,8 +6,12 @@ import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.*;
+import org.example.carpooling.services.interfaces.UserService;
 
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,8 +20,8 @@ public class Helpers {
 
     public static final double MOCK_RATING = 5.0;
     public static final int MOCK_ID = 1;
-    private static final String pattern = "dd/MM/yyyy HH:mm:ss";
-    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+    public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
+    private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT);
 
     public static User createMockUser(){
         User mockUser = new User();
@@ -98,7 +102,9 @@ public class Helpers {
         mockTravel.setStartingPoint("Mock starting point");
         mockTravel.setEndingPoint("Mock ending point");
         mockTravel.setDriver(createMockUser());
-        mockTravel.setDepartureTime(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMAT);
+        mockTravel.setDepartureTime(parseTimestamp(now.format(formatter)));
         mockTravel.setFreeSpots(0);
         mockTravel.setTravelStatus(TravelStatus.Upcoming);
 
@@ -111,7 +117,9 @@ public class Helpers {
         mockTravel.setStartingPoint("Mock starting point");
         mockTravel.setEndingPoint("Mock ending point");
         mockTravel.setDriverName(createMockUser().getUsername());
-        mockTravel.setDepartureTime(dateFormat.format(LocalDateTime.now()));
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMAT);
+        mockTravel.setDepartureTime(parseTimestamp(now.format(formatter)).toString());
         mockTravel.setFreeSpots(0);
         mockTravel.setTravelStatus(TravelStatus.Upcoming.toString());
 
@@ -123,7 +131,9 @@ public class Helpers {
         mockTravel.setTitle("Mock title");
         mockTravel.setStartingPoint("Mock starting point");
         mockTravel.setEndingPoint("Mock ending point");
-        mockTravel.setDepartureTime(dateFormat.format(LocalDateTime.now()));
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMAT);
+        mockTravel.setDepartureTime(parseTimestamp(now.format(formatter)).toString());
         mockTravel.setFreeSpots(0);
 
         return mockTravel;
@@ -148,5 +158,12 @@ public class Helpers {
         }
     }
 
+    private static Timestamp parseTimestamp(String time) {
+        try {
+            return new Timestamp(DATE_TIME_FORMAT.parse(time).getTime());
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
 }

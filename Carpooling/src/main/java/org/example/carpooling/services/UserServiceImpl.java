@@ -52,6 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByTravelId(int travelId) {
+        return userRepository.findUserByTravelId(travelId)
+                .orElseThrow( () -> new EntityNotFoundException("Travel", travelId));
+    }
+
+    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

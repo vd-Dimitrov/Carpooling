@@ -37,13 +37,13 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public List<Travel> searchTravels(String title, String startingPoint, String endingPoint, String departureTime, int freeSpots) {
-        return travelRepository.searchTravels(title, startingPoint, endingPoint, parseTimestamp(departureTime), freeSpots);
+    public List<Travel> searchTravels(String title, String startingPoint, String endingPoint, String departureTime, int freeSpots, String createdAt) {
+        return travelRepository.searchTravels(title, startingPoint, endingPoint, parseTimestamp(departureTime), freeSpots, parseTimestamp(createdAt));
     }
 
     @Override
-    public Page<Travel> searchTravelsPaginated(String title, String startingPoint, String endingPoint, Timestamp departureTime, int freeSpots, PageRequest pageRequest) {
-            return travelRepository.searchTravelsPaginated(title, startingPoint, endingPoint, departureTime, freeSpots, pageRequest);
+    public Page<Travel> searchTravelsPaginated(String title, String startingPoint, String endingPoint, Timestamp departureTime, int freeSpots, Timestamp createdAt, PageRequest pageRequest) {
+            return travelRepository.searchTravelsPaginated(title, startingPoint, endingPoint, departureTime, freeSpots,createdAt, pageRequest);
     }
 
     @Override

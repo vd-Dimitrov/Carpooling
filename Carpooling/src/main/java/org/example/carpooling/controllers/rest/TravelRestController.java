@@ -71,10 +71,11 @@ public class TravelRestController {
                                             @RequestParam(required = false) String endingPoint,
                                             @RequestParam(required = false) String departureTime,
                                             @RequestParam(required = false) String travelStatus,
-                                            @RequestParam(required = false) int freeSpots){
+                                            @RequestParam(required = false) int freeSpots,
+                                            @RequestParam(required = false) String createdAt){
         try{
             authenticationHelper.tryGetUser(httpHeaders);
-            List<Travel> travelList = travelService.searchTravels(title, startingPoint, endingPoint, departureTime, freeSpots);
+            List<Travel> travelList = travelService.searchTravels(title, startingPoint, endingPoint, departureTime, freeSpots, createdAt);
 
             return modelMapper.fromListTravelsToListTravelDtoOut(travelList);
         } catch (AuthorizationException e){
@@ -114,12 +115,12 @@ public class TravelRestController {
 
     @PutMapping("/update/{id}")
     public TravelDtoOut updateTravel(@RequestHeader HttpHeaders headers,
-                             @Valid @RequestBody TravelDtoUpdate travelDtoUpdate,
+                             @Valid @RequestBody TravelDtoIn travelDtoIn,
                              @PathVariable int id){
         try{
             User user = authenticationHelper.tryGetUser(headers);
-            Travel travel = modelMapper.fromTravelDtoUpdateToTravel(
-                    travelDtoUpdate,
+            Travel travel = modelMapper.fromTravelDtoInToTravel(
+                    travelDtoIn,
                     user,
                     id);
             travelService.updateTravel(travel, user);
