@@ -22,23 +22,27 @@ public interface TravelRepository extends JpaRepository<Travel, Integer> {
                                     "and (:startingPoint is null or t.startingPoint like %:startingPoint%)" +
                                     "and (:endingPoint is null or t.endingPoint like %:endingPoint%)" +
                                     "and (:departureTime is null or t.departureTime <= :departureTime)" +
-                                    "and (:freeSpots is null or t.freeSpots >= :freeSpots)")
+                                    "and (:freeSpots is null or t.freeSpots >= :freeSpots)" +
+                                    "and (:createdAt is null or t.createdAt <= :createAt)")
     List<Travel> searchTravels(@Param("title")String title,
                                @Param("startingPoint") String startingPoint,
                                @Param("endingPoint") String endingPoint,
                                @Param("departureTime") Timestamp     departureTime,
-                               @Param("freeSpots") int freeSpots);
+                               @Param("freeSpots") int freeSpots,
+                               @Param("createdAt") Timestamp timestamp);
 
     @Query("select t from Travel t where (:title is null or t.title like %:title%)" +
                                     "and (:startingPoint is null or t.startingPoint like %:startingPoint%)" +
                                     "and (:endingPoint is null or t.endingPoint like %:endingPoint%)" +
                                     "and (:departureTime is null or t.departureTime >= :departureTime)" +
-                                    "and (:freeSpots is null or t.freeSpots >= :freeSpots)")
+                                    "and (:freeSpots is null or t.freeSpots >= :freeSpots)" +
+                                    "and (:createdAt is null or t.createdAt <= :createdAt)")
     Page<Travel> searchTravelsPaginated(@Param("title")String title,
                                         @Param("startingPoint") String startingPoint,
                                         @Param("endingPoint") String endingPoint,
                                         @Param("departureTime") Timestamp departureTime,
                                         @Param("freeSpots") int freeSpots,
+                                        @Param("createdAt") Timestamp createdAt,
                                         Pageable pageable);
     Optional<List<Travel>> findAllByDriverUserId(int driverId);
     Optional<Travel> findTravelByTravelId(int travelId);

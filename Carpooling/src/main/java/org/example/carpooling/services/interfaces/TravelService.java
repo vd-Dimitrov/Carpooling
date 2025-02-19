@@ -17,12 +17,15 @@ public interface TravelService {
                                String startingPoint,
                                String endingPoint,
                                String departureTime,
-                               int freeSpots);
+                               int freeSpots,
+                               String createdAt
+    );
     Page<Travel> searchTravelsPaginated(String title,
                                         String startingPoint,
                                         String endingPoint,
                                         Timestamp departureTime,
                                         int freeSpots,
+                                        Timestamp createdAt,
                                         PageRequest pageRequest);
     List<Travel> getAllUpcomingTravels();
     Travel getById(int travelId);

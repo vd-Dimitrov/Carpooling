@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import org.example.carpooling.models.enums.TravelStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -55,6 +53,10 @@ public class Travel {
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<User> passengers = new HashSet<>();
+
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
 
     @ManyToMany
     @JoinTable(name = "travels_options",
@@ -148,6 +150,14 @@ public class Travel {
 
     public void setOptions(Set<Option> options) {
         this.options = options;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createAt) {
+        this.createdAt = createAt;
     }
 
     @Override

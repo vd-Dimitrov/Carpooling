@@ -5,6 +5,7 @@ import org.example.carpooling.models.Feedback;
 import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.*;
+import org.example.carpooling.services.interfaces.TravelService;
 import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,10 +25,12 @@ public class ModelMapper {
     public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
     private final UserService userService;
     private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT);
+    private final TravelService travelService;
 
     @Autowired
-    public ModelMapper(UserService userService) {
+    public ModelMapper(UserService userService, TravelService travelService) {
         this.userService = userService;
+        this.travelService = travelService;
     }
 
     public User fromUserDto(UserDtoIn userDtoIn) {
@@ -117,9 +120,22 @@ public class ModelMapper {
         travelDtoOut.setDriverName(travel.getDriver().getUsername());
         travelDtoOut.setDepartureTime(travel.getDepartureTime().toString());
         travelDtoOut.setFreeSpots(travel.getFreeSpots());
+        travelDtoOut.setTravelStatus(travel.getTravelStatus().toString());
         travelDtoOut.setPassengers(fromSetUsersToListUserDtoOut(travel.getPassengers()));
 
         return travelDtoOut;
+    }
+
+    public TravelDtoIn fromTravelToTravelDtoIn(Travel travel){
+        TravelDtoIn travelDtoIn = new TravelDtoIn();
+        travelDtoIn.setTitle(travel.getTitle());
+        travelDtoIn.setStartingPoint(travel.getStartingPoint());
+        travelDtoIn.setEndingPoint(travel.getEndingPoint());
+                travelDtoIn.setDepartureTime(travel.getDepartureTime().toLocalDateTime().toString());
+
+        travelDtoIn.setFreeSpots(travel.getFreeSpots());
+
+        return travelDtoIn;
     }
 
     public Travel fromTravelDtoInToTravel(TravelDtoIn travelDto, User user){
@@ -127,25 +143,31 @@ public class ModelMapper {
         travel.setTitle(travelDto.getTitle());
         travel.setStartingPoint(travelDto.getStartingPoint());
         travel.setEndingPoint(travelDto.getEndingPoint());
-        travel.setDepartureTime(parseTimestamp(travelDto.getDepartureTime()));
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMAT);
+        if (travelDto.getDepartureTime() == null) {
+            travel.setDepartureTime(parseTimestamp(now.format(formatter)));
+        } else {
+            travel.setDepartureTime(parseTimestamp(travelDto.getDepartureTime()));
+        }
         travel.setDriver(user);
         travel.setFreeSpots(travelDto.getFreeSpots());
         travel.setTravelStatus(TravelStatus.Upcoming);
+        travel.setCreatedAt(parseTimestamp(now.format(formatter)));
+
+        return travel;
+    }
+    public Travel fromTravelDtoInUpdateToTravel(TravelDtoIn travelDto, int travelId){
+        User user = userService.getByTravelId(travelId);
+        Travel travel = fromTravelDtoInToTravel(travelDto, user);
+        travel.setTravelId(travelId);
 
         return travel;
     }
 
-    public Travel fromTravelDtoUpdateToTravel(TravelDtoUpdate travelDto, User user, int id){
-        Travel travel = new Travel();
-
+    public Travel fromTravelDtoInToTravel(TravelDtoIn travelDto, User user, int id){
+        Travel travel = fromTravelDtoInToTravel(travelDto, user);
         travel.setTravelId(id);
-        travel.setDriver(user);
-        travel.setTitle(travelDto.getTitle());
-        travel.setDepartureTime(Timestamp.valueOf(travelDto.getDepartureTime()));
-        travel.setStartingPoint(travelDto.getStartingPoint());
-        travel.setEndingPoint(travelDto.getEndingPoint());
-        travel.setFreeSpots(travelDto.getFreeSpots());
-        travel.setTravelStatus(TravelStatus.valueOf(travelDto.getDepartureTime().toUpperCase()));
 
         return travel;
     }
