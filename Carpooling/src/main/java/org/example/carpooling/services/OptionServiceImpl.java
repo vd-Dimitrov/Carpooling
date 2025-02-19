@@ -22,7 +22,7 @@ public class OptionServiceImpl implements OptionService {
         boolean duplicateExists = true;
         try {
             findOptionByOptionType(option.getOptionType());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
 
@@ -36,13 +36,13 @@ public class OptionServiceImpl implements OptionService {
     @Override
     public Option findOptionById(int id) {
         return optionRepository.findOptionByOptionId(id)
-                .orElseThrow( () -> new EntityNotFoundException("Option", id));
+                .orElseThrow(() -> new EntityNotFoundException("Option", id));
     }
 
     @Override
     public Option findOptionByOptionType(String optionType) {
         return optionRepository.findOptionByOptionType(optionType)
-                .orElseThrow( () -> new EntityNotFoundException("Option", "name", optionType));
+                .orElseThrow(() -> new EntityNotFoundException("Option", "name", optionType));
     }
 
     @Override
@@ -51,8 +51,8 @@ public class OptionServiceImpl implements OptionService {
         optionRepository.save(updatedOption);
     }
 
-    private void checkPermission(User requestingUser){
-        if (!requestingUser.isAdmin()){
+    private void checkPermission(User requestingUser) {
+        if (!requestingUser.isAdmin()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }

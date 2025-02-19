@@ -7,7 +7,7 @@ public enum TravelStatus {
 
     @Override
     public String toString() {
-        return switch (this){
+        return switch (this) {
             case Upcoming -> "Upcoming";
             case Complete -> "Complete";
             case Cancelled -> "Cancelled";

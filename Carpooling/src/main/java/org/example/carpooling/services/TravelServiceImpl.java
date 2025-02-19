@@ -43,7 +43,7 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Page<Travel> searchTravelsPaginated(String title, String startingPoint, String endingPoint, Timestamp departureTime, int freeSpots, Timestamp createdAt, PageRequest pageRequest) {
-            return travelRepository.searchTravelsPaginated(title, startingPoint, endingPoint, departureTime, freeSpots,createdAt, pageRequest);
+        return travelRepository.searchTravelsPaginated(title, startingPoint, endingPoint, departureTime, freeSpots, createdAt, pageRequest);
     }
 
     @Override
@@ -55,13 +55,13 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Travel getById(int travelId) {
         return travelRepository.findTravelByTravelId(travelId)
-                .orElseThrow( () -> new EntityNotFoundException("Travel", travelId));
+                .orElseThrow(() -> new EntityNotFoundException("Travel", travelId));
     }
 
     @Override
     public List<Travel> getByDriver(int driveId) {
         return travelRepository.findAllByDriverUserId(driveId)
-                .orElseThrow( () -> new EntityNotFoundException("Driver", driveId));
+                .orElseThrow(() -> new EntityNotFoundException("Driver", driveId));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public void changeTravelStatusToCancelled(Travel travel, User requestingUser){
+    public void changeTravelStatusToCancelled(Travel travel, User requestingUser) {
         checkPermission(travel, requestingUser);
         travel.setTravelStatus(TravelStatus.Cancelled);
         travelRepository.save(travel);
@@ -90,9 +90,9 @@ public class TravelServiceImpl implements TravelService {
         checkPermission(travelToDelete, requestingUser);
         travelRepository.delete(travelToDelete);
     }
-    
-    private void checkPermission(Travel updatedTravel, User requestingUser){
-        if (!requestingUser.equals(updatedTravel.getDriver())){
+
+    private void checkPermission(Travel updatedTravel, User requestingUser) {
+        if (!requestingUser.equals(updatedTravel.getDriver())) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }

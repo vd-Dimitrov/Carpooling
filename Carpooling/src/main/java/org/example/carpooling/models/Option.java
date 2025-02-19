@@ -32,15 +32,15 @@ public class Option {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Option option = (Option) o;
         return optionId == option.optionId;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hashCode(optionId);
     }
 }

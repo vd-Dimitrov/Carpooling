@@ -39,25 +39,25 @@ public class TravelRestController {
     }
 
     @GetMapping
-    public List<TravelDtoOut> getAllTravels(@RequestHeader HttpHeaders httpHeaders){
-        try{
+    public List<TravelDtoOut> getAllTravels(@RequestHeader HttpHeaders httpHeaders) {
+        try {
             authenticationHelper.tryGetUser(httpHeaders);
             List<Travel> travelList = travelService.getAllTravels();
 
             return modelMapper.fromListTravelsToListTravelDtoOut(travelList);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
     public TravelDtoOut getTravelById(@RequestHeader HttpHeaders httpHeaders,
-                                      @PathVariable int id){
-        try{
+                                      @PathVariable int id) {
+        try {
             authenticationHelper.tryGetUser(httpHeaders);
 
             return modelMapper.fromTravelToTravelDtoOut(travelService.getById(id));
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -72,41 +72,41 @@ public class TravelRestController {
                                             @RequestParam(required = false) String departureTime,
                                             @RequestParam(required = false) String travelStatus,
                                             @RequestParam(required = false) int freeSpots,
-                                            @RequestParam(required = false) String createdAt){
-        try{
+                                            @RequestParam(required = false) String createdAt) {
+        try {
             authenticationHelper.tryGetUser(httpHeaders);
             List<Travel> travelList = travelService.searchTravels(title, startingPoint, endingPoint, departureTime, freeSpots, createdAt);
 
             return modelMapper.fromListTravelsToListTravelDtoOut(travelList);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
-    
+
     @GetMapping("/user/{id}")
     public List<TravelDtoOut> getAllTravelsOfUser(@RequestHeader HttpHeaders httpHeaders,
-                                                  @PathVariable int id){
+                                                  @PathVariable int id) {
         try {
             authenticationHelper.tryGetUser(httpHeaders);
             List<Travel> travels = travelService.getByDriver(id);
 
             return modelMapper.fromListTravelsToListTravelDtoOut(travels);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @PostMapping("/create")
     public TravelDtoOut createTravel(@RequestHeader HttpHeaders httpHeaders,
-                                     @Valid @RequestBody TravelDtoIn travelDto){
-        try{
+                                     @Valid @RequestBody TravelDtoIn travelDto) {
+        try {
             User user = authenticationHelper.tryGetUser(httpHeaders);
             Travel travel = modelMapper.fromTravelDtoInToTravel(travelDto, user);
             travelService.createTravel(travel);
             return modelMapper.fromTravelToTravelDtoOut(travel);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -115,9 +115,9 @@ public class TravelRestController {
 
     @PutMapping("/update/{id}")
     public TravelDtoOut updateTravel(@RequestHeader HttpHeaders headers,
-                             @Valid @RequestBody TravelDtoIn travelDtoIn,
-                             @PathVariable int id){
-        try{
+                                     @Valid @RequestBody TravelDtoIn travelDtoIn,
+                                     @PathVariable int id) {
+        try {
             User user = authenticationHelper.tryGetUser(headers);
             Travel travel = modelMapper.fromTravelDtoInToTravel(
                     travelDtoIn,
@@ -126,68 +126,68 @@ public class TravelRestController {
             travelService.updateTravel(travel, user);
 
             return modelMapper.fromTravelToTravelDtoOut(travel);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
     @DeleteMapping("/delete/{id}")
     public void deleteTravel(@RequestHeader HttpHeaders headers,
-                             @PathVariable int id){
-        try{
+                             @PathVariable int id) {
+        try {
             User user = authenticationHelper.tryGetUser(headers);
             travelService.deleteTravel(id, user);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
     @PostMapping("/{travelId}/apply")
     public void applyForTravel(@RequestHeader HttpHeaders httpHeaders,
-                               @PathVariable int travelId){
-        try{
+                               @PathVariable int travelId) {
+        try {
             User user = authenticationHelper.tryGetUser(httpHeaders);
             Travel travel = travelService.getById(travelId);
             requestService.createTravelRequest(user, travel);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @PutMapping("/{travelId}/apply/{requestId}/approve")
-    public void approveRequest( HttpHeaders httpHeaders,
-                                @PathVariable int travelId,
-                                @PathVariable int requestId){
-        try{
+    public void approveRequest(HttpHeaders httpHeaders,
+                               @PathVariable int travelId,
+                               @PathVariable int requestId) {
+        try {
             User user = authenticationHelper.tryGetUser(httpHeaders);
             requestService.approveRequest(user, travelId, requestId);
 
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @PutMapping("/{travelId}/apply/{requestId}/reject")
-    public void rejectRequest( HttpHeaders httpHeaders,
-                                @PathVariable int travelId,
-                                @PathVariable int requestId){
-        try{
+    public void rejectRequest(HttpHeaders httpHeaders,
+                              @PathVariable int travelId,
+                              @PathVariable int requestId) {
+        try {
             User user = authenticationHelper.tryGetUser(httpHeaders);
             requestService.rejectRequest(user, travelId, requestId);
 
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }

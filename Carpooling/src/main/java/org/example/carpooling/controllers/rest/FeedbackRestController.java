@@ -43,70 +43,70 @@ public class FeedbackRestController {
             authenticationHelper.tryGetUser(httpHeaders);
 
             return modelMapper.fromFeedbackToFeedbackDtoOut(feedbackService.getFeedbackById(feedbackId));
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @GetMapping("/author/{userId}")
     public List<FeedbackDtoOut> getFeedbacksByAuthor(@RequestHeader HttpHeaders httpHeaders,
-                                                     @PathVariable int userId){
-        try{
+                                                     @PathVariable int userId) {
+        try {
             authenticationHelper.tryGetUser(httpHeaders);
 
             User requestedUser = userService.getById(userId);
             List<Feedback> feedbacks = feedbackService.getFeedbackByAuthor(requestedUser);
             return modelMapper.fromListFeedbackToListFeedbackDtoOut(feedbacks);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @GetMapping("/receiver/{userId}")
     public List<FeedbackDtoOut> getFeedbacksByReceiver(@RequestHeader HttpHeaders httpHeaders,
-                                                        @PathVariable int userId){
-        try{
+                                                       @PathVariable int userId) {
+        try {
             authenticationHelper.tryGetUser(httpHeaders);
             User requestedUser = userService.getById(userId);
             List<Feedback> feedbacks = feedbackService.getFeedbackByReceiver(requestedUser);
             return modelMapper.fromListFeedbackToListFeedbackDtoOut(feedbacks);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @GetMapping
-    public List<FeedbackDtoOut> getAllFeedbacks(@RequestHeader HttpHeaders httpHeaders){
+    public List<FeedbackDtoOut> getAllFeedbacks(@RequestHeader HttpHeaders httpHeaders) {
         try {
             authenticationHelper.tryGetUser(httpHeaders);
             List<Feedback> feedbacks = feedbackService.getAllFeedback();
             return modelMapper.fromListFeedbackToListFeedbackDtoOut(feedbacks);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
     @PostMapping("/{receiverId}")
     public FeedbackDtoOut createNewFeedback(@RequestHeader HttpHeaders httpHeaders,
-                                                  @Valid @RequestBody FeedbackDtoIn feedbackDtoIn,
-                                                  @PathVariable int receiverId){
+                                            @Valid @RequestBody FeedbackDtoIn feedbackDtoIn,
+                                            @PathVariable int receiverId) {
         try {
             User feedbackAuthor = authenticationHelper.tryGetUser(httpHeaders);
             User feedbackReceiver = userService.getById(receiverId);
             Feedback feedback = modelMapper.fromFeedbackDtoInToFeedback(feedbackDtoIn, feedbackAuthor, feedbackReceiver);
 
             return modelMapper.fromFeedbackToFeedbackDtoOut(feedback);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
@@ -114,7 +114,7 @@ public class FeedbackRestController {
     @PutMapping("/{feedbackId}")
     public FeedbackDtoOut updateFeedback(@RequestHeader HttpHeaders httpHeaders,
                                          @Valid @RequestBody FeedbackDtoIn feedbackDtoIn,
-                                         @PathVariable int feedbackId){
+                                         @PathVariable int feedbackId) {
         try {
             User feedbackAuthor = authenticationHelper.tryGetUser(httpHeaders);
             Feedback originalFeedback = feedbackService.getFeedbackById(feedbackId);
@@ -122,25 +122,25 @@ public class FeedbackRestController {
             feedbackService.updateFeedback(updatedFeedback, feedbackAuthor);
 
             return modelMapper.fromFeedbackToFeedbackDtoOut(updatedFeedback);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @DeleteMapping("/{feedbackId}")
     public void deleteFeedback(@RequestHeader HttpHeaders httpHeaders,
-                               @PathVariable int feedbackId){
+                               @PathVariable int feedbackId) {
         try {
             User requestingUser = authenticationHelper.tryGetUser(httpHeaders);
             Feedback deletedFeedback = feedbackService.getFeedbackById(feedbackId);
             feedbackService.deleteFeedback(deletedFeedback, requestingUser);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }

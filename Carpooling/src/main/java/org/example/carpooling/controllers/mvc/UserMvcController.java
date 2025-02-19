@@ -39,14 +39,14 @@ public class UserMvcController {
     }
 
     @ModelAttribute("isAuthenticated")
-    public boolean populateIsAuthenticated(HttpSession httpSession){
+    public boolean populateIsAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;
     }
 
     @ModelAttribute("currentUsername")
-    public String populateCurrentUsername(HttpSession httpSession){
+    public String populateCurrentUsername(HttpSession httpSession) {
         Object currentUser = httpSession.getAttribute("currentUser");
-        if (currentUser != null){
+        if (currentUser != null) {
             return httpSession.getAttribute("currentUser").toString();
         }
 
@@ -54,14 +54,14 @@ public class UserMvcController {
     }
 
     @GetMapping("/profile")
-    public String getUserProfile(Model model, HttpSession httpSession){
+    public String getUserProfile(Model model, HttpSession httpSession) {
         User user;
         List<Travel> userTravels;
 
-        try{
+        try {
             user = authenticationHelper.tryGetCurrentUser(httpSession);
             userTravels = travelService.getByDriver(user.getUserId());
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
 
@@ -74,16 +74,16 @@ public class UserMvcController {
     @GetMapping("/{userId}")
     public String showSingleUser(@PathVariable int userId,
                                  Model model,
-                                 HttpSession httpSession){
-        try{
+                                 HttpSession httpSession) {
+        try {
             authenticationHelper.tryGetCurrentUser(httpSession);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
 
         User displayedUser = userService.getById(userId);
 
-        try{
+        try {
             model.addAttribute("user", displayedUser);
 
             return "SingleUserView";
@@ -95,11 +95,11 @@ public class UserMvcController {
     }
 
     @GetMapping("/update")
-    public String getUpdateUserProfile(Model model, HttpSession httpSession){
+    public String getUpdateUserProfile(Model model, HttpSession httpSession) {
         User user;
-        try{
-           user = authenticationHelper.tryGetCurrentUser(httpSession);
-        } catch (AuthorizationException e){
+        try {
+            user = authenticationHelper.tryGetCurrentUser(httpSession);
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
 
@@ -113,24 +113,24 @@ public class UserMvcController {
     public String updateUserProfile(@Valid @ModelAttribute("user") UserDtoUpdate userDtoUpdate,
                                     BindingResult bindingResult,
                                     Model model,
-                                    HttpSession httpSession){
+                                    HttpSession httpSession) {
         User authenticatedUser;
-        try{
-             authenticatedUser = authenticationHelper.tryGetCurrentUser(httpSession);
-        } catch (AuthorizationException e){
+        try {
+            authenticatedUser = authenticationHelper.tryGetCurrentUser(httpSession);
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("user", userDtoUpdate);
             return "UserUpdateProfileView";
         }
 
-        try{
+        try {
             User updatedUser = modelMapper.fromUserDtoUpdate(userDtoUpdate, authenticatedUser.getUserId());
 
             userService.updateUser(updatedUser, authenticatedUser);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
 
@@ -144,21 +144,21 @@ public class UserMvcController {
     @GetMapping("/delete/{userId}")
     public String deleteUser(@PathVariable int userId,
                              Model model,
-                             HttpSession httpSession){
+                             HttpSession httpSession) {
         User authenticatedUser;
         try {
             authenticatedUser = authenticationHelper.tryGetCurrentUser(httpSession);
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
 
-        try{
+        try {
 
 
             userService.deleteUser(userId, authenticatedUser);
 
             return "redirect:/logout";
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";

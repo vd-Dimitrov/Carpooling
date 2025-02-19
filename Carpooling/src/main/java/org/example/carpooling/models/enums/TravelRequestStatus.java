@@ -7,7 +7,7 @@ public enum TravelRequestStatus {
 
     @Override
     public String toString() {
-        return switch (this){
+        return switch (this) {
             case Waiting -> "Waiting";
             case Accepted -> "Accepted";
             case Rejected -> "Rejected";

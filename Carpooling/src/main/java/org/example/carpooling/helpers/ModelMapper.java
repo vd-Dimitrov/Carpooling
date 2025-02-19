@@ -49,7 +49,7 @@ public class ModelMapper {
         return user;
     }
 
-    public User fromUserDtoUpdate(UserDtoUpdate userDtoUpdate, int id){
+    public User fromUserDtoUpdate(UserDtoUpdate userDtoUpdate, int id) {
         User user = new User();
         user.setUserId(id);
         user.setUsername(userService.getById(id).getUsername());
@@ -67,7 +67,7 @@ public class ModelMapper {
     }
 
 
-    public UserDtoOut fromUserToUserDto(User user){
+    public UserDtoOut fromUserToUserDto(User user) {
         UserDtoOut userDtoOut = new UserDtoOut();
 
         userDtoOut.setUsername(user.getUsername());
@@ -79,7 +79,7 @@ public class ModelMapper {
         return userDtoOut;
     }
 
-    public UserDtoUpdateOut fromUserToUserDtoUpdateOut(User user){
+    public UserDtoUpdateOut fromUserToUserDtoUpdateOut(User user) {
         UserDtoUpdateOut userDtoUpdateOut = new UserDtoUpdateOut();
 
         userDtoUpdateOut.setUserId(user.getUserId());
@@ -92,8 +92,8 @@ public class ModelMapper {
         return userDtoUpdateOut;
     }
 
-    public List<UserDtoOut> fromListUsersToListUserDto(List<User> users){
-        if (users == null){
+    public List<UserDtoOut> fromListUsersToListUserDto(List<User> users) {
+        if (users == null) {
             return new ArrayList<>();
         }
 
@@ -102,8 +102,8 @@ public class ModelMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<UserDtoOut> fromSetUsersToListUserDtoOut(Set<User> users){
-        if (users == null){
+    public List<UserDtoOut> fromSetUsersToListUserDtoOut(Set<User> users) {
+        if (users == null) {
             return new ArrayList<>();
         }
 
@@ -111,7 +111,7 @@ public class ModelMapper {
                 .collect(Collectors.toList());
     }
 
-    public TravelDtoOut fromTravelToTravelDtoOut(Travel travel){
+    public TravelDtoOut fromTravelToTravelDtoOut(Travel travel) {
         TravelDtoOut travelDtoOut = new TravelDtoOut();
 
         travelDtoOut.setTitle(travel.getTitle());
@@ -126,19 +126,19 @@ public class ModelMapper {
         return travelDtoOut;
     }
 
-    public TravelDtoIn fromTravelToTravelDtoIn(Travel travel){
+    public TravelDtoIn fromTravelToTravelDtoIn(Travel travel) {
         TravelDtoIn travelDtoIn = new TravelDtoIn();
         travelDtoIn.setTitle(travel.getTitle());
         travelDtoIn.setStartingPoint(travel.getStartingPoint());
         travelDtoIn.setEndingPoint(travel.getEndingPoint());
-                travelDtoIn.setDepartureTime(travel.getDepartureTime().toLocalDateTime().toString());
+        travelDtoIn.setDepartureTime(travel.getDepartureTime().toLocalDateTime().toString());
 
         travelDtoIn.setFreeSpots(travel.getFreeSpots());
 
         return travelDtoIn;
     }
 
-    public Travel fromTravelDtoInToTravel(TravelDtoIn travelDto, User user){
+    public Travel fromTravelDtoInToTravel(TravelDtoIn travelDto, User user) {
         Travel travel = new Travel();
         travel.setTitle(travelDto.getTitle());
         travel.setStartingPoint(travelDto.getStartingPoint());
@@ -157,7 +157,8 @@ public class ModelMapper {
 
         return travel;
     }
-    public Travel fromTravelDtoInUpdateToTravel(TravelDtoIn travelDto, int travelId){
+
+    public Travel fromTravelDtoInUpdateToTravel(TravelDtoIn travelDto, int travelId) {
         User user = userService.getByTravelId(travelId);
         Travel travel = fromTravelDtoInToTravel(travelDto, user);
         travel.setTravelId(travelId);
@@ -165,23 +166,23 @@ public class ModelMapper {
         return travel;
     }
 
-    public Travel fromTravelDtoInToTravel(TravelDtoIn travelDto, User user, int id){
+    public Travel fromTravelDtoInToTravel(TravelDtoIn travelDto, User user, int id) {
         Travel travel = fromTravelDtoInToTravel(travelDto, user);
         travel.setTravelId(id);
 
         return travel;
     }
 
-    public List<TravelDtoOut> fromListTravelsToListTravelDtoOut(List<Travel> travels){
-        if (travels == null){
+    public List<TravelDtoOut> fromListTravelsToListTravelDtoOut(List<Travel> travels) {
+        if (travels == null) {
             return new ArrayList<>();
         }
 
         return travels.stream().map(this::fromTravelToTravelDtoOut)
-                    .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
-    public FeedbackDtoOut fromFeedbackToFeedbackDtoOut(Feedback feedback){
+    public FeedbackDtoOut fromFeedbackToFeedbackDtoOut(Feedback feedback) {
         FeedbackDtoOut feedbackDtoOut = new FeedbackDtoOut();
 
         feedbackDtoOut.setRating(feedback.getRating());
@@ -191,8 +192,8 @@ public class ModelMapper {
         return feedbackDtoOut;
     }
 
-    public List<FeedbackDtoOut> fromListFeedbackToListFeedbackDtoOut(List<Feedback> feedbacks){
-        if (feedbacks == null){
+    public List<FeedbackDtoOut> fromListFeedbackToListFeedbackDtoOut(List<Feedback> feedbacks) {
+        if (feedbacks == null) {
             return new ArrayList<>();
         }
 
@@ -205,7 +206,7 @@ public class ModelMapper {
 
         feedback.setAuthor(feedbackAuthor);
         feedback.setRating(feedbackDtoIn.getRating());
-        if (!feedbackDtoIn.getComment().isEmpty()){
+        if (!feedbackDtoIn.getComment().isEmpty()) {
             feedback.setComment(feedbackDtoIn.getComment());
         }
         feedback.setReceiver(feedbackReceiver);

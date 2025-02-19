@@ -10,7 +10,9 @@ import java.util.Optional;
 @Repository
 public interface TravelRequestRepository extends JpaRepository<TravelRequest, Integer> {
     Optional<TravelRequest> findTravelRequestByRequestId(int requestId);
+
     Optional<List<TravelRequest>> findTravelRequestsByAppliedTravelTravelId(int travelId);
+
     Optional<List<TravelRequest>> findTravelRequestsByApplicantUserId(int applicantId);
 
 }

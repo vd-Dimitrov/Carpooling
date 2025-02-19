@@ -39,7 +39,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
             throw new IllegalArgumentException("Too late to apply for this travel.");
         }
 
-        if (appliedTravel.getPassengers().contains(requestingUser)){
+        if (appliedTravel.getPassengers().contains(requestingUser)) {
             throw new IllegalArgumentException("You are already accepted for the travel!");
         }
         TravelRequest request = new TravelRequest();
@@ -52,16 +52,15 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     @Override
     public TravelRequest getRequestByRequestId(int requestId) {
         return requestRepository.findTravelRequestByRequestId(requestId)
-                .orElseThrow( () -> new EntityNotFoundException("request", requestId));
+                .orElseThrow(() -> new EntityNotFoundException("request", requestId));
     }
 
     @Override
     public List<TravelRequest> getTravelRequestsForPopulate(User user, int travelId) {
         Travel travel = travelRepository.findTravelByTravelId(travelId).orElseThrow(() -> new EntityNotFoundException("Travel", travelId));
-        if (travel.getDriver().getUserId() == user.getUserId()){
+        if (travel.getDriver().getUserId() == user.getUserId()) {
             return requestRepository.findTravelRequestsByAppliedTravelTravelId(travelId).orElseThrow(() -> new EntityNotFoundException("Travel", travelId));
-        }
-        else {
+        } else {
             return getAllTravelRequestsForUser(user.getUserId()).stream()
                     .filter(r -> r.getAppliedTravel().getTravelId() == travelId)
                     .collect(Collectors.toList());
@@ -76,13 +75,13 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     @Override
     public List<TravelRequest> getAllTravelRequestsForTravel(int travelId) {
         return requestRepository.findTravelRequestsByAppliedTravelTravelId(travelId)
-                .orElseThrow( () -> new EntityNotFoundException("Travel", travelId));
+                .orElseThrow(() -> new EntityNotFoundException("Travel", travelId));
     }
 
     @Override
     public List<TravelRequest> getAllTravelRequestsForUser(int userId) {
         return requestRepository.findTravelRequestsByApplicantUserId(userId)
-                .orElseThrow( () -> new EntityNotFoundException("User", userId));
+                .orElseThrow(() -> new EntityNotFoundException("User", userId));
     }
 
     @Override
@@ -91,13 +90,13 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         checkRequestManagementPermission(driver, travelRequest, travelId);
 
         Travel travel = travelService.getById(travelId);
-        if (travel.getFreeSpots() == 0){
+        if (travel.getFreeSpots() == 0) {
             throw new IllegalArgumentException(NO_FREE_SPOTS_ERROR);
         }
 
         travelRequest.setRequestStatus(TravelRequestStatus.Accepted);
         travel.getPassengers().add(travelRequest.getApplicant());
-        travel.setFreeSpots(travel.getFreeSpots()-1);
+        travel.setFreeSpots(travel.getFreeSpots() - 1);
         requestRepository.save(travelRequest);
     }
 
@@ -110,7 +109,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         travelRequest.setRequestStatus(TravelRequestStatus.Rejected);
 
 
-        travel.setFreeSpots(travel.getFreeSpots()+1);
+        travel.setFreeSpots(travel.getFreeSpots() + 1);
         travel.getTravelRequests().remove(travelRequest);
         travelRepository.save(travel);
         requestRepository.save(travelRequest);
@@ -134,25 +133,25 @@ public class TravelRequestServiceImpl implements TravelRequestService {
         List<TravelRequest> requestsForTravel = getAllTravelRequestsForTravel(travelId);
         TravelRequest requestToDelete = requestsForTravel
                 .stream()
-                .filter( r -> r.getApplicant().equals(requestingUser))
+                .filter(r -> r.getApplicant().equals(requestingUser))
                 .findFirst()
-                .orElseThrow( () -> new EntityNotFoundException("User", requestingUser.getUserId()));
+                .orElseThrow(() -> new EntityNotFoundException("User", requestingUser.getUserId()));
         checkPermission(requestToDelete, requestingUser);
         requestRepository.delete(requestToDelete);
     }
 
-    private void checkPermission(TravelRequest travelRequest, User requestingUser){
-        if (requestingUser.getUserId()!=travelRequest.getApplicant().getUserId()){
+    private void checkPermission(TravelRequest travelRequest, User requestingUser) {
+        if (requestingUser.getUserId() != travelRequest.getApplicant().getUserId()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }
 
-    private void checkRequestManagementPermission(User requestingUser, TravelRequest travelRequest, int travelId){
-        if (travelRequest.getAppliedTravel().getTravelId() != travelId){
+    private void checkRequestManagementPermission(User requestingUser, TravelRequest travelRequest, int travelId) {
+        if (travelRequest.getAppliedTravel().getTravelId() != travelId) {
             throw new IllegalArgumentException("Invalid request");
         }
 
-        if (!travelRequest.getAppliedTravel().getDriver().equals(requestingUser)){
+        if (!travelRequest.getAppliedTravel().getDriver().equals(requestingUser)) {
             throw new AuthorizationException(TRAVEL_REQUEST_ERROR_MESSAGE);
         }
     }

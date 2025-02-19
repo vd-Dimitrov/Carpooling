@@ -20,7 +20,7 @@ public class AuthenticationHelper {
         this.userService = userService;
     }
 
-    public User tryGetUser(HttpHeaders headers){
+    public User tryGetUser(HttpHeaders headers) {
         if (!headers.containsKey(AUTHORIZATION_HEADER)) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
@@ -29,30 +29,30 @@ public class AuthenticationHelper {
             String username = getUsername(userInfo);
             String password = getPassword(userInfo);
             User user = userService.getByUsername(username);
-            if (!user.getPassword().equals(password)){
+            if (!user.getPassword().equals(password)) {
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
             }
             return user;
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
     }
 
-    public User verifyUser(String username, String password){
-        try{
+    public User verifyUser(String username, String password) {
+        try {
             User user = userService.getByUsername(username);
-            if(!user.getPassword().equals(password)){
+            if (!user.getPassword().equals(password)) {
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
             }
             return user;
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
     }
 
-    public User tryGetCurrentUser(HttpSession session){
+    public User tryGetCurrentUser(HttpSession session) {
         String currentUsername = session.getAttribute("currentUser").toString();
-        if (currentUsername == null){
+        if (currentUsername == null) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
         return userService.getByUsername(currentUsername);
@@ -61,7 +61,7 @@ public class AuthenticationHelper {
 
     private String getUsername(String userInformation) {
         int firstSpace = userInformation.indexOf(" ");
-        if (firstSpace == -1){
+        if (firstSpace == -1) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
         return userInformation.substring(0, firstSpace);
@@ -69,7 +69,7 @@ public class AuthenticationHelper {
 
     private String getPassword(String userInfo) {
         int firstSpace = userInfo.indexOf(" ");
-        if (firstSpace == -1){
+        if (firstSpace == -1) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
         return userInfo.substring(firstSpace + 1);

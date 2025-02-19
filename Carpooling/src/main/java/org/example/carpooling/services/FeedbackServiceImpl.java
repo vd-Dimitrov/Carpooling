@@ -27,7 +27,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public Feedback getFeedbackById(int id) {
         return feedbackRepository.findFeedbackByFeedbackId(id)
-                .orElseThrow( () -> new EntityNotFoundException("Feedback", id));
+                .orElseThrow(() -> new EntityNotFoundException("Feedback", id));
     }
 
     @Override
@@ -38,13 +38,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public List<Feedback> getFeedbackByAuthor(User author) {
         return feedbackRepository.findFeedbackByAuthor(author)
-                .orElseThrow( () -> new EntityNotFoundException("User", author.getUserId()));
+                .orElseThrow(() -> new EntityNotFoundException("User", author.getUserId()));
     }
 
     @Override
     public List<Feedback> getFeedbackByReceiver(User receiver) {
         return feedbackRepository.findFeedbackByReceiver(receiver)
-                .orElseThrow( () -> new EntityNotFoundException("User", receiver.getUserId()));
+                .orElseThrow(() -> new EntityNotFoundException("User", receiver.getUserId()));
     }
 
     @Override
@@ -58,9 +58,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         checkPermission(requestingUser, deletedFeedback);
         feedbackRepository.delete(deletedFeedback);
     }
-    
-    private void checkPermission(User requestingUser, Feedback updatedFeedback){
-        if (requestingUser.getUserId()!= updatedFeedback.getAuthor().getUserId()){
+
+    private void checkPermission(User requestingUser, Feedback updatedFeedback) {
+        if (requestingUser.getUserId() != updatedFeedback.getAuthor().getUserId()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }

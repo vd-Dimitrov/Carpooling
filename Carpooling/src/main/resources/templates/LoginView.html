@@ -3,8 +3,8 @@
 <div th:insert="~{fragments/PageFrame :: head('Login')}"></div>
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
-<div class = "masthead">
-    <div class = "container px-4 d-flex align-items-center flex-column">
+<div class="masthead">
+    <div class="container px-4 d-flex align-items-center flex-column">
         <H1>Login</H1>
         <form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
             <label th:text="#{login.label.username}">Username</label>

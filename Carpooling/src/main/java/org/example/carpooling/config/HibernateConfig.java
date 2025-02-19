@@ -28,7 +28,7 @@ public class HibernateConfig {
     }
 
     @Bean(name = "entityManagerFactory")
-    public LocalSessionFactoryBean sessionFactory(){
+    public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("org.example.carpooling.models");
@@ -37,7 +37,7 @@ public class HibernateConfig {
     }
 
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
         dataSource.setUrl(dbUrl);
@@ -47,7 +47,7 @@ public class HibernateConfig {
     }
 
 
-    private Properties hibernateProperties(){
+    private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect");
 //        hibernateProperties.setProperty("hibernate.show_sql", "true");

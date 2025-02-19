@@ -6,11 +6,11 @@ import org.example.carpooling.models.enums.TravelRequestStatus;
 import java.util.Objects;
 
 @Entity
-@Table(name="travel_applications")
+@Table(name = "travel_applications")
 public class TravelRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="application_id")
+    @Column(name = "application_id")
     private int requestId;
 
     @OneToOne
@@ -58,7 +58,7 @@ public class TravelRequest {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TravelRequest travelRequest = (TravelRequest) o;

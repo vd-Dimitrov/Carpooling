@@ -31,15 +31,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Map<String,List<String>>>
-    handleEntityNotFoundException(EntityNotFoundException e){
+    public ResponseEntity<Map<String, List<String>>>
+    handleEntityNotFoundException(EntityNotFoundException e) {
         List<String> errors = Collections.singletonList(e.getMessage());
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AuthorizationException.class)
-    public ResponseEntity<Map<String,List<String>>>
-    handleAuthorizationException(AuthorizationException e){
+    public ResponseEntity<Map<String, List<String>>>
+    handleAuthorizationException(AuthorizationException e) {
         List<String> errors = Collections.singletonList(e.getMessage());
         return new ResponseEntity<>(getErrorsMap(errors),
                 new HttpHeaders(), HttpStatus.UNAUTHORIZED);
@@ -47,13 +47,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityDuplicateException.class)
     public ResponseEntity<Map<String, List<String>>>
-    handleEntityDuplicateException(EntityDuplicateException e){
+    handleEntityDuplicateException(EntityDuplicateException e) {
         List<String> errors = Collections.singletonList(e.getMessage());
         return new ResponseEntity<>(getErrorsMap(errors),
                 new HttpHeaders(), HttpStatus.CONFLICT);
     }
 
-//    @ExceptionHandler(IllegalArgumentException.class)
+    //    @ExceptionHandler(IllegalArgumentException.class)
 //    public ResponseEntity<Map<String,List<String>>>
 //    handleIllegalArgumentException(IllegalArgumentException e){
 //        List<String> errors = Collections.singletonList(e.getMessage());

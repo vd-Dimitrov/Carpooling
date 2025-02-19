@@ -34,12 +34,12 @@ public class AuthenticationMvcController {
     }
 
     @ModelAttribute("isAuthenticated")
-    public boolean populateIsAuthenticated(HttpSession httpSession){
+    public boolean populateIsAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;
     }
 
     @GetMapping("/login")
-    public String showLogin(Model model){
+    public String showLogin(Model model) {
         model.addAttribute("login", new LoginDto());
         return "LoginView";
     }
@@ -47,61 +47,61 @@ public class AuthenticationMvcController {
     @PostMapping("/login")
     public String handleLogin(@Valid @ModelAttribute("login") LoginDto login,
                               BindingResult bindingResult,
-                              HttpSession httpSession){
-       if (bindingResult.hasErrors()){
-           return "LoginView";
-       }
+                              HttpSession httpSession) {
+        if (bindingResult.hasErrors()) {
+            return "LoginView";
+        }
 
-       try {
+        try {
             authenticationHelper.verifyUser(login.getUsername(), login.getPassword());
             httpSession.setAttribute("currentUser", login.getUsername());
             return "redirect:/";
-       } catch (AuthorizationException e){
-           bindingResult.rejectValue("username", "auth_error", e.getMessage());
-           return "LoginView";
-       }
+        } catch (AuthorizationException e) {
+            bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            return "LoginView";
+        }
     }
 
     @GetMapping("/logout")
-    public String handleLogout(HttpSession httpSession){
+    public String handleLogout(HttpSession httpSession) {
         httpSession.removeAttribute("currentUser");
         return "redirect:/";
     }
 
     @GetMapping("/register")
-    public String showRegisterPage(Model model){
+    public String showRegisterPage(Model model) {
         model.addAttribute("register", new UserDtoIn());
         return "RegisterView";
     }
 
     @PostMapping("/register")
-    public String handleRegister(@Valid @ModelAttribute("register")UserDtoIn userDtoIn,
-                                 BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public String handleRegister(@Valid @ModelAttribute("register") UserDtoIn userDtoIn,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "RegisterView";
         }
 
-        if (!userDtoIn.getPassword().equals(userDtoIn.getPasswordConfirm())){
+        if (!userDtoIn.getPassword().equals(userDtoIn.getPasswordConfirm())) {
             bindingResult.rejectValue("passwordConfirm", "password_error", "Passwords should match");
             return "RegisterView";
         }
 
-        try{
+        try {
             User user = modelMapper.fromUserDto(userDtoIn);
             userService.createUser(user);
             return "redirect:/auth/login";
-        } catch (EntityDuplicateException e){
+        } catch (EntityDuplicateException e) {
             String rejectedValue = duplicateErrorCause(e.getMessage());
-            bindingResult.rejectValue(rejectedValue, rejectedValue+"_error", e.getMessage());
+            bindingResult.rejectValue(rejectedValue, rejectedValue + "_error", e.getMessage());
             return "RegisterView";
-        } catch ( IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             bindingResult.rejectValue("email", "email_error", e.getMessage());
             return "RegisterView";
         }
     }
 
 
-    private String duplicateErrorCause(String errorMessage){
+    private String duplicateErrorCause(String errorMessage) {
         String[] splitStr = errorMessage.split("\\s+");
         return switch (splitStr[1]) {
             case "username" -> "username";

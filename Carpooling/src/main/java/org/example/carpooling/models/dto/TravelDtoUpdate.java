@@ -48,4 +48,4 @@ public class TravelDtoUpdate {
         this.freeSpots = freeSpots;
     }
 
-  }
+}

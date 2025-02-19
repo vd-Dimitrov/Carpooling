@@ -9,7 +9,8 @@ public class LoginDto {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
-    public LoginDto(){}
+    public LoginDto() {
+    }
 
     public String getUsername() {
         return username;

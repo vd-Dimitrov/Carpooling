@@ -28,7 +28,7 @@ public class HomeMvcController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession httpSession){
+    public String logout(HttpSession httpSession) {
         httpSession.removeAttribute("currentUser");
         return "redirect:/";
     }

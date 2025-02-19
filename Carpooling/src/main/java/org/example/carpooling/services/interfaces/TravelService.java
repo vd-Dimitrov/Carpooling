@@ -13,6 +13,7 @@ public interface TravelService {
     Travel createTravel(Travel travel);
 
     List<Travel> getAllTravels();
+
     List<Travel> searchTravels(String title,
                                String startingPoint,
                                String endingPoint,
@@ -20,6 +21,7 @@ public interface TravelService {
                                int freeSpots,
                                String createdAt
     );
+
     Page<Travel> searchTravelsPaginated(String title,
                                         String startingPoint,
                                         String endingPoint,
@@ -27,12 +29,18 @@ public interface TravelService {
                                         int freeSpots,
                                         Timestamp createdAt,
                                         PageRequest pageRequest);
+
     List<Travel> getAllUpcomingTravels();
+
     Travel getById(int travelId);
+
     List<Travel> getByDriver(int driveId);
 
     void updateTravel(Travel updatedTravel, User requestingUser);
+
     void changeTravelStatusToFinished(Travel travel, User requestingUser);
+
     void changeTravelStatusToCancelled(Travel travel, User requestingUser);
-    void deleteTravel(int travelId, User requestingUser );
+
+    void deleteTravel(int travelId, User requestingUser);
 }

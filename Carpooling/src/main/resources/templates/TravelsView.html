@@ -5,142 +5,161 @@
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 
 <header class="bg-secondary text-light text-center py-3">
-  <div class = "pt-5 container d-flex align-items-center flex-column">
-    <h1 class=" mb-0" th:text="#{travels.title}">All Listed Travels</h1>
-  </div>
+    <div class="pt-5 container d-flex align-items-center flex-column">
+        <h1 class=" mb-0" th:text="#{travels.title}">All Listed Travels</h1>
+    </div>
 </header>
 
 <div class="page-section travel-view-color py-5 pb-3 pb-lg-2">
-  <div class="container">
-    <div class="row g-0">
-      <div class=" col-lg-4 order-2 order-lg-1 pe-4 ">
-        <div class = "sidebar-wrapper">
-          <div class="sidebar-section">
-            <h3 class="title">Find travel</h3>
-            <div class="sidebar-search-form">
-              <h4 class="small-title" th:text="'Travel title'"></h4>
-              <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
-                <div class="input-group">
-                  <input type="text" name="search" placeholder="Search" th:placeholder="'Travel title'"
-                  th:field="*{travelTitle}">
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Sorting window-->
-      <div class="col-lg-8 order-1 order-lg-2">
-        <div class="filter">
-          <div class="result-sorted">
-            <div class="total-result">
-              <span th:text="${travelsSize}"></span>
-              <span th:text="'Results found'"></span>
-            </div>
-            <div class="form-left">
-              <form action="#" method="get">
-                <!-- sort options -->
-                <label>Sort by:</label>
-                <select class="form-select" name="sortField" id="sortField">
-                  <option value="title" th:selected="${sortField == 'title'}" th:text="'Title'"></option>
-                  <option value="departureTime" th:selected="${sortField == 'departureTime'}" th:text="'Departute time'"></option>
-                  <option value="startingPoint" th:selected="${sortField == 'startingPoint'}" th:text="'Starting point'"></option>
-                  <option value="freeSpots" th:selected="${sortField == 'freeSpots'}" th:text="'Free spots'"></option>
-                  <option value="createdAt" th:selected="${sortField == 'createdAt'}" th:text="'Created at'"></option>
-                </select>
-                <!-- sort options -->
-
-                <!-- Order options -->
-                <label>Order:</label>
-                <select class="form-select" name="sortDirection">
-                  <option value="asc" th:selected="${sortDirection == 'asc'}" th:text="Ascending"></option>
-                  <option value="desc" th:selected="${sortDirection == 'desc'}" th:text="Descending"></option>
-                </select>
-                <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
-                  <button type="submit" class="btn-secondary btn">Sort</button>
-                </form>
-                <!-- Order options -->
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="tab-content">
-          <div class="tab-pane fade show active">
-            <div class="row">
-              <div class="col-lg-12 mb-1" th:each = "travel : ${travelsPaged}">
-                <div class="single-travel">
-                  <div class="info-box">
-                    <div class="travel-info">
-                      <div class="inner-info">
-                        <div class="top-info">
-                          <div class="travel-status">
-                            <span class="travel-label" th:text="${travel.getTravelStatus().name()}"></span>
-                          </div>
-                          <div class="title-section">
-                            <h3 class="travel-title">
-                              <a th:ref="@{/travels/{travelId}(travelId=${travel.getTravelId()})}" th:text="${travel.getTitle()}"></a>
-                            </h3>
-                            <div class="driver-name">
-                              <a th:text="'Driver:' "></a>
-                              <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}" th:text="${travel.driver.username}" id="driverLink"></a>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="bottom-info gx-4 gx-lg-5">
-                          <div class = "travel-desc col-lg-2 col-md-2 text-center" th:text = "'Starting location: ' + ${travel.getStartingPoint()}">
-                          </div>
-                          <div class = "travel-desc col-lg-2 col-md-2 text-center" th:text = "'Ending location: ' + ${travel.getEndingPoint()}">
-                          </div>
-                          <div class = "travel-desc col-lg-2 col-md-2 text-center" th:text = "'Free spots: ' + ${travel.getFreeSpots()}">
-                          </div>
-                          <div class="travel-desc col-lg-2 col-md-2 text-center">
-                            <i class="fa-solid fa-clock"></i>
-                            <a th:text="${travel.departureTime}"></a>
-                          </div>
-
-                          <div class="col-lg-4 offset-2">
-                            <form action="#" th:action="@{/travels/{travelId}(travelId=${travel.getTravelId()})}" method="get">
-                              <button type="submit" class="btn-secondary btn">View</button>
+    <div class="container">
+        <div class="row g-0">
+            <div class=" col-lg-4 order-2 order-lg-1 pe-4 ">
+                <div class="sidebar-wrapper">
+                    <div class="sidebar-section">
+                        <h3 class="title">Find travel</h3>
+                        <div class="sidebar-search-form">
+                            <h4 class="small-title" th:text="'Travel title'"></h4>
+                            <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
+                                <div class="input-group">
+                                    <input type="text" name="search" placeholder="Search"
+                                           th:placeholder="'Travel title'"
+                                           th:field="*{travelTitle}">
+                                </div>
                             </form>
-                          </div>
                         </div>
-                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sorting window-->
+            <div class="col-lg-8 order-1 order-lg-2">
+                <div class="filter">
+                    <div class="result-sorted">
+                        <div class="total-result">
+                            <span th:text="${travelsSize}"></span>
+                            <span th:text="'Results found'"></span>
+                        </div>
+                        <div class="form-left">
+                            <form action="#" method="get">
+                                <!-- sort options -->
+                                <label>Sort by:</label>
+                                <select class="form-select" name="sortField" id="sortField">
+                                    <option value="title" th:selected="${sortField == 'title'}"
+                                            th:text="'Title'"></option>
+                                    <option value="departureTime" th:selected="${sortField == 'departureTime'}"
+                                            th:text="'Departute time'"></option>
+                                    <option value="startingPoint" th:selected="${sortField == 'startingPoint'}"
+                                            th:text="'Starting point'"></option>
+                                    <option value="freeSpots" th:selected="${sortField == 'freeSpots'}"
+                                            th:text="'Free spots'"></option>
+                                    <option value="createdAt" th:selected="${sortField == 'createdAt'}"
+                                            th:text="'Created at'"></option>
+                                </select>
+                                <!-- sort options -->
+
+                                <!-- Order options -->
+                                <label>Order:</label>
+                                <select class="form-select" name="sortDirection">
+                                    <option value="asc" th:selected="${sortDirection == 'asc'}"
+                                            th:text="Ascending"></option>
+                                    <option value="desc" th:selected="${sortDirection == 'desc'}"
+                                            th:text="Descending"></option>
+                                </select>
+                                <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
+                                    <button type="submit" class="btn-secondary btn">Sort</button>
+                                </form>
+                                <!-- Order options -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active">
+                        <div class="row">
+                            <div class="col-lg-12 mb-1" th:each="travel : ${travelsPaged}">
+                                <div class="single-travel">
+                                    <div class="info-box">
+                                        <div class="travel-info">
+                                            <div class="inner-info">
+                                                <div class="top-info">
+                                                    <div class="travel-status">
+                                                        <span class="travel-label"
+                                                              th:text="${travel.getTravelStatus().name()}"></span>
+                                                    </div>
+                                                    <div class="title-section">
+                                                        <h3 class="travel-title">
+                                                            <a th:ref="@{/travels/{travelId}(travelId=${travel.getTravelId()})}"
+                                                               th:text="${travel.getTitle()}"></a>
+                                                        </h3>
+                                                        <div class="driver-name">
+                                                            <a th:text="'Driver:' "></a>
+                                                            <a th:href="@{/users/{userId}(userId=${travel.getDriver().getUserId()})}"
+                                                               th:text="${travel.driver.username}" id="driverLink"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bottom-info gx-4 gx-lg-5">
+                                                    <div class="travel-desc col-lg-2 col-md-2 text-center"
+                                                         th:text="'Starting location: ' + ${travel.getStartingPoint()}">
+                                                    </div>
+                                                    <div class="travel-desc col-lg-2 col-md-2 text-center"
+                                                         th:text="'Ending location: ' + ${travel.getEndingPoint()}">
+                                                    </div>
+                                                    <div class="travel-desc col-lg-2 col-md-2 text-center"
+                                                         th:text="'Free spots: ' + ${travel.getFreeSpots()}">
+                                                    </div>
+                                                    <div class="travel-desc col-lg-2 col-md-2 text-center">
+                                                        <i class="fa-solid fa-clock"></i>
+                                                        <a th:text="${travel.departureTime}"></a>
+                                                    </div>
+
+                                                    <div class="col-lg-4 offset-2">
+                                                        <form action="#"
+                                                              th:action="@{/travels/{travelId}(travelId=${travel.getTravelId()})}"
+                                                              method="get">
+                                                            <button type="submit" class="btn-secondary btn">View
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- pagination stuff -->
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="pagination">
+                                    <!-- for previous pages -->
+                                    <li th:class="${currentPage == 0} ? 'disabled' : ''">
+                                        <a th:if="${currentPage > 0}" th:href="@{/travels(page = ${currentPage - 1})}">
+                                            <i class="fa-solid fa-angle-left"></i>
+                                        </a>
+                                    </li>
+
+                                    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                        th:class="${i == currentPage ? 'active' : ''}">
+                                        <a th:href="@{'/travels?page=' + ${i}}" th:text="${i + 1}"></a>
+                                    </li>
+
+                                    <li th:class="${currentPage == totalPages - 1 } ? 'disabled' : ''">
+                                        <a th:if="${currentPage < totalPages - 1}"
+                                           th:href="@{/travels(page = ${currentPage +1})}">
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
-                  </div>
                 </div>
-
-              </div>
             </div>
-            <!-- pagination stuff -->
-            <div class="row">
-              <div class="col-12">
-                <ul class="pagination">
-                  <!-- for previous pages -->
-                  <li th:class="${currentPage == 0} ? 'disabled' : ''">
-                    <a th:if="${currentPage > 0}" th:href="@{/travels(page = ${currentPage - 1})}">
-                      <i class="fa-solid fa-angle-left"></i>
-                    </a>
-                  </li>
-
-                  <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage ? 'active' : ''}">
-                    <a th:href="@{'/travels?page=' + ${i}}" th:text="${i + 1}"></a>
-                  </li>
-
-                  <li th:class="${currentPage == totalPages - 1 } ? 'disabled' : ''">
-                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/travels(page = ${currentPage +1})}">
-                      <i class="fa-solid fa-angle-right"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
     </div>
-  </div>
 
 </div>
 <div th:replace="~{fragments/PageFrame :: footerAlt}"></div>

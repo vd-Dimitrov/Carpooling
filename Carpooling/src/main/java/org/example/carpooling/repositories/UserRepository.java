@@ -23,8 +23,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findUserByTravelId(@Param("travelId") int travelId);
 
     @Query("select u from User u where (:username is null or u.username like %:username%)" +
-                                "and (:email is null or u.email like %:email%)" +
-                                "and (:phoneNumber is null or u.phoneNumber like %:phoneNumber%)")
+            "and (:email is null or u.email like %:email%)" +
+            "and (:phoneNumber is null or u.phoneNumber like %:phoneNumber%)")
     User searchUsers(@Param("username") String username,
                      @Param("email") String email,
                      @Param("phoneNumber") String phoneNumber);

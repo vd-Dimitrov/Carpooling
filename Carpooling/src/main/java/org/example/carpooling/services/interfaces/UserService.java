@@ -8,13 +8,19 @@ public interface UserService {
     User createUser(User user);
 
     User getByUsername(String username);
+
     User getById(int id);
+
     User getByEmail(String email);
+
     User getByPhoneNumber(String phoneNumber);
+
     User getByTravelId(int travelId);
+
     List<User> getAllUsers();
 
     void updateUser(User updatedUser, User requestingUser);
+
     void deleteUser(int id, User requestingUser);
 
     User searchUsers(String username, String email, String phoneNumber);

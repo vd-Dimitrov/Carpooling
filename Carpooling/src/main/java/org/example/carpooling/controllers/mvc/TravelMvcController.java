@@ -62,44 +62,44 @@ public class TravelMvcController {
                                 @RequestParam(defaultValue = LISTINGS_PER_PAGE) int size,
                                 @RequestParam(defaultValue = "createdAt") String sortField,
                                 @RequestParam(defaultValue = "desc") String sortDirection,
-                                @Valid @ModelAttribute("travelSearchDto")TravelSearchDto searchDto,
+                                @Valid @ModelAttribute("travelSearchDto") TravelSearchDto searchDto,
                                 Model model,
                                 HttpSession httpSession) {
-        try{
+        try {
             authenticationHelper.tryGetCurrentUser(httpSession);
 
-        if ("createdAt".equals(sortField)) {
-            sortField = "createdAt";
-        }
-        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        PageRequest pageRequest = PageRequest.of(page, size, sort);
+            if ("createdAt".equals(sortField)) {
+                sortField = "createdAt";
+            }
+            Sort sort = Sort.by(sortDirection.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+            PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-        Page<Travel> travelPage = travelService.searchTravelsPaginated(
-                searchDto.getTravelTitle(),
-                searchDto.getStartingPoint(),
-                searchDto.getEndingPoint(),
-                searchDto.getDepartureTime(),
-                searchDto.getFreeSpots(),
-                searchDto.getCreatedAt(),
-                pageRequest);
-        model.addAttribute("travelsPaged", travelPage.getContent());
-        model.addAttribute("travelsSize", travelPage.getTotalElements());
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("currentPage",travelPage.getNumber());
-        model.addAttribute("totalPages",travelPage.getTotalPages());
-        model.addAttribute("sortDirection", sortDirection);
-        model.addAttribute("travelSearchDto", searchDto);
+            Page<Travel> travelPage = travelService.searchTravelsPaginated(
+                    searchDto.getTravelTitle(),
+                    searchDto.getStartingPoint(),
+                    searchDto.getEndingPoint(),
+                    searchDto.getDepartureTime(),
+                    searchDto.getFreeSpots(),
+                    searchDto.getCreatedAt(),
+                    pageRequest);
+            model.addAttribute("travelsPaged", travelPage.getContent());
+            model.addAttribute("travelsSize", travelPage.getTotalElements());
+            model.addAttribute("sortField", sortField);
+            model.addAttribute("currentPage", travelPage.getNumber());
+            model.addAttribute("totalPages", travelPage.getTotalPages());
+            model.addAttribute("sortDirection", sortDirection);
+            model.addAttribute("travelSearchDto", searchDto);
 
-        return "TravelsView";
-        } catch(AuthorizationException e) {
+            return "TravelsView";
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
     }
 
     @GetMapping("/{travelId}")
-    public String showSingleTravel(@PathVariable int travelId, Model model, HttpSession httpSession){
+    public String showSingleTravel(@PathVariable int travelId, Model model, HttpSession httpSession) {
         try {
-            User currentUser= authenticationHelper.tryGetCurrentUser(httpSession);
+            User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             Travel travel = travelService.getById(travelId);
             List<TravelRequest> populateTravelRequests = travelRequestService.getTravelRequestsForPopulate(currentUser, travelId);
 
@@ -118,9 +118,9 @@ public class TravelMvcController {
             model.addAttribute("travel", travel);
 
             return "TravelView";
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -129,9 +129,9 @@ public class TravelMvcController {
 
     @PostMapping("/{travelId}/apply")
     public String userApplyForTravel(@PathVariable int travelId,
-                                                Model model,
-                                                HttpSession httpSession){
-        try{
+                                     Model model,
+                                     HttpSession httpSession) {
+        try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             Travel travel = travelService.getById(travelId);
             travelRequestService.createTravelRequest(currentUser, travel);
@@ -139,11 +139,11 @@ public class TravelMvcController {
             return "redirect:/travels";
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             model.addAttribute("statusCode", HttpStatus.BAD_REQUEST.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -180,12 +180,12 @@ public class TravelMvcController {
     public String acceptTravel(@PathVariable int travelId,
                                @PathVariable int requestId,
                                Model model,
-                               HttpSession httpSession){
-        try{
+                               HttpSession httpSession) {
+        try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             travelRequestService.approveRequest(currentUser, travelId, requestId);
 
-            return "redirect:/travels/"+travelId;
+            return "redirect:/travels/" + travelId;
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         } catch (EntityNotFoundException e) {
@@ -201,14 +201,14 @@ public class TravelMvcController {
 
     @PostMapping("/{travelId}/requests/{requestId}/reject")
     public String rejectRequest(@PathVariable int travelId,
-                               @PathVariable int requestId,
-                               Model model,
-                               HttpSession httpSession){
-        try{
+                                @PathVariable int requestId,
+                                Model model,
+                                HttpSession httpSession) {
+        try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             travelRequestService.rejectRequest(currentUser, travelId, requestId);
 
-            return "redirect:/travels/"+travelId;
+            return "redirect:/travels/" + travelId;
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         } catch (EntityNotFoundException e) {
@@ -223,8 +223,8 @@ public class TravelMvcController {
     }
 
     @PostMapping("/{travelId}/complete")
-    public String completeTravel(@PathVariable int travelId, Model model, HttpSession httpSession){
-        try{
+    public String completeTravel(@PathVariable int travelId, Model model, HttpSession httpSession) {
+        try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             Travel travel = travelService.getById(travelId);
             travelService.changeTravelStatusToFinished(travel, currentUser);
@@ -232,11 +232,11 @@ public class TravelMvcController {
             return "redirect:/travels";
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             model.addAttribute("statusCode", HttpStatus.BAD_REQUEST.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -244,12 +244,12 @@ public class TravelMvcController {
     }
 
     @GetMapping("/create")
-    public String showTravelCreate(Model model, HttpSession httpSession){
-        try{
+    public String showTravelCreate(Model model, HttpSession httpSession) {
+        try {
             authenticationHelper.tryGetCurrentUser(httpSession);
             model.addAttribute("travel", new TravelDtoIn());
             return "TravelCreateView";
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
     }
@@ -258,20 +258,20 @@ public class TravelMvcController {
     public String handleCreateTravel(@Valid @ModelAttribute("travel") TravelDtoIn travelDtoIn,
                                      BindingResult bindingResult,
                                      Model model,
-                                     HttpSession httpSession){
-        if (bindingResult.hasErrors()){
+                                     HttpSession httpSession) {
+        if (bindingResult.hasErrors()) {
             return "TravelCreateView";
         }
-        try{
+        try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
 
             Travel travel = modelMapper.fromTravelDtoInToTravel(travelDtoIn, currentUser);
 
             travelService.createTravel(travel);
             return "redirect:/travels";
-        }catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             model.addAttribute("statusCode", HttpStatus.BAD_REQUEST.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "TravelCreateView";
@@ -281,21 +281,21 @@ public class TravelMvcController {
     @GetMapping("/{travelId}/update")
     public String showTravelUpdate(@PathVariable int travelId,
                                    Model model,
-                                   HttpSession httpSession){
+                                   HttpSession httpSession) {
         try {
             authenticationHelper.tryGetCurrentUser(httpSession);
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
 
-        try{
+        try {
             travelService.getById(travelId);
             authenticationHelper.tryGetCurrentUser(httpSession);
             model.addAttribute("travel", new TravelDtoIn());
             model.addAttribute("travelId", travelId);
 
             return "TravelUpdateView";
-        }  catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -307,24 +307,24 @@ public class TravelMvcController {
                                      @Valid @ModelAttribute("travel") TravelDtoIn travelDto,
                                      BindingResult bindingResult,
                                      HttpSession httpSession,
-                                     Model model){
-        if (bindingResult.hasErrors()){
+                                     Model model) {
+        if (bindingResult.hasErrors()) {
             return "TravelCreateView";
         }
-        try{
+        try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
 
             Travel travel = modelMapper.fromTravelDtoInUpdateToTravel(travelDto, travelId);
 
             travelService.updateTravel(travel, currentUser);
             return "redirect:/travels";
-        }catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return "redirect:/auth/login";
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             model.addAttribute("statusCode", HttpStatus.BAD_REQUEST.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "TravelCreateView";
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -334,15 +334,15 @@ public class TravelMvcController {
     @PostMapping("/{travelId}/cancel")
     public String cancelTravel(@PathVariable int travelId,
                                Model model,
-                               HttpSession httpSession){
-        try{
+                               HttpSession httpSession) {
+        try {
             User currentUser = authenticationHelper.tryGetCurrentUser(httpSession);
             Travel travel = travelService.getById(travelId);
             travelService.changeTravelStatusToCancelled(travel, currentUser);
             return "redirect:/travels";
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";

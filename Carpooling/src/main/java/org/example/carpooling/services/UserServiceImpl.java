@@ -30,31 +30,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByUsername(String username) {
         return userRepository.findUserByUsername(username)
-                .orElseThrow( () -> new EntityNotFoundException("User", "username", username));
+                .orElseThrow(() -> new EntityNotFoundException("User", "username", username));
     }
 
     @Override
     public User getById(int id) {
         return userRepository.findUserByUserId(id)
-                .orElseThrow( () -> new EntityNotFoundException("User", id));
+                .orElseThrow(() -> new EntityNotFoundException("User", id));
     }
 
     @Override
     public User getByEmail(String email) {
         return userRepository.findUserByEmail(email)
-                .orElseThrow( () -> new EntityNotFoundException("User", "email", email));
+                .orElseThrow(() -> new EntityNotFoundException("User", "email", email));
     }
 
     @Override
     public User getByPhoneNumber(String phoneNumber) {
         return userRepository.findUserByPhoneNumber(phoneNumber)
-                .orElseThrow( () -> new EntityNotFoundException("User", "phone number", phoneNumber));
+                .orElseThrow(() -> new EntityNotFoundException("User", "phone number", phoneNumber));
     }
 
     @Override
     public User getByTravelId(int travelId) {
         return userRepository.findUserByTravelId(travelId)
-                .orElseThrow( () -> new EntityNotFoundException("Travel", travelId));
+                .orElseThrow(() -> new EntityNotFoundException("Travel", travelId));
     }
 
     @Override
@@ -82,46 +82,46 @@ public class UserServiceImpl implements UserService {
         return userRepository.searchUsers(username, email, phoneNumber);
     }
 
-    private void checkPermission(User updatedUser, User requestingUser){
-        if (requestingUser.getUserId()!=updatedUser.getUserId()){
+    private void checkPermission(User updatedUser, User requestingUser) {
+        if (requestingUser.getUserId() != updatedUser.getUserId()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }
+
     private void checkUniqueUser(User user) {
         boolean duplicateUsernameExists = true;
         boolean duplicateEmailExists = true;
         boolean duplicatePhoneExists = true;
         try {
             getByUsername(user.getUsername());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             duplicateUsernameExists = false;
         }
-        try{
+        try {
             getByEmail(user.getEmail());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             duplicateEmailExists = false;
         }
-        try{
+        try {
             getByPhoneNumber(user.getPhoneNumber());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             duplicatePhoneExists = false;
         }
         if (duplicateUsernameExists) {
             throw new EntityDuplicateException("User", "username", user.getUsername());
-        }else if (duplicateEmailExists) {
+        } else if (duplicateEmailExists) {
             throw new EntityDuplicateException("User", "email", user.getEmail());
         } else if (duplicatePhoneExists) {
             throw new EntityDuplicateException("User", "phone number", user.getPhoneNumber());
         }
     }
 
-    public void checkValidEmailPattern(String emailAddress){
+    public void checkValidEmailPattern(String emailAddress) {
         String REGEX_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         if (!Pattern.compile(REGEX_PATTERN)
                 .matcher(emailAddress)
-                .matches())
-        {
+                .matches()) {
             throw new IllegalArgumentException("Enter valid email address");
         }
     }

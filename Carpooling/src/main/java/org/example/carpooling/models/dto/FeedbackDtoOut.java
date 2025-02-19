@@ -6,7 +6,7 @@ public class FeedbackDtoOut {
     private String receiver;
     private String author;
 
-    public FeedbackDtoOut(){
+    public FeedbackDtoOut() {
 
     }
 

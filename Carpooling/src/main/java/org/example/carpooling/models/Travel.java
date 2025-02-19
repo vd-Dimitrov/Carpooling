@@ -46,8 +46,8 @@ public class Travel {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "travel_applications",
-                joinColumns = @JoinColumn(name = "travel_id"),
-                inverseJoinColumns = @JoinColumn(name = "applicant_id"))
+            joinColumns = @JoinColumn(name = "travel_id"),
+            inverseJoinColumns = @JoinColumn(name = "applicant_id"))
     private Set<TravelRequest> travelRequests = new HashSet<>();
 
     @OneToMany
@@ -161,8 +161,8 @@ public class Travel {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(this == o) return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Travel travel = (Travel) o;
         return travelId == travel.travelId;
