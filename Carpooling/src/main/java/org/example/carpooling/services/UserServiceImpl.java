@@ -3,8 +3,12 @@ package org.example.carpooling.services;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityDuplicateException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
+import org.example.carpooling.models.Travel;
+import org.example.carpooling.models.TravelRequest;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.UserRepository;
+import org.example.carpooling.services.interfaces.TravelRequestService;
+import org.example.carpooling.services.interfaces.TravelService;
 import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +20,14 @@ import java.util.regex.Pattern;
 public class UserServiceImpl implements UserService {
     public static final String MODIFY_ERROR_MESSAGE = "Only owner can make changes to the User's information!";
     private final UserRepository userRepository;
+    private final TravelRequestService travelRequestService;
+    private final TravelService travelService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, TravelRequestService travelRequestService, TravelService travelService) {
         this.userRepository = userRepository;
+        this.travelRequestService = travelRequestService;
+        this.travelService = travelService;
     }
 
     @Override
@@ -67,9 +75,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User updatedUser, User requestingUser) {
         checkPermission(requestingUser, updatedUser);
-        checkUniqueUser(updatedUser);
         checkValidEmailPattern(updatedUser.getEmail());
-        userRepository.save(updatedUser);
+        userRepository.saveAndFlush(updatedUser);
     }
 
     @Override

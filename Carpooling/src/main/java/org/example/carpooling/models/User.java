@@ -11,7 +11,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", updatable = false)
     private int userId;
 
     @Column(name = "username", nullable = false, unique = true, length = 20)
@@ -35,7 +35,7 @@ public class User {
     @Column(name = "user_rating")
     private double userRating;
 
-    @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
     private Set<Travel> travels;
 
     @Column(name = "is_admin")

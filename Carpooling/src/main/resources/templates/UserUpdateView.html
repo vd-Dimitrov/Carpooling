@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('User Profile')}"></div>
+<body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+
+<div class="masthead ">
+    <div class="container travel-view-color py-5 py-3 pb-lg-2 rounded-5 border">
+        <div class="d-flex align-items-center flex-column">
+            <div class="card-title">
+                <h1 class="text-bg-primary text-center  mb-3 rounded-4" th:text="'Update User Details'"></h1>
+            </div>
+                <div class="gx-4 gx-lg-5">
+                    </div>
+                    <form action="#" th:action="@{__${requestURI}__}" th:object="${user}" method="post">
+                        <label th:text="#{update.label.password}">Password</label>
+                        <br/>
+                        <input type="password" th:field="*{password}"/>
+                        <label class="text-warning" th:errors="*{password}">Password error placeholder</label>
+                        <br/><br/>
+
+                        <label th:text="#{update.label.first-name}">First name</label>
+                        <br/>
+                        <input type="text" th:field="*{firstName}"/>
+                        <label class="text-warning" th:errors="*{firstName}">First name error placeholder</label>
+                        <br/><br/>
+
+                        <label th:text="#{update.label.last-name}">Last name point</label>
+                        <br/>
+                        <input type="text" th:field="*{lastName}"/>
+                        <label class="text-warning" th:errors="*{lastName}">Last name error placeholder</label>
+                        <br/><br/>
+
+                        <label th:text="#{update.label.email}">Email</label>
+                        <br/>
+                        <input type="email" th:field="*{email}"/>
+                        <label class="text-warning" th:errors="*{email}">Email error placeholder</label>
+                        <br/><br/>
+
+                        <label th:text="#{update.label.phone-number}">Phone number</label>
+                        <br/>
+                        <input type="text" th:field="*{phoneNumber}"/>
+                        <label class="text-warning" th:errors="*{phoneNumber}">Phone number error placeholder</label>
+                        <br/><br/>
+
+                        <input type="submit" value="Submit"/>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
+</body>
+</html>

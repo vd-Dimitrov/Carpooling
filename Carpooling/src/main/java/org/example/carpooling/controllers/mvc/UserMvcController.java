@@ -1,5 +1,6 @@
 package org.example.carpooling.controllers.mvc;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.example.carpooling.exceptions.AuthorizationException;
@@ -45,6 +46,12 @@ public class UserMvcController {
     public boolean populateIsAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;
     }
+
+    @ModelAttribute("requestURI")
+    public String requestURI(final HttpServletRequest request) {
+        return request.getRequestURI();
+    }
+
 
     @ModelAttribute("currentUsername")
     public String populateCurrentUsername(HttpSession httpSession) {
@@ -100,16 +107,14 @@ public class UserMvcController {
     public String getUpdateUserProfile(@PathVariable int userId,
                                        Model model,
                                        HttpSession httpSession) {
-        User user;
         try {
-            user = authenticationHelper.tryGetCurrentUser(httpSession);
+             authenticationHelper.tryGetCurrentUser(httpSession);
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
         try {
             userService.getById(userId);
-            UserDtoUpdateOut updateUser = modelMapper.fromUserToUserDtoUpdateOut(user);
-            model.addAttribute("user", updateUser);
+            model.addAttribute("user", new UserDtoUpdate());
             model.addAttribute("userId", userId);
 
             return "UserUpdateView";
@@ -133,11 +138,6 @@ public class UserMvcController {
         User authenticatedUser;
         try {
             authenticatedUser = authenticationHelper.tryGetCurrentUser(httpSession);
-        } catch (AuthorizationException e) {
-            return "redirect:/auth/login";
-        }
-
-        try {
             User updatedUser = modelMapper.fromUserDtoUpdate(userDtoUpdate, userId);
 
             userService.updateUser(updatedUser, authenticatedUser);
@@ -146,6 +146,8 @@ public class UserMvcController {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
+        }catch (AuthorizationException e) {
+            return "redirect:/auth/login";
         }
     }
 
@@ -164,7 +166,7 @@ public class UserMvcController {
             User userToDelete = userService.getById(userId);
             userService.deleteUser(userToDelete, authenticatedUser);
 
-            return "redirect:/";
+            return "redirect:/logout";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());

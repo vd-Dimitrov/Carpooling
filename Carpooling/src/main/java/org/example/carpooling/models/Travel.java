@@ -27,8 +27,8 @@ public class Travel {
     @Column(name = "ending_point", nullable = false)
     private String endingPoint;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "driver_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id", updatable = false)
     private User driver;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,7 +44,7 @@ public class Travel {
     private TravelStatus travelStatus;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "travel_applications",
             joinColumns = @JoinColumn(name = "travel_id"),
             inverseJoinColumns = @JoinColumn(name = "applicant_id"))

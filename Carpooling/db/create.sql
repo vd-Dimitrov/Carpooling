@@ -25,7 +25,7 @@ create table if not exists travels(
     travel_status enum('Upcoming', 'Complete', 'Cancelled'),
     free_spots int,
     created_at timestamp default current_timestamp,
-    constraint travels_users_user_id_fk foreign key (driver_id) references users (user_id)
+    constraint travels_users_user_id_fk foreign key (driver_id) references users (user_id) on update cascade on delete cascade
 );
 
 create table if not exists travel_applications(
@@ -33,8 +33,8 @@ create table if not exists travel_applications(
     applicant_id int,
     travel_id int,
     application_status enum('Waiting', 'Accepted', 'Rejected'),
-    constraint travel_applications_users_user_id_fk foreign key (applicant_id) references users (user_id) ,
-    constraint travel_applications_travels_travel_id_fk foreign key (travel_id) references travels (travel_id)
+    constraint travel_applications_users_user_id_fk foreign key (applicant_id) references users (user_id) on update cascade on delete cascade ,
+    constraint travel_applications_travels_travel_id_fk foreign key (travel_id) references travels (travel_id) on update cascade on delete cascade
 );
 
 create table if not exists options(
@@ -45,8 +45,8 @@ create table if not exists options(
 create table if not exists travels_options(
     `travels_id` int not null ,
     `options_id` int not null ,
-    constraint travels_options_travels_travel_id_fk foreign key (travels_id) references travels (travel_id) ,
-    constraint travels_options_options_option_id_fk foreign key (options_id) references options (options_id)
+    constraint travels_options_travels_travel_id_fk foreign key (travels_id) references travels (travel_id) on delete cascade,
+    constraint travels_options_options_option_id_fk foreign key (options_id) references options (options_id) on delete cascade
 );
 
 create table if not exists feedbacks(
@@ -56,7 +56,7 @@ create table if not exists feedbacks(
     comment varchar(255),
     author_id int ,
     receiver_id int ,
-    constraint feedbacks_users_user_id_fk1 foreign key (author_id) references users (user_id),
-    constraint feedbacks_users_user_id_fk2 foreign key (receiver_id) references users (user_id)
+    constraint feedbacks_users_user_id_fk1 foreign key (author_id) references users (user_id)  on delete cascade ,
+    constraint feedbacks_users_user_id_fk2 foreign key (receiver_id) references users (user_id) on delete cascade
 );
 
