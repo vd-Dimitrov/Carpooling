@@ -13,11 +13,11 @@ public class TravelRequest {
     @Column(name = "application_id")
     private int requestId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "applicant_id")
     private User applicant;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "travel_id")
     private Travel appliedTravel;
 

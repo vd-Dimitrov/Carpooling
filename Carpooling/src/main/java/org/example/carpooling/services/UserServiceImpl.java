@@ -6,6 +6,7 @@ import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.UserRepository;
 import org.example.carpooling.services.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class UserServiceImpl implements UserService {
     public static final String MODIFY_ERROR_MESSAGE = "Only owner can make changes to the User's information!";
     private final UserRepository userRepository;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -71,8 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id, User requestingUser) {
-        User userToDelete = getById(id);
+    public void deleteUser(User userToDelete, User requestingUser) {
         checkPermission(userToDelete, requestingUser);
         userRepository.delete(userToDelete);
     }

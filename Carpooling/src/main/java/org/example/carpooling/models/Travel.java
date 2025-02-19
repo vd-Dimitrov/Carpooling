@@ -28,7 +28,7 @@ public class Travel {
     private String endingPoint;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "driver_id", nullable = false)
+    @JoinColumn(name = "driver_id")
     private User driver;
 
     @Temporal(TemporalType.TIMESTAMP)

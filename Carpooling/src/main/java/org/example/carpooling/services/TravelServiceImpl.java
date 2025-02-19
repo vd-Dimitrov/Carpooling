@@ -7,6 +7,7 @@ import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.TravelRepository;
 import org.example.carpooling.services.interfaces.TravelService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class TravelServiceImpl implements TravelService {
     private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final TravelRepository travelRepository;
 
+    @Autowired
     public TravelServiceImpl(TravelRepository travelRepository) {
         this.travelRepository = travelRepository;
     }

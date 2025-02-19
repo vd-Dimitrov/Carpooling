@@ -21,7 +21,7 @@ public interface UserService {
 
     void updateUser(User updatedUser, User requestingUser);
 
-    void deleteUser(int id, User requestingUser);
+    void deleteUser(User userToDelete, User requestingUser);
 
     User searchUsers(String username, String email, String phoneNumber);
 }
