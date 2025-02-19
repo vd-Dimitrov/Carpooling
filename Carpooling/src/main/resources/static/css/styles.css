@@ -12773,7 +12773,7 @@ header.masthead h1, header.masthead .h1 {
     margin-bottom: 5px;
 }
 
-.travel-title {
+.title-section .travel-title {
     font-size: 20px;
     line-height: 26px;
     font-weight: 600;
@@ -12781,7 +12781,13 @@ header.masthead h1, header.masthead .h1 {
     margin: 30px 0 5px;
 }
 
-.travel-info .inner-info .top-info .driver-name {
+.travel-view-title{
+    font-weight: 600;
+    color: #333333;
+    margin: 30px 0 5px;
+}
+
+.driver-name {
     margin-bottom: 12px;
 }
 
@@ -12790,7 +12796,7 @@ header.masthead h1, header.masthead .h1 {
     color: #343434;
 }
 
-#driverLink .travel-info .inner-info .top-info .driver-name a:hover {
+.driver-name a:hover {
     color: #fd9d84;
 }
 
@@ -12806,7 +12812,7 @@ header.masthead h1, header.masthead .h1 {
     width: 100%;
 }
 
-.travel-info .inner-info .bottom-info .travel-desc {
+.travel-desc {
     font-weight: 500;
     color: #232323;
 }
