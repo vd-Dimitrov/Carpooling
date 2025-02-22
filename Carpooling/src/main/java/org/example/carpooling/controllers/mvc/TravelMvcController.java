@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.example.carpooling.exceptions.AuthorizationException;
+import org.example.carpooling.exceptions.EntityDuplicateException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.helpers.AuthenticationHelper;
 import org.example.carpooling.helpers.ModelMapper;
@@ -328,6 +329,10 @@ public class TravelMvcController {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
+        } catch (EntityDuplicateException e){
+            model.addAttribute("statusCode", HttpStatus.CONFLICT.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "TravelUpdateView";
         }
     }
 
