@@ -177,7 +177,7 @@ public class UserServiceImplTests {
                 .thenReturn(Optional.of(mockUser));
 
         // Act
-        mockUserService.deleteUser(1, mockUser);
+        mockUserService.deleteUser(mockUser, mockUser);
 
         // Assert
         Mockito.verify(mockUserRepository, Mockito.times(1))
@@ -195,7 +195,7 @@ public class UserServiceImplTests {
 
         // Act, Assert
         Assertions.assertThrows(AuthorizationException.class,
-                () -> mockUserService.deleteUser(1, mockInvalidUser));
+                () -> mockUserService.deleteUser(mockUser, mockInvalidUser));
     }
 
 }
