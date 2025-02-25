@@ -163,8 +163,7 @@ public class UserMvcController {
         }
 
         try {
-            User userToDelete = userService.getById(userId);
-            userService.deleteUser(userToDelete, authenticatedUser);
+            userService.deleteUser(userId, authenticatedUser);
 
             return "redirect:/logout";
         } catch (EntityNotFoundException e) {

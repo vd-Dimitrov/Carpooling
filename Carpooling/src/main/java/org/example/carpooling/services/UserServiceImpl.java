@@ -77,11 +77,12 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User updatedUser, User requestingUser) {
         checkPermission(requestingUser, updatedUser);
         checkValidEmailPattern(updatedUser.getEmail());
-        userRepository.saveAndFlush(updatedUser);
+        userRepository.save(updatedUser);
     }
 
     @Override
-    public void deleteUser(User userToDelete, User requestingUser) {
+    public void deleteUser(int userId, User requestingUser) {
+        User userToDelete = getById(userId);
         checkPermission(userToDelete, requestingUser);
         userRepository.delete(userToDelete);
     }

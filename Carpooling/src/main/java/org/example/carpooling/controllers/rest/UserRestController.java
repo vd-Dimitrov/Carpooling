@@ -104,8 +104,7 @@ public class UserRestController {
     public void deleteUser(@RequestHeader HttpHeaders httpHeaders, @PathVariable int id) {
         try {
             User currentUser = authenticationHelper.tryGetUser(httpHeaders);
-            User userToDelete = userService.getById(id);
-            userService.deleteUser(userToDelete, currentUser);
+            userService.deleteUser(id, currentUser);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {
