@@ -27,7 +27,7 @@ public class Helpers {
         User mockUser = new User();
         mockUser.setUserId(MOCK_ID);
         mockUser.setUsername("MockUsername");
-        mockUser.setPassword("MockPassword");
+        mockUser.setPassword("MockPassword!1");
         mockUser.setFirstName("MockFirstName");
         mockUser.setLastName("MockLastName");
         mockUser.setPhoneNumber("0123456789");
@@ -40,7 +40,7 @@ public class Helpers {
         User mockUser = new User();
         mockUser.setUserId(MOCK_ID);
         mockUser.setUsername("MockUsername");
-        mockUser.setPassword("MockPassword");
+        mockUser.setPassword("MockPassword!1");
         mockUser.setFirstName("MockFirstName");
         mockUser.setLastName("MockLastName");
         mockUser.setPhoneNumber("0123456789");
@@ -74,8 +74,8 @@ public class Helpers {
     public static UserDtoIn createMockUserDtoIn(){
         UserDtoIn mockUserDto = new UserDtoIn();
         mockUserDto.setUsername("MockUsername");
-        mockUserDto.setPassword("MockPassword");
-        mockUserDto.setPasswordConfirm("MockPassword");
+        mockUserDto.setPassword("MockPassword!1");
+        mockUserDto.setPasswordConfirm("MockPassword!1");
         mockUserDto.setFirstName("MockFirstName");
         mockUserDto.setLastName("MockLastName");
         mockUserDto.setEmail("MockEmail@mock.com");
@@ -86,7 +86,7 @@ public class Helpers {
 
     public static UserDtoUpdate createMockUserDtoUpdate(){
         UserDtoUpdate mockUserDto = new UserDtoUpdate();
-        mockUserDto.setPassword("MockPassword");
+        mockUserDto.setPassword("MockPassword!1");
         mockUserDto.setFirstName("MockFirstName");
         mockUserDto.setLastName("MockLastName");
         mockUserDto.setEmail("MockEmail@mock.com");

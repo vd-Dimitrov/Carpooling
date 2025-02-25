@@ -24,6 +24,9 @@
                                     <input type="text" name="search" placeholder="Search"
                                            th:placeholder="'Travel title'"
                                            th:field="*{travelTitle}">
+                                    <form action="#" th:action="@{/travels}" method="get" th:object="${travelSearchDto}">
+                                        <button type="submit" class="btn-secondary btn">Search</button>
+                                    </form>
                                 </div>
                             </form>
                         </div>
