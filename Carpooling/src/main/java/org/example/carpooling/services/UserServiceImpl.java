@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
     public User createUser(User user) {
         checkUniqueUser(user);
         checkValidEmailPattern(user.getEmail());
+        checkValidPasswordPattern(user.getPassword());
         return userRepository.save(user);
     }
 
@@ -133,5 +134,13 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Enter valid email address");
         }
     }
+public void checkValidPasswordPattern(String password){
+    String REGEX_PATTERN_PASSWORD = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^A-Za-z0-9]).{8,}$";
+    if (!Pattern.compile(REGEX_PATTERN_PASSWORD)
+            .matcher(password)
+            .matches()) {
+        throw new IllegalArgumentException("Enter valid password");
+    }
+}
 
 }

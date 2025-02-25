@@ -107,7 +107,7 @@ public class AuthenticationMvcController {
             case "username" -> "username";
             case "email" -> "email";
             case "phone" -> "phone number";
-            default -> "No error";
+            default -> "";
         };
     }
 }

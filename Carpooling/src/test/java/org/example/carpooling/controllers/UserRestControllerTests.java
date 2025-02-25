@@ -282,7 +282,7 @@ public class UserRestControllerTests {
 
         Mockito.doThrow(EntityNotFoundException.class)
                 .when(mockService)
-                .deleteUser(1,mockUser);
+                .deleteUser(mockUser,mockUser);
 
         // Act, Assert
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/{id}", 1))
