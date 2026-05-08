@@ -50,10 +50,6 @@ public class Travel {
             inverseJoinColumns = @JoinColumn(name = "applicant_id"))
     private Set<TravelRequest> travelRequests = new HashSet<>();
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private Set<User> passengers = new HashSet<>();
-
     @Column(name = "created_at")
     private Timestamp createdAt;
 
@@ -64,6 +60,11 @@ public class Travel {
             inverseJoinColumns = @JoinColumn(name = "options_id"))
     private Set<Option> options = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "travel_passengers",
+                    joinColumns = @JoinColumn(name = "travel_id"),
+                    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> passengers = new HashSet<>();
     public String getTitle() {
         return title;
     }

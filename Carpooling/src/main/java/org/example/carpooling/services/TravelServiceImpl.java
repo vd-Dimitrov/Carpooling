@@ -94,12 +94,15 @@ public class TravelServiceImpl implements TravelService {
     }
 
     private void checkPermission(Travel updatedTravel, User requestingUser) {
-        if (!requestingUser.equals(updatedTravel.getDriver())) {
+        if (!requestingUser.equals(updatedTravel.getDriver()) && !requestingUser.isAdmin()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }
 
     private Timestamp parseTimestamp(String time) {
+        if (time == null || time.isBlank()) {
+            return null;
+        }
         try {
             return new Timestamp(DATE_TIME_FORMAT.parse(time).getTime());
         } catch (ParseException e) {

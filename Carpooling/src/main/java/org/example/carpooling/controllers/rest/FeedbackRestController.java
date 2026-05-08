@@ -100,7 +100,7 @@ public class FeedbackRestController {
             User feedbackAuthor = authenticationHelper.tryGetUser(httpHeaders);
             User feedbackReceiver = userService.getById(receiverId);
             Feedback feedback = modelMapper.fromFeedbackDtoInToFeedback(feedbackDtoIn, feedbackAuthor, feedbackReceiver);
-
+            feedbackService.createFeedback(feedback);
             return modelMapper.fromFeedbackToFeedbackDtoOut(feedback);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

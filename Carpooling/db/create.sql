@@ -60,3 +60,10 @@ create table if not exists feedbacks(
     constraint feedbacks_users_user_id_fk2 foreign key (receiver_id) references users (user_id) on delete cascade
 );
 
+create table if not exists travel_passengers(
+    travel_id INT NOT NULL,
+    user_id INT NOT NULL ,
+    CONSTRAINT  fk_tp_travel FOREIGN KEY (travel_id) REFERENCES travels(travel_id) on delete cascade,
+    constraint fk_tp_user_ foreign key (user_id) references users(user_id) on delete cascade
+);
+

@@ -7,6 +7,7 @@ import org.example.carpooling.models.User;
 import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,10 +15,12 @@ public class AuthenticationHelper {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String INVALID_AUTHENTICATION_ERROR = "Incorrect password or username";
     private final UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthenticationHelper(UserService userService) {
+    public AuthenticationHelper(UserService userService, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User tryGetUser(HttpHeaders headers) {
@@ -29,7 +32,7 @@ public class AuthenticationHelper {
             String username = getUsername(userInfo);
             String password = getPassword(userInfo);
             User user = userService.getByUsername(username);
-            if (!user.getPassword().equals(password)) {
+            if (!passwordEncoder.matches(password, user.getPassword())) {
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
             }
             return user;
@@ -41,7 +44,7 @@ public class AuthenticationHelper {
     public User verifyUser(String username, String password) {
         try {
             User user = userService.getByUsername(username);
-            if (!user.getPassword().equals(password)) {
+            if (!passwordEncoder.matches(password,user.getPassword())) {
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
             }
             return user;

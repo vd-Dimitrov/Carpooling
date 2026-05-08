@@ -11,6 +11,7 @@ import org.example.carpooling.services.interfaces.TravelRequestService;
 import org.example.carpooling.services.interfaces.TravelService;
 import org.example.carpooling.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +23,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final TravelRequestService travelRequestService;
     private final TravelService travelService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, TravelRequestService travelRequestService, TravelService travelService) {
+    public UserServiceImpl(UserRepository userRepository,
+                           TravelRequestService travelRequestService,
+                           TravelService travelService,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.travelRequestService = travelRequestService;
         this.travelService = travelService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,6 +41,7 @@ public class UserServiceImpl implements UserService {
         checkUniqueUser(user);
         checkValidEmailPattern(user.getEmail());
         checkValidPasswordPattern(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -75,8 +82,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User updatedUser, User requestingUser) {
-        checkPermission(requestingUser, updatedUser);
+        checkPermission(updatedUser, requestingUser);
+        checkValidPasswordPattern(updatedUser.getPassword());
         checkValidEmailPattern(updatedUser.getEmail());
+        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         userRepository.save(updatedUser);
     }
 
@@ -93,7 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkPermission(User updatedUser, User requestingUser) {
-        if (requestingUser.getUserId() != updatedUser.getUserId()) {
+        if (requestingUser.getUserId() != updatedUser.getUserId() && !requestingUser.isAdmin()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }

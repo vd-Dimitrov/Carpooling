@@ -60,7 +60,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     private void checkPermission(User requestingUser, Feedback updatedFeedback) {
-        if (requestingUser.getUserId() != updatedFeedback.getAuthor().getUserId()) {
+        if (requestingUser.getUserId() != updatedFeedback.getAuthor().getUserId() && !requestingUser.isAdmin()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }

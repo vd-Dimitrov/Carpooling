@@ -91,7 +91,7 @@ public class UserMvcController {
         }
         try {
             User displayedUser = userService.getById(userId);
-            boolean isOwner = currentUser.equals(displayedUser);
+            boolean isOwner = currentUser.equals(displayedUser) || currentUser.isAdmin();
             model.addAttribute("isOwner", isOwner);
             model.addAttribute("user", displayedUser);
 
@@ -165,7 +165,10 @@ public class UserMvcController {
         try {
             userService.deleteUser(userId, authenticatedUser);
 
-            return "redirect:/logout";
+            if (authenticatedUser.getUserId() == userId) {
+                return "redirect:/auth/logout";
+            }
+            return "redirect:/";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());

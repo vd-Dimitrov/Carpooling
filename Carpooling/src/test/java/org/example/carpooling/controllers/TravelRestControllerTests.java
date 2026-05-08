@@ -115,7 +115,7 @@ public class TravelRestControllerTests {
 
         List<Travel> mockTravelList = new ArrayList<>();
 
-        Mockito.when(mockTravelService.getAllTravels())
+        Mockito.when(mockTravelService.getByDriver(Mockito.anyInt()))
                 .thenReturn(mockTravelList);
 
         // Act, Assert
@@ -126,6 +126,9 @@ public class TravelRestControllerTests {
     @Test
     public void getAllTravelsOfUser_Should_ReturnStatusEntityNotFound_When_UserDoesNotExist() throws Exception{
         Mockito.when(mockAuthenticationHelper.tryGetUser(Mockito.any()))
+                .thenReturn(createMockUser());
+
+        Mockito.when(mockTravelService.getByDriver(Mockito.anyInt()))
                 .thenThrow(EntityNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/travel/user/{id}", 1))

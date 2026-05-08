@@ -27,7 +27,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     private final TravelRepository travelRepository;
     private final TravelService travelService;
 
-    public TravelRequestServiceImpl(TravelRequestRepository requestRepository, TravelRepository travelRepository, TravelRepository travelRepository1, TravelService travelService) {
+    public TravelRequestServiceImpl(TravelRequestRepository requestRepository, TravelRepository travelRepository1, TravelService travelService) {
         this.requestRepository = requestRepository;
         this.travelRepository = travelRepository1;
         this.travelService = travelService;
@@ -142,7 +142,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     }
 
     private void checkPermission(TravelRequest travelRequest, User requestingUser) {
-        if (requestingUser.getUserId() != travelRequest.getApplicant().getUserId()) {
+        if (requestingUser.getUserId() != travelRequest.getApplicant().getUserId() && !requestingUser.isAdmin()) {
             throw new AuthorizationException(MODIFY_ERROR_MESSAGE);
         }
     }
@@ -152,7 +152,7 @@ public class TravelRequestServiceImpl implements TravelRequestService {
             throw new IllegalArgumentException("Invalid request");
         }
 
-        if (!travelRequest.getAppliedTravel().getDriver().equals(requestingUser)) {
+        if (!travelRequest.getAppliedTravel().getDriver().equals(requestingUser) && !requestingUser.isAdmin()) {
             throw new AuthorizationException(TRAVEL_REQUEST_ERROR_MESSAGE);
         }
     }
