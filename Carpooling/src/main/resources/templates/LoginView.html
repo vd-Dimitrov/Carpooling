@@ -26,7 +26,26 @@
         </form>
     </div>
 </div>
+<div th:if="${suspendedMessage}" class="modal fade" id="suspendedModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Account Suspended</h5>
+            </div>
+            <div class="modal-body" th:text="${suspendedMessage}"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
 <div th:replace="~{fragments/PageFrame :: scripts}"></div>
+<script th:if="${suspendedMessage}">
+    document.addEventListener('DOMContentLoaded', function () {
+        new bootstrap.Modal(document.getElementById('suspendedModal')).show();
+    });
+</script>
 </body>
 </html>

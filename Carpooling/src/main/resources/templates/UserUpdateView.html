@@ -15,40 +15,53 @@
                     <form action="#" th:action="@{__${requestURI}__}" th:object="${user}" method="post">
                         <label th:text="#{update.label.password}">Password</label>
                         <br/>
-                        <input type="password" th:field="*{password}"/>
+                        <label>
+                            <input type="password" th:field="*{password}"/>
+                        </label>
                         <label class="text-warning" th:errors="*{password}">Password error placeholder</label>
                         <br/><br/>
 
                         <label th:text="#{update.label.first-name}">First name</label>
                         <br/>
-                        <input type="text" th:field="*{firstName}"/>
+                        <label>
+                            <input type="text" th:field="*{firstName}"/>
+                        </label>
                         <label class="text-warning" th:errors="*{firstName}">First name error placeholder</label>
                         <br/><br/>
 
                         <label th:text="#{update.label.last-name}">Last name point</label>
                         <br/>
-                        <input type="text" th:field="*{lastName}"/>
+                        <label>
+                            <input type="text" th:field="*{lastName}"/>
+                        </label>
                         <label class="text-warning" th:errors="*{lastName}">Last name error placeholder</label>
                         <br/><br/>
 
                         <label th:text="#{update.label.email}">Email</label>
                         <br/>
-                        <input type="email" th:field="*{email}"/>
+                        <label>
+                            <input type="email" th:field="*{email}"/>
+                        </label>
                         <label class="text-warning" th:errors="*{email}">Email error placeholder</label>
                         <br/><br/>
 
                         <label th:text="#{update.label.phone-number}">Phone number</label>
                         <br/>
-                        <input type="text" th:field="*{phoneNumber}"/>
+                        <label>
+                            <input type="text" th:field="*{phoneNumber}"/>
+                        </label>
                         <label class="text-warning" th:errors="*{phoneNumber}">Phone number error placeholder</label>
                         <br/><br/>
 
                         <input type="submit" value="Submit"/>
                     </form>
+                    <script>
+                        document.querySelectorAll('input[type="text"], input[type="email"]')
+                            .forEach(i => i.addEventListener('focus', () => i.select()));
+                    </script>
             </div>
         </div>
     </div>
-</div>
 <div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
 <div th:replace="~{fragments/PageFrame :: scripts}"></div>
 </body>

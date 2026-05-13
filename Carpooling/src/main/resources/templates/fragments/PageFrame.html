@@ -44,6 +44,8 @@
                     <a class="nav-link" href="#" th:href="@{/users/profile}"
                        th:text="#{navigation.profile}">Profile</a>
                 </li>
+                <li th:if="${isAuthenticated and isAdmin}" class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/admin/users}">Admin Panel</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/auth/logout}">Logout</a></li>
             </ul>

@@ -53,6 +53,15 @@ public class TravelMvcController {
         return session.getAttribute("currentUser") != null;
     }
 
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session) {
+        try {
+            return authenticationHelper.tryGetCurrentUser(session).isAdmin();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @ModelAttribute("requestURI")
     public String requestURI(final HttpServletRequest request) {
         return request.getRequestURI();

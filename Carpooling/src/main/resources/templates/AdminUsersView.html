@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('Admin - Users')}"></div>
+<body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+
+<header class="bg-secondary text-light text-center py-3">
+    <div class="pt-5 container d-flex align-items-center flex-column">
+        <h1 class="mb-0">Admin Panel — Users</h1>
+    </div>
+</header>
+
+<div class="page-section travel-view-color py-5 pb-3 pb-lg-2">
+    <div class="container">
+        <table class="table table-bordered table-hover bg-white rounded">
+            <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.userId}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.phoneNumber}"></td>
+                <td th:text="${user.userRating}"></td>
+                <td>
+                    <span th:if="${user.suspended}" class="badge bg-danger"
+                          th:text="'Suspended until ' + ${user.suspendedUntil}"></span>
+                    <span th:unless="${user.suspended}" class="badge bg-success">Active</span>
+                </td>
+                <td class="d-flex gap-2 flex-wrap">
+                    <!-- Edit -->
+                    <a th:href="@{/users/{id}/update(id=${user.userId})}" class="btn btn-sm btn-primary">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a>
+
+                    <!-- Suspend trigger -->
+                    <button type="button" class="btn btn-sm btn-warning"
+                            th:data-bs-target="'#suspendModal-' + ${user.userId}"
+                            data-bs-toggle="modal">
+                        <i class="fa-solid fa-ban"></i> Suspend
+                    </button>
+
+                    <!-- Delete trigger -->
+                    <button type="button" class="btn btn-sm btn-danger"
+                            th:data-bs-target="'#deleteModal-' + ${user.userId}"
+                            data-bs-toggle="modal">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Suspend modals (one per user) -->
+<div th:each="user : ${users}">
+    <div class="modal fade" th:id="'suspendModal-' + ${user.userId}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"
+                        th:text="'Suspend ' + ${user.username}"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/admin/users/{id}/suspend(id=${user.userId})}" method="post">
+                    <div class="modal-body">
+                        <label class="form-label">Suspend until:</label>
+                        <input type="date" name="suspendUntil" class="form-control" required
+                               th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning">Confirm Suspension</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete modals (one per user) -->
+<div th:each="user : ${users}">
+    <div class="modal fade" th:id="'deleteModal-' + ${user.userId}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to permanently delete
+                    <strong th:text="${user.username}"></strong>'s account?
+                    This cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{/admin/users/{id}/delete(id=${user.userId})}" method="post">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/PageFrame :: footerAlt}"></div>
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
+</body>
+</html>

@@ -19,7 +19,7 @@ INSERT INTO carpooling.users (username, password, first_name, last_name, email, 
 ('kevin_m', '$2a$12$uswS88sIBeTAi6982pb1sewmWqcF6j1cd7luIBP4IsqAMG3rkHaaO', 'Kevin', 'Morgan', 'kevin.m@example.com', '0899786543', 0),
 ('emmaL', '$2a$12$oApz9ABdXdmQXDTT0u9A6e112g0gXfWf/pUmeAh/F4tKheq86VOpy', 'Emma', 'Lewis', 'emmal@example.com', '0876345897', 0),
 ('nick_42', '$2a$12$b3sE9ZxPO1bWu9uHaDvc6uY09fQTGit7w2ZC35WMiIZi7C3Nv3vw2', 'Nick', 'Anderson', 'nick42@example.com', '0889123456', 0),
-('admin','$2a$12$cdvsatI5qcPMQ9X97d4im.bQbAtZ082tfDHiKGR7Rj7b99PDqsTqS', 'Admin', 'Admin', 'vladislav.d.dimit@gmail.com', '1234567890', 0 );
+('admin','$2a$12$cdvsatI5qcPMQ9X97d4im.bQbAtZ082tfDHiKGR7Rj7b99PDqsTqS', 'Admin', 'Admin', 'vladislav.d.dimit@gmail.com', '1234567890', 1 );
 
 INSERT INTO carpooling.travels (title, starting_point, ending_point, driver_id, departure_time, travel_status, free_spots) VALUES
 ('Mountain Escape', 'Sofia', 'Bansko', 5, '2025-03-15 08:00', 1, 2),

@@ -3,8 +3,6 @@ package org.example.carpooling.services;
 import org.example.carpooling.exceptions.AuthorizationException;
 import org.example.carpooling.exceptions.EntityDuplicateException;
 import org.example.carpooling.exceptions.EntityNotFoundException;
-import org.example.carpooling.models.Travel;
-import org.example.carpooling.models.TravelRequest;
 import org.example.carpooling.models.User;
 import org.example.carpooling.repositories.UserRepository;
 import org.example.carpooling.services.interfaces.TravelRequestService;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -21,18 +20,14 @@ import java.util.regex.Pattern;
 public class UserServiceImpl implements UserService {
     public static final String MODIFY_ERROR_MESSAGE = "Only owner can make changes to the User's information!";
     private final UserRepository userRepository;
-    private final TravelRequestService travelRequestService;
-    private final TravelService travelService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           TravelRequestService travelRequestService,
-                           TravelService travelService,
+
                            BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.travelRequestService = travelRequestService;
-        this.travelService = travelService;
+
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -99,6 +94,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User searchUsers(String username, String email, String phoneNumber) {
         return userRepository.searchUsers(username, email, phoneNumber);
+    }
+
+    @Override
+    public void suspendUser(int userId, LocalDate until, User requestingUser) {
+        if (!requestingUser.isAdmin()) {
+            throw new AuthorizationException("Only admins can suspend users.");
+        }
+        User user = getById(userId);
+        user.setSuspendedUntil(until);
+        userRepository.save(user);
     }
 
     private void checkPermission(User updatedUser, User requestingUser) {

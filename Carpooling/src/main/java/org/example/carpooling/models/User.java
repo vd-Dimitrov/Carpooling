@@ -3,6 +3,7 @@ package org.example.carpooling.models;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -43,6 +44,9 @@ public class User {
 
     @Column(name = "created_at")
     private Timestamp createAt;
+
+    @Column(name = "suspended_until")
+    private LocalDate suspendedUntil;
 
     public Timestamp getCreateAt() {
         return createAt;
@@ -130,6 +134,18 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public LocalDate getSuspendedUntil() {
+        return suspendedUntil;
+    }
+
+    public void setSuspendedUntil(LocalDate suspendedUntil) {
+        this.suspendedUntil = suspendedUntil;
+    }
+
+    public boolean isSuspended() {
+        return suspendedUntil != null && suspendedUntil.isAfter(LocalDate.now());
     }
 
     @Override

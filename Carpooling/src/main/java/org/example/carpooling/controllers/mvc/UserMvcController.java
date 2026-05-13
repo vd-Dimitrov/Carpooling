@@ -8,10 +8,8 @@ import org.example.carpooling.exceptions.EntityNotFoundException;
 import org.example.carpooling.helpers.AuthenticationHelper;
 import org.example.carpooling.helpers.ModelMapper;
 import org.example.carpooling.models.Feedback;
-import org.example.carpooling.models.Travel;
 import org.example.carpooling.models.User;
 import org.example.carpooling.models.dto.UserDtoUpdate;
-import org.example.carpooling.models.dto.UserDtoUpdateOut;
 import org.example.carpooling.services.interfaces.FeedbackService;
 import org.example.carpooling.services.interfaces.TravelService;
 import org.example.carpooling.services.interfaces.UserService;
@@ -29,15 +27,13 @@ import java.util.List;
 public class UserMvcController {
     private final AuthenticationHelper authenticationHelper;
     private final UserService userService;
-    private final TravelService travelService;
     private final ModelMapper modelMapper;
     private final FeedbackService feedbackService;
 
     @Autowired
-    public UserMvcController(AuthenticationHelper authenticationHelper, UserService userService, TravelService travelService, ModelMapper modelMapper, FeedbackService feedbackService) {
+    public UserMvcController(AuthenticationHelper authenticationHelper, ModelMapper modelMapper, FeedbackService feedbackService, UserService userService) {
         this.authenticationHelper = authenticationHelper;
         this.userService = userService;
-        this.travelService = travelService;
         this.modelMapper = modelMapper;
         this.feedbackService = feedbackService;
     }
@@ -45,6 +41,15 @@ public class UserMvcController {
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;
+    }
+
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session) {
+        try {
+            return authenticationHelper.tryGetCurrentUser(session).isAdmin();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @ModelAttribute("requestURI")
@@ -113,8 +118,13 @@ public class UserMvcController {
             return "redirect:/auth/login";
         }
         try {
-            userService.getById(userId);
-            model.addAttribute("user", new UserDtoUpdate());
+            User existingUser = userService.getById(userId);
+            UserDtoUpdate dto = new UserDtoUpdate();
+            dto.setFirstName(existingUser.getFirstName());
+            dto.setLastName(existingUser.getLastName());
+            dto.setEmail(existingUser.getEmail());
+            dto.setPhoneNumber(existingUser.getPhoneNumber());
+            model.addAttribute("user", dto);
             model.addAttribute("userId", userId);
 
             return "UserUpdateView";

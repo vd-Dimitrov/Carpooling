@@ -12,7 +12,8 @@ create table if not exists users (
     phone_number varchar(13) not null unique ,
     user_rating double default 0,
     created_at timestamp default current_timestamp,
-    is_admin boolean
+    is_admin boolean,
+    suspended_until date default null
 );
 
 create table if not exists travels(

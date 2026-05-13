@@ -2,6 +2,7 @@ package org.example.carpooling.services.interfaces;
 
 import org.example.carpooling.models.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
@@ -24,4 +25,6 @@ public interface UserService {
     void deleteUser(int userId, User requestingUser);
 
     User searchUsers(String username, String email, String phoneNumber);
+
+    void suspendUser(int userId, LocalDate until, User requestingUser);
 }

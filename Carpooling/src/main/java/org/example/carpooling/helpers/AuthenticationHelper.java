@@ -44,8 +44,11 @@ public class AuthenticationHelper {
     public User verifyUser(String username, String password) {
         try {
             User user = userService.getByUsername(username);
-            if (!passwordEncoder.matches(password,user.getPassword())) {
+            if (!passwordEncoder.matches(password, user.getPassword())) {
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            }
+            if (user.isSuspended()) {
+                throw new AuthorizationException("Your account is suspended until " + user.getSuspendedUntil());
             }
             return user;
         } catch (EntityNotFoundException e) {

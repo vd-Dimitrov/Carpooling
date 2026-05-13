@@ -3,7 +3,6 @@ package org.example.carpooling.controllers.mvc;
 import jakarta.servlet.http.HttpSession;
 import org.example.carpooling.helpers.AuthenticationHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,15 @@ public class HomeMvcController {
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
+    }
+
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session) {
+        try {
+            return authenticationHelper.tryGetCurrentUser(session).isAdmin();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @GetMapping

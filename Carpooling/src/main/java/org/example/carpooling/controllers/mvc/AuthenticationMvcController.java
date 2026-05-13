@@ -38,6 +38,15 @@ public class AuthenticationMvcController {
         return httpSession.getAttribute("currentUser") != null;
     }
 
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session) {
+        try {
+            return authenticationHelper.tryGetCurrentUser(session).isAdmin();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @GetMapping("/login")
     public String showLogin(Model model) {
         model.addAttribute("login", new LoginDto());
@@ -47,7 +56,8 @@ public class AuthenticationMvcController {
     @PostMapping("/login")
     public String handleLogin(@Valid @ModelAttribute("login") LoginDto login,
                               BindingResult bindingResult,
-                              HttpSession httpSession) {
+                              HttpSession httpSession,
+                              Model model) {
         if (bindingResult.hasErrors()) {
             return "LoginView";
         }
@@ -57,7 +67,11 @@ public class AuthenticationMvcController {
             httpSession.setAttribute("currentUser", login.getUsername());
             return "redirect:/";
         } catch (AuthorizationException e) {
-            bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            if (e.getMessage().startsWith("Your account is suspended")) {
+                model.addAttribute("suspendedMessage", e.getMessage());
+            } else {
+                bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            }
             return "LoginView";
         }
     }
